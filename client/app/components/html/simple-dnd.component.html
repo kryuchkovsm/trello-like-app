@@ -1,0 +1,63 @@
+<h4>Simple Drag-and-Drop</h4>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">Available to drag</div>
+            <div class="panel-body">
+                <div class="panel panel-default" dnd-draggable [dragEnabled]="true">
+                    <div class="panel-body">
+                        <div>Drag Me</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div dnd-droppable class="panel panel-info" (onDropSuccess)="simpleDrop=$event">
+            <div class="panel-heading">Place to drop</div>
+            <div class="panel-body">
+                <div *ngIf="simpleDrop">Item was dropped here</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4>Multi list sortable</h4>
+<div class="row">
+    <div class="col-sm-3">
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                Available boxers
+            </div>
+            <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listBoxers">
+                <ul class="list-group" >
+                    <li *ngFor="let item of listBoxers; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                First Team
+            </div>
+            <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamOne">
+                <ul class="list-group" >
+                    <li *ngFor="let item of listTeamOne; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                Second Team
+            </div>
+            <div class="panel-body" dnd-sortable-container [dropZones]="['boxers-zone']" [sortableData]="listTeamTwo">
+                <ul class="list-group">
+                    <li *ngFor="let item of listTeamTwo; let i = index" class="list-group-item" dnd-sortable [sortableIndex]="i">{{item}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

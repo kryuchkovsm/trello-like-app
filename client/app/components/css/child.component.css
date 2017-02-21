@@ -1,0 +1,31 @@
+
+
+
+.child-component {
+    color: white;
+    width: 220px;
+    padding: 10px;
+    background-color: sandybrown;
+    margin-top: 30px;
+    margin-left: 30px;
+    border: 10px solid blue;
+}
+
+.btn-add {
+    float: right;
+}
+
+.btn-remove {
+    float: left;
+}
+
+p {
+    margin: 0;
+    padding: 5px;
+}
+
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
