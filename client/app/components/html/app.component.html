@@ -1,19 +1,19 @@
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <link rel="stylesheet" href="/app/components/css/styles.css">
-<!--<link rel="stylesheet" type="text/css" href="https://rawgit.com/akserg/ng2-dnd/master/ng2-dnd.css">-->
 
-<!--<h1>Trello-like-app</h1>-->
-<body>
 <header>
     <nav>
         <a class="btn">|||| Boards</a>
         <a class="logo">Trello learning app</a>
-        <toolbar></toolbar>
+
+        <div class = "login">
+            <button class="btn" [routerLink]="['']">Home</button>
+            <button class="btn" [routerLink]="['login']" *ngIf="!auth.isAuthenticated()">Log In</button>
+            <button class="btn" (click)="auth.logout()" *ngIf="auth.isAuthenticated()">Log Out</button>
+        </div>
     </nav>
 </header>
 
 <div id="content-wrapper">
-    <board-component></board-component>
-    <!--<router-outlet></router-outlet>-->
+    <!--<board-component></board-component>-->
+    <router-outlet></router-outlet>
 </div>
-</body>

@@ -9,6 +9,7 @@ var express = require('express');
 var app = express()
 
 
+
 // View Engine
 app.set('views', path.join(__dirname, 'views'))
 app.set('viewengine', 'ejs')
@@ -32,6 +33,7 @@ var users = [
 // app.get('/api/users', authCheck, function(req, res) {
 //   res.json(users);
 // });
+
 
 
 // Set static folder

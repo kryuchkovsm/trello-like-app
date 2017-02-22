@@ -4,8 +4,6 @@ body {
     height: 100%;
 }
 
-
-
 body, input[text], button {
     color: #333;
 }
@@ -25,7 +23,7 @@ a {
     text-decoration: none;
     font-weight: bold;
     border-radius: 3px;
-    display: block;
+    /*display: block;*/
     padding: 8px;
 }
 
