@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service'
 import { List } from './classes/list'
 
@@ -9,7 +9,7 @@ import { List } from './classes/list'
 })
 
 export class ListComponent {
-    @Input() inputList;
+    @Input() inputList: List;
 
     // constructor (private dataService: DataService) {
     constructor () {
@@ -17,6 +17,10 @@ export class ListComponent {
         console.log(this.inputList);
     }
 
+    ngOnInit(): void {
+        console.log('list12356');
+         console.log(this.inputList);
+    }
 
 
 }

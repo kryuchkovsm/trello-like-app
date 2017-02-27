@@ -1,29 +1,29 @@
 import { List } from '../components/classes/list'
 import { Ticket } from '../components/classes/ticket'
 
-
 export const LISTS: List[] = [
-    {   _id: 111,
+    {   _id: '111',
         title: 'to do',
         boardId: 'board1',
         order: 0,
-        tickets:Ticket = []
+        tickets: []
     },
-    {   _id: 222,
+    {   _id: '222',
         title: 'in progress',
         boardId: 'board1',
         order: 1,
-        tickets:Ticket = []
+        tickets: []
     },
-    {   _id: 333,
+    {   _id: '333',
         title: 'done',
         boardId: 'board1',
-        order: 2,
-        tickets:Ticket = []
+        order: 2,        
+        tickets: []
     },
-    {   _id: 4444,
+    {   _id: '4444',
         title: 'done',
         boardId: 'board1',
         order: 3,
-        tickets:Ticket = []
-    }]
+        tickets: []
+    }
+]

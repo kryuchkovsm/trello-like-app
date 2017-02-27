@@ -11,7 +11,9 @@
             <!--<button class = "btn-add" (click) = "addChild(node)">+</button>-->
             <!--<child-node [childNodes] = "node.children"></child-node>-->
         <!--</div>-->
-        <list-component  *ngFor="let list of lists" [inputList] = "abcdefg"></list-component>
+        <list-component  *ngFor="let list of lists" 
+             [inputList] = "list">
+        </list-component>
     </div>
     <div class="add-list">
         <span>Add a list...</span>
