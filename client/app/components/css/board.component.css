@@ -59,3 +59,8 @@
     line-height: 18px;
     padding: 3px 5px 4px 5px;
 }
+
+.dnd-test {
+    margin: 50px;
+    width: 1000px;
+}

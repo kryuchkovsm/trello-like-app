@@ -34,12 +34,18 @@
         </div>
         <p>OR</p>
         <br>
-        <button
-          type="button"
-          class="btn btn-default btn-primary"
-          (click)="auth.loginWithGoogle()">
-            Login with Google
-        </button>
+            <button
+              type="button"
+              class="btn btn-social btn-auth-google"
+              (click)="auth.loginWithGoogle()">
+                Login with Google
+            </button>
+            <button
+                  type="button"
+                  class="btn btn-social btn-auth-facebook"
+                  (click)="auth.loginWithFacebook()">
+              Login with Facebook
+            </button>
       </form>
     </div>
   </div>

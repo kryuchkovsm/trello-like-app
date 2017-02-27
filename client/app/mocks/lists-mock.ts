@@ -1,5 +1,5 @@
 import { List } from '../components/classes/list'
-import { Ticket } from '../components/classes/ticket'
+
 
 export const LISTS: List[] = [
     {   _id: '111',
@@ -21,7 +21,7 @@ export const LISTS: List[] = [
         tickets: []
     },
     {   _id: '4444',
-        title: 'done',
+        title: 'another tasks',
         boardId: 'board1',
         order: 3,
         tickets: []

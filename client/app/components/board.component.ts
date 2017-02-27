@@ -11,21 +11,13 @@ import { List } from './classes/list';
 export class BoardComponent implements OnInit {    
     lists: List[];
 
-    constructor( private dataService: DataService) {
-        this.lists = this.dataService.getLists();        
-    }
+    constructor( private dataService: DataService) { }
 
     ngOnInit(): void {        
         this.getLists();        
     }
 
     public getLists() {
-        this.dataService.getLists();        
+        this.lists = this.dataService.getLists();
     }
-
-
-    // simpleDrop: any = null;
-    // listBoxers:Array<string> = ['Sugar Ray Robinson','Muhammad Ali','George Foreman','Joe Frazier','Jake LaMotta','Joe Louis','Jack Dempsey','Rocky Marciano','Mike Tyson','Oscar De La Hoya'];
-    // listTeamOne:Array<string> = [];
-    // listTeamTwo:Array<string> = [];
 }

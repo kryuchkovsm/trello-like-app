@@ -3,12 +3,31 @@
         <h4>{{inputList.title}}</h4>
         <!--<input placeholder= 'asfasf'/>-->
     </div>
-    <ul class = 'ticket-list'>
-        <ticket-component></ticket-component>
-        <ticket-component></ticket-component>
-        <ticket-component></ticket-component>
-        <ticket-component></ticket-component>
+
+    <!--<ul class = 'ticket-list'>-->
+
+
+    <ul class = 'ticket-list'
+        dnd-sortable-container
+        [dropZones]="['ticket-zone']"
+        [sortableData]="tickets">
+
+        <ticket-component
+                *ngFor="let ticket of tickets;  let j = index"
+                [inputTicket]="ticket"
+                dnd-sortable
+                [sortableIndex]="j"
+                [dragEnabled]='true'>
+        </ticket-component>
+
+
+        <!--<ticket-component-->
+                <!--*ngFor="let ticket of tickets"-->
+                <!--[inputTicket]="ticket">-->
+        <!--</ticket-component>-->
+
     </ul>
+
     <div class = 'add-ticket'>
         <input placeholder= 'Add ticket...'/>
     </div>

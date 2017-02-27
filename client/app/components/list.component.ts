@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../services/data.service'
+import { Ticket } from './classes/ticket'
 import { List } from './classes/list'
 
 @Component({
@@ -8,19 +9,21 @@ import { List } from './classes/list'
     styleUrls: ['./app/components/css/list.component.css'],
 })
 
-export class ListComponent {
+export class ListComponent implements OnInit{
     @Input() inputList: List;
 
+    tickets: Ticket[];
+
     // constructor (private dataService: DataService) {
-    constructor () {
-        console.log('list123');
-        console.log(this.inputList);
+    constructor (private dataService: DataService) {
     }
 
     ngOnInit(): void {
-        console.log('list12356');
-         console.log(this.inputList);
+        this.getTickets(this.inputList._id);
     }
 
+    public getTickets(listId) {
+        this.tickets = this.dataService.getTickets(listId);
+    }
 
 }

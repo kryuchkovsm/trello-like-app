@@ -1,19 +1,20 @@
-<li class="ticket-component">
-    <!--[attr.card-id]="card._id"-->
-    <!--[attr.card-order]="card.order"-->
-    <!--(click)="editCard()">-->
+<li class="ticket-component"
+>
+    <!--[attr.ticket-id]="ticket._id"-->
+    <!--[attr.ticket-order]="ticket.order"-->
+    <!--(click)="editTicket()">-->
     <span>
-        <!--<ticket-component> [innerHtml]="card.title" [style.display]="editingCard ? 'none' : ''">-->
-        Ticket item
+        {{inputTicket.title}}
     </span>
-    <textarea>
-        blah-blah-blah
-    </textarea>
+        <!--<ticket-component> [innerHtml]="ticket.content" [style.display]="editingTicket ? 'none' : ''">-->
+
     <!--<textarea>-->
-        <!--blah-blah-blah-->
-        <!--&lt;!&ndash;[style.display]="editingCard ? '' : 'none' "&ndash;&gt;-->
-        <!--&lt;!&ndash;(keydown)="blurOnEnter($event)"&ndash;&gt;-->
-        <!--&lt;!&ndash;(blur)="updateCard()"&ndash;&gt;-->
-        <!--&lt;!&ndash;[(ngModel)]="card.title" >&ndash;&gt;-->
+        <!--{{inputTicket.title}}-->
+        <!--[style.display]="editingTicket ? '' : 'none' "-->
+        <!--(keydown)="blurOnEnter($event)"-->
+        <!--(blur)="updateTicket()"-->
+        <!--[(ngModel)]="ticket.content" >-->
     <!--</textarea>-->
+
+
 </li>

@@ -1,14 +1,17 @@
 import { Injectable }      from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 import { Router }          from '@angular/router';
-import { myConfig }        from '../auth.config';
+import { myConfig }        from './auth.config';
+
+import {Http, Headers, RequestOptions} from '@angular/http';
+import 'rxjs/add/operator/map'
+
 
 // Avoid name not found warnings
 declare var auth0: any;
 
 @Injectable()
 export class Auth {
-
     // Configure Auth0
     auth0 = new auth0.WebAuth({
         domain: myConfig.domain,
@@ -17,7 +20,7 @@ export class Auth {
         responseType: 'token id_token'
     });
 
-    constructor(private router: Router) {
+    constructor(private router: Router, private http:Http) {
     }
 
     public handleAuthentication(): void {
@@ -86,6 +89,12 @@ export class Auth {
         });
     }
 
+    public loginWithFacebook():void {
+        this.auth0.authorize({
+            connection: 'facebook',
+        });
+    }
+
     public isAuthenticated(): boolean {
         // Check whether the id_token is expired or not
         return tokenNotExpired();
@@ -102,3 +111,8 @@ export class Auth {
         localStorage.setItem('id_token', authResult.idToken);
     }
 }
+
+
+
+
+

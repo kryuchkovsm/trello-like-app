@@ -1,12 +1,14 @@
-var path = require('path');
-var config = require('./config')
-var bodyParser = require('body-parser')
+const Express = require('express');
+const jwt = require('express-jwt');
+const jwksRsa = require('jwks-rsa');
+const bodyParser = require('body-parser');
+const path = require('path');
+const config = require('./config')
+const index = require('./routes/index')
+const api = require('./routes/api')
 
-var index = require('./routes/index')
-var nodes = require('./routes/nodes')
+const app = new Express();
 
-var express = require('express');
-var app = express()
 
 
 
@@ -16,28 +18,8 @@ app.set('viewengine', 'ejs')
 app.engine('html', require('ejs').renderFile);
 
 
-var jwt = require('express-jwt');
-var cors = require('cors');
-app.use(cors());
-var authCheck = jwt({
-  secret: new Buffer('i5zRGlZPiFYmCO_oAEQwbGiFk_N7HggRV8ci_txegwepvHcd4gOlFGyZhO1jMXpE', 'base64'),
-  audience: 'tmG1ssKXnkoITIHeobps2HQ8nlwRjYaH'
-});
-
-var users = [
-  { id: 1, name: 'Todd Motto', image: 'image-1.jpg' },
-  { id: 2, name: 'Brad Green', image: 'image-2.jpg' },
-  { id: 3, name: 'Igor Minar', image: 'image-3.jpg' }
-];
-
-// app.get('/api/users', authCheck, function(req, res) {
-//   res.json(users);
-// });
-
-
-
 // Set static folder
-app.use(express.static(path.join(__dirname, 'client')));
+app.use(Express.static(path.join(__dirname, 'client')));
 
 
 // Body parser MW
@@ -45,7 +27,8 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:false}))
 
 app.use('/', index);
-app.use('/api', nodes);
+app.use('/api', api);
+
 
 app.listen(config.get('port'),  function() {
   console.log('Server started on port' + config.get('port'));

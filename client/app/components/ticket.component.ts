@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Ticket } from './classes/ticket';
 
 
 @Component({
@@ -9,5 +10,7 @@ import { Component } from '@angular/core';
 })
 
 export class TicketComponent {
+    @Input() inputTicket: Ticket;
+
     
 }
