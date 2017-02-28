@@ -1,38 +1,43 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 module.exports = function(mongoose) {
   const User = new Schema({
-    email: string,
-    // password: string,
-    token: string
+    name:   String,
+    email:  String
+    // password: String,
+    // token: String
   })
   
   const Board = new Schema({
-    _id: String,
-    name: String,
-    owner: String,
+    _id:    Number,
+    name:   String,
+    owner:  String,
     guests: [String],
-    lists: [String]
+    lists:  [String]
   })
   
   const List = new Schema({
-    _id: String,
-    title: String,
+    _id:     Number,
+    name:   String,
     boardId: String,
-    order: number,
+    order:   Number,
     tickets: [String]
   });
 
   const Ticket = new Schema({
-    _id: String,
-    title: String, 
-    listId: String,
+    _id:     Number,
+    text:   String,
+    listId:  String,
     boardId: String,
-    order: number,
+    order: Number,
+    users:   [String]
   });
   
   const models = {
-    Users : mongoose.model('Users', User),
-    Boards : mongoose.model('Boards', Board),
-    Lists : mongoose.model('Lists', List),
+    Users :   mongoose.model('Users',   User),
+    Boards :  mongoose.model('Boards',  Board),
+    Lists :   mongoose.model('Lists',   List),
     Tickets : mongoose.model('Tickets', Ticket)
   };
   
