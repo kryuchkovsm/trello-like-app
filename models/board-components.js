@@ -2,12 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 module.exports = function(mongoose) {
-  const User = new Schema({
-    name:   String,
-    email:  String
-    // password: String,
-    // token: String
-  })
   
   const Board = new Schema({
     _id:    Number,
@@ -35,7 +29,6 @@ module.exports = function(mongoose) {
   });
   
   const models = {
-    Users :   mongoose.model('Users',   User),
     Boards :  mongoose.model('Boards',  Board),
     Lists :   mongoose.model('Lists',   List),
     Tickets : mongoose.model('Tickets', Ticket)

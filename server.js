@@ -10,8 +10,6 @@ const api = require('./routes/api')
 const app = new Express();
 
 
-
-
 // View Engine
 app.set('views', path.join(__dirname, 'views'))
 app.set('viewengine', 'ejs')

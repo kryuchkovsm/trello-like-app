@@ -1,10 +1,9 @@
 const router = require('express').Router();
 const mongoose = require('mongoose');
 // const Schema = mongoose.Schema;
-const models = require('./models')(mongoose);
-
+const models = require('../models/board-components')(mongoose);
+const User = require('../models/user')(mongoose);
 const db = mongoose.connection;
-
 
 mongoose.connect('mongodb://localhost:27017/trelloAppDb');
 
@@ -17,13 +16,14 @@ db.once('open', function() {
 
 
 router.get('/users', function(req, res, next) {
-  models.Users.find({}, function (err, result) {
+  User.find({}, function (err, result) {
     if (err)
       return console.log(err);
     console.log(result);
     res.json(result);
   })
 })
+
 
 router.get('/boards', function(req, res, next) {
   models.Boards.find({}, function (err, result) {
