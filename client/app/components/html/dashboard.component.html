@@ -1,11 +1,25 @@
 <div class="boards-wrapper">
     <h2>Boards</h2>
     <div id="boards">
-        <a class="board">
-            <span class="title"></span>
+        <a *ngFor = "let board of boards"
+                class="board">
+            <span class = "title">{{board.name}}</span>
         </a>
-        <a href="#" class="board add-board">
-            <span class="title">Create a new board...</span>
+        <a class="add-board"
+          (click) ="enableAddBoard()">
+
+            <span class = "title"
+                  *ngIf="!addingBoard">
+               Create a new board...
+            </span>
+
+            <input *ngIf="addingBoard"
+                   placeholder= 'Add a board...'
+                   [attr.autofocus]="addingBoard"
+                   [(ngModel)]="addBoardName"
+                   (focusout)="cancelAddBoard()"
+                   (keyup)="addBoardOnEnter($event)"/>
         </a>
     </div>
 </div>
+

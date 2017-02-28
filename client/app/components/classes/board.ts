@@ -1,7 +1,11 @@
 import {List} from './list';
 
 export class Board {
-    _id: string;
-    title: string;
-    lists: List[];
+    _id: number;
+    name: string;
+    order: number;
+    owner: string;
+    // guests: string[];
+    lists: string[];
+    // lists: Lists[];
 }

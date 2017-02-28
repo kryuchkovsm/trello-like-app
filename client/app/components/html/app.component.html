@@ -2,7 +2,9 @@
 
 <header>
     <nav>
-        <a class="btn">|||| Boards</a>
+
+        <a class="btn"
+        (click)="toggleDashBoard()">|||| Boards</a>
         <a class="logo">Trello learning app</a>
 
         <div class = "login">
@@ -15,5 +17,7 @@
 
 <div id="content-wrapper">
     <!--<board-component></board-component>-->
+    <dashboard-component *ngIf="dashBoardVisible"></dashboard-component>
     <router-outlet></router-outlet>
+
 </div>

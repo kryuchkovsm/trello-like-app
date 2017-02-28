@@ -13,11 +13,5 @@ export class SimpleDndComponent {
     // listTeamTwo:Array<string> = [];
     lists:Array<string> = ['list1', 'list2', 'list3'];
     
-    tasks:Array<string> = [
-        ['task1', 'task2', 'task3'],
-        [],
-        []];
-
-    
-
+    tasks:Array<string> = ['task1', 'task2', 'task3'];
 }

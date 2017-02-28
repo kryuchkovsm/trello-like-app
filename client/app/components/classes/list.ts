@@ -1,8 +1,8 @@
 import { Ticket } from './ticket';
 
 export class List {
-    _id: string;
-    title: string;
+    _id: number;
+    name: string;
     boardId: string;
     order: number;
     tickets: Ticket[];

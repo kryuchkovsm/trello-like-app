@@ -52,12 +52,14 @@
 }
 
 .add-list input {
-    width: 65%;
-    height: 70%;
-    font-weight: 700;
-    border: none;
+    margin-left: 5px;
+    margin-top: 5px;
     line-height: 18px;
-    padding: 3px 5px 4px 5px;
+    font-size: 14px;
+    border: none;
+    border-radius: 3px;
+    padding: 5px 5px 4px 5px;
+    width: calc(100% - 10px);
 }
 
 .dnd-test {

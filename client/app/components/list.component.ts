@@ -12,6 +12,7 @@ import { List } from './classes/list'
 export class ListComponent implements OnInit{
     @Input() inputList: List;
 
+
     tickets: Ticket[];
 
     // constructor (private dataService: DataService) {

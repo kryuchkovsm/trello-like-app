@@ -11,7 +11,14 @@ import { Auth }             from '../services/auth.service';
 })
 
 export class AppComponent {
+    dashBoardVisible = false;
+
+
     constructor(private auth: Auth, private dataservice: DataService) {
         this.auth.handleAuthentication();
+    }
+
+    toggleDashBoard() {
+        this.dashBoardVisible = !this.dashBoardVisible;
     }
 }

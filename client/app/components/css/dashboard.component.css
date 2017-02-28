@@ -1,40 +1,57 @@
-
 .boards-wrapper {
-    padding: 2em;
+    padding: 10px;
     background-color: white;
-    min-height: calc(100% - 4em);
+    width: 250px;
+    position: absolute;
+    left: 5px;
+    top: 45px;
+    border-radius: 3px;
+    box-shadow: 0 3px 6px rgba(0,0,0,.4);
+
 }
 
 h2 {
     color: #333;
-    font-weight: 700;
-    /*font: 14px "Helvetica Neue",Arial,Helvetica,sans-serif; */
-    line-height: 20px;
+    font-weight: bold;
+    /*line-height: 20px;*/
+    /*margin: 0;*/
     font-size: 12pt;
 }
 
 .board {
-    background-color: #0079BF;
-    height: 72px;
-    width: 280px;
-    color: white;
+    background-color: #94d4e6;
+    height: 35px;
+    width: 200px;
+
+    font-weight: bold;
     float: left;
     margin-right: 16px;
     margin-bottom: 16px;
     text-align: left;
-    padding: 9pt 8px;
+    padding: 10px;
     border-radius: 3px;
     text-decoration: none;
 }
 
-.board .title {
-    font-weight: 700;
-    /*font: 14px "Helvetica Neue",Arial,Helvetica,sans-serif; */
+.board > .title {
+    color: black;
     line-height: 20px;
     font-size: 12pt;
+    height: 35px;
+    width: 200px;
 }
 
-.add-board {
-    background-color: #e2e4e6;
+
+.add-board .title:hover {
+    /*background-color: #e2e4e6;*/
+}
+
+.add-board .title {
+    margin-left: 5px;
     color: #8c8c8c;
+    background-color: white;
+}
+
+.add-board:hover {
+
 }
