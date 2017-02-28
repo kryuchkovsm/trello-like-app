@@ -1,9 +1,16 @@
+* {
+    color: white;
+}
+
+input {
+    color: black;
+}
+
 .login-component {
     width: 300px;
     margin: auto;
     margin-top: 100px;
     padding: 15px;
-    color: white;
     background-color: #0067A3;
     border-radius: 5px;
 }
@@ -14,7 +21,6 @@
 
 .btn {
     display: inline-block;
-    color: white;
 }
 
 .btn-login {

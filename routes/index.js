@@ -5,4 +5,7 @@ router.get('/', function(req, res, next) {
   res.render('index.html')
 })
 
+router.get('/login', function(req, res, next) {
+  res.render('index.html')
+})
 module.exports = router;
