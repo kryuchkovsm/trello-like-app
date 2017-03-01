@@ -1,3 +1,4 @@
+const port     = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const path = require('path');
 const passport = require('passport');
@@ -6,15 +7,16 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var session      = require('express-session');
 
-const config = require('./config')
 const Express = require('express');
 
 
 const api = require('./app/routes/api')
-const index = require('./app/routes/index')
+const auth   = require('./app/routes/auth')
 
 const app = new Express();
 
+// configuration =========================================================
+require('./config/passport')(passport); // pass passport for configuration
 
 // View Engine
 app.set('views', path.join(__dirname, 'views'))
@@ -40,14 +42,14 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 
-app.use('/', index);
 app.use('/api', api);
-
+app.use('/x', auth)
 // routes ======================================================================
+
 require ('./app/routes/routes')(app, passport);
 
 
 // launch ======================================================================
-app.listen(config.get('port'),  function() {
-  console.log('Server started on port' + config.get('port'));
+app.listen(port,  function() {
+  console.log('Server started on port' + port);
 });
