@@ -1,10 +1,10 @@
 import { List } from '../components/classes/list'
 import { Ticket } from '../components/classes/ticket'
-import { LISTS } from '../mocks/lists-mock';
+// import { LISTS } from '../mocks/lists-mock';
 import { TICKETS } from '../mocks/tickets-mock';
 
 import { Injectable }      from '@angular/core';
-// import { Router }          from '@angular/router';
+import { Router }          from '@angular/router';
 import {Http, Headers, RequestOptions} from '@angular/http';
 import 'rxjs/add/operator/map'
 
@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map'
 export class DataService {
 
     // constructor(private router: Router, private http:Http) {
-    constructor(private http:Http) {
+    constructor(private router: Router, private http:Http) {
     }
 
     public getBoards() {
@@ -26,7 +26,12 @@ export class DataService {
                 .map(res => res.json());
     }
 
-
+    public getUser() {
+        return this.http.get('http://localhost:3000/api/user')
+            .map(res => res.json());
+    }
+    
+    
 
     public getTickets(listId:string):Ticket[]{
         return TICKETS.filter( ticket => ticket.listId === listId);
@@ -46,6 +51,15 @@ export class DataService {
         return this.http
             .post('http://localhost:3000/api/addboard', JSON.stringify( { board } ), options)
             .map(res => res.json());
+    }
+
+    logout() {
+        window.location.href = '/logout';
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        // return this.http
+        //     .post('http://localhost:3000/logout', {'action':'logout'}, options)
+        //     .map(res => res.json());
     }
 
     // addItem(item) {

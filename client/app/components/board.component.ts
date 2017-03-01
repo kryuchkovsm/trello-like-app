@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { DataService }      from '../services/data.service';
 import { List } from './classes/list';
 
+import { User } from './classes/user';
+
 @Component({
     selector: 'board-component',
     templateUrl: './app/components/html/board.component.html',
@@ -10,6 +12,9 @@ import { List } from './classes/list';
 
 export class BoardComponent implements OnInit {    
     lists: List[];
+    
+    user: User;
+    
     addingList: boolean = false;
     addListName: string = '';
 
@@ -17,8 +22,14 @@ export class BoardComponent implements OnInit {
 
     ngOnInit(): void {        
         this.getLists();
+        this.getUser();
     }
 
+    public getUser() {
+        this.dataService.getUser()
+            .subscribe(user => { this.user = user });
+    }
+    
     public getLists() {
         this.dataService.getLists()
             .subscribe(lists => { this.lists = lists });

@@ -9,8 +9,12 @@
 
         <div class = "login">
             <button class="btn" [routerLink]="['']">Home</button>
-            <button class="btn" [routerLink]="['login']" *ngIf="!auth.isAuthenticated()">Log In</button>
-            <button class="btn" (click)="auth.logout()" *ngIf="auth.isAuthenticated()">Log Out</button>
+            <span>{{user._id}}</span>
+            <span>{{user.local.email}}</span>
+            <button class="btn"
+            (click) = "logout()">
+                Log Out
+            </button>
         </div>
     </nav>
 </header>

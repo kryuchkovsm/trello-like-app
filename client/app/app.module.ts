@@ -2,9 +2,7 @@ import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { HttpModule }    from '@angular/http';
-
-import { AUTH_PROVIDERS }      from 'angular2-jwt';
-
+import { Routes, RouterModule }        from '@angular/router';
 
 import { DndModule } from 'ng2-dnd';
 import { AppComponent }   from './components/app.component';
@@ -16,8 +14,11 @@ import { SimpleDndComponent } from './components/simple-dnd.component';
 import { LoginComponent }    from './components/login.component';
 import { HomeComponent }       from './components/home.component';
 
-import { routing,
-    appRoutingProviders } from './routes/app.routes';
+const appRoutes: Routes = [
+    { path: '', component: BoardComponent },
+    { path: 'login', component: LoginComponent },
+    { path: '**', redirectTo: '' }
+];
 
 @NgModule({
     imports: [
@@ -25,7 +26,7 @@ import { routing,
         FormsModule,
         HttpModule,
         DndModule.forRoot(),
-        routing,
+        RouterModule.forRoot(appRoutes) //, { useHash: true }
     ],
     declarations: [
         AppComponent,
@@ -37,10 +38,7 @@ import { routing,
         HomeComponent,
         LoginComponent
     ],
-    providers:    [
-        appRoutingProviders,
-        AUTH_PROVIDERS
-    ],
+    providers:    [],
     bootstrap: [ AppComponent ]
 })
 
