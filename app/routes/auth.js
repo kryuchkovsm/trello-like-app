@@ -17,6 +17,10 @@ router.get('/forbidden', function (req, res, next) {
   res.render('app.html');
 })
 
+router.get('/board', function(req,res, next) {
+  res.render('app.html');
+})
+
 router.get('/app', function(req,res, next) {
   res.render('app.html');
 })
