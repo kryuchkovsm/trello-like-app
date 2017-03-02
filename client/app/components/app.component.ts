@@ -1,6 +1,6 @@
 import { DataService }      from '../services/data.service';
 import { Component, OnInit }        from '@angular/core';
-import { User } from './classes/user';
+// import { User } from './classes/user';
 
 @Component({
     selector: 'my-app',
@@ -10,9 +10,15 @@ import { User } from './classes/user';
 })
 
 export class AppComponent implements OnInit {
-    
+
+    isAuthenticated:boolean = false
+
     dashBoardVisible = false;
-     
+
+    ngOnInit() {
+        
+    }
+
     // logout() {
     //     this.dataService.logout();
     // }
