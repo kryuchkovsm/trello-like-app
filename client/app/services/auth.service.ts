@@ -1,118 +1,55 @@
 import { Injectable }      from '@angular/core';
-import { tokenNotExpired } from 'angular2-jwt';
-import { Router }          from '@angular/router';
-import { myConfig }        from './auth.config';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
-import {Http, Headers, RequestOptions} from '@angular/http';
+import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
 
-// Avoid name not found warnings
-declare var auth0: any;
 
 @Injectable()
-export class Auth {
-    // Configure Auth0
-    auth0 = new auth0.WebAuth({
-        domain: myConfig.domain,
-        clientID: myConfig.clientID,
-        redirectUri: myConfig.callbackURL,
-        responseType: 'token id_token'
-    });
+export class AuthService {
 
-    constructor(private router: Router, private http:Http) {
+    private headers = new Headers({'Content-Type': 'application/json'});
+    private authUrl = 'http://localhost:3000/login';  // URL to web api
+
+    private isLoggedIn = false;
+
+    constructor(private http:Http) { }
+
+    public login(email:string, password:string) {
+        let user = {email: email, password: password};
+        let url = `http://localhost:3000/login`;
+        return this.http
+          .post(url, JSON.stringify( { user } ), {headers: this.headers})
+          .map(res => res.json());
     }
 
-    public handleAuthentication(): void {
-        this.auth0.parseHash((err, authResult) => {
-            if (err) {
-                console.log(err);
-            }
-            if (authResult && authResult.accessToken && authResult.idToken) {
-                console.log('authResult:');
-                console.log(authResult);
-                this.auth0.client.userInfo(authResult.accessToken, function(err, user) {
-                    console.log(err);
-                    console.log('userInfo:')
-                    console.log(user);
-                });
-                window.location.hash = '';
-                localStorage.setItem('access_token', authResult.accessToken);
-                localStorage.setItem('id_token', authResult.idToken);
-                this.router.navigate(['/home']);
-            } else if (authResult && authResult.error) {
-                alert(`Error: ${authResult.error}`);
-            }
-        });
+    // public addBoard(board) {
+    //     return this.http
+    //         .post('http://localhost:3000/api/addboard', JSON.stringify( { board } ), {headers: this.headers})
+    //         .map(res => res.json());
+    // }
+
+    // public getUser() {
+    //     const url = `${this.apiUrl}/user`
+    //     return this.http.get(url)
+    //         .map(res => res.json());
+    // }
+
+    public logout() {
+        window.location.href = '/logout';
+        // let headers = new Headers({ 'Content-Type': 'application/json' });
+        // let options = new RequestOptions({ headers: headers });
+        // return this.http
+        //     .post('http://localhost:3000/logout', {'action':'logout'}, options)
+        //     .map(res => res.json());
     }
 
-    public login(username: string, password: string): void {
-        this.auth0.client.login({
-            realm: 'Username-Password-Authentication',
-            username,
-            password
-        }, (err, authResult) => {
-            this.setUser(authResult);
-            if (err) {
-                alert(`Error: ${err.description}`);
-                return;
-            }
-            if (authResult && authResult.idToken && authResult.accessToken) {
-                console.log('authResult:');
-                console.log(authResult);
-                this.auth0.client.userInfo(authResult.accessToken, function(err, user) {
-                    console.log(err);
-                    console.log('userInfo:')
-                    console.log(user);
-                });
-                this.setUser(authResult);
-                this.router.navigate(['/home']);
-            }
-        });
-    }
+    // public getUserEmail() {
+    //     const url = `${this.authUrl}/useremail`;
+    //     return this.http.get(url)
+    //         .map(res => res.json());
+    // }
 
-    public signup(email, password): void {
-        this.auth0.redirect.signupAndLogin({
-            connection: 'Username-Password-Authentication',
-            email,
-            password,
-        }, function(err) {
-            if (err) {
-                alert(`Error: ${err.description}`);
-            }
-        });
-    }
 
-    public loginWithGoogle(): void {
-        this.auth0.authorize({
-            connection: 'google-oauth2',
-        });
-    }
-
-    public loginWithFacebook():void {
-        this.auth0.authorize({
-            connection: 'facebook',
-        });
-    }
-
-    public isAuthenticated(): boolean {
-        // Check whether the id_token is expired or not
-        return tokenNotExpired();
-    }
-
-    public logout(): void {
-        // Remove token from localStorage
-        localStorage.removeItem('access_token');
-        localStorage.removeItem('id_token');
-    }
-
-    private setUser(authResult): void {
-        localStorage.setItem('access_token', authResult.accessToken);
-        localStorage.setItem('id_token', authResult.idToken);
-    }
 }
-
-
-
-
-

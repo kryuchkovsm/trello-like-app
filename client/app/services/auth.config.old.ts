@@ -1,6 +1,6 @@
 interface AuthConfiguration {
     clientID: string,
-    domain: string,
+domain: string,
     callbackURL: string
 }
 

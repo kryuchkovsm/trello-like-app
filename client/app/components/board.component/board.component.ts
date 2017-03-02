@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService }      from '../services/data.service';
-import { List } from './classes/list';
+import { DataService }      from '../../services/data.service';
+import { List } from '../../classes/list';
 
 
 @Component({
     selector: 'board-component',
-    templateUrl: './app/components/html/board.component.html',
-    styleUrls: ['./app/components/css/board.component.css'],    
+    templateUrl: './app/components/board.component/board.component.html',
+    styleUrls: ['./app/components/board.component/board.component.css'],
 })
 
 export class BoardComponent implements OnInit {    

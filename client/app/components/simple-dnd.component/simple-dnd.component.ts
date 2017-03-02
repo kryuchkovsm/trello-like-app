@@ -2,8 +2,8 @@ import {Component} from '@angular/core';
 
 @Component({
     selector: 'simple-dnd',
-    templateUrl: './app/components/html/simple-dnd.component.html',
-    styleUrls: ['./app/components/css/simple-dnd.component.css']
+    templateUrl: './app/components/simple-dnd.component/simple-dnd.component.html',
+    styleUrls: ['./app/components/simple-dnd.component/simple-dnd.component.css']
 })
 
 

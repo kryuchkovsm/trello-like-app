@@ -1,4 +1,4 @@
-import { List } from '../components/classes/list'
+import { List } from '../classes/list'
 
 
 export const LISTS: List[] = [

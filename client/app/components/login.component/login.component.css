@@ -25,11 +25,13 @@ input {
 
 .btn-login {
     display:inline-block;
-    float: right;
+    float: left;
+    width: 150px;
 }
 
 .btn-signup {
     display:inline-block;
+    float: right;
     background-color: #61bd4f;
 }
 
@@ -44,11 +46,11 @@ input {
 }
 
 .btn-auth-google {
-    background-image: url(./app/components/images/google.png);
+    background-image: url(./app/components/login.component/images/google.png);
 }
 
 .btn-auth-facebook {
-    background-image: url(./app/components/images/facebook.png);
+    background-image: url(./app/components/login.component/images/facebook.png);
 }
 
 .sign-btns {

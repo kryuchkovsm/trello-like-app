@@ -1,20 +1,17 @@
-import { Ticket } from '../components/classes/ticket'
-import { TICKETS } from '../mocks/tickets-mock';
-
 import { Injectable }      from '@angular/core';
-import {Http, Headers } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
+import { Ticket } from '../classes/ticket'
 
 @Injectable()
 export class DataService {
 
     private headers = new Headers({'Content-Type': 'application/json'});
     private apiUrl = 'http://localhost:3000/api';  // URL to web api
-
-
+    
     constructor(private http:Http) { }
 
     public getBoards() {
@@ -36,21 +33,26 @@ export class DataService {
     }
     
     public getTickets(listId:string):Ticket[]{
-        return TICKETS.filter( ticket => ticket.listId === listId);
+        return null;
+        // return TICKETS.filter( ticket => ticket.listId === listId);
     }
 
     public addList(list) {
+        const url = `${this.apiUrl}/addlist`
         return this.http
-            .post('http://localhost:3000/api/addlist', JSON.stringify( { list } ), {headers: this.headers})
+            .post(url, JSON.stringify( { list } ), {headers: this.headers})
             .map(res => res.json());
     }
 
     public addBoard(board) {
+        const url = `${this.apiUrl}/addboard`
         return this.http
-            .post('http://localhost:3000/api/addboard', JSON.stringify( { board } ), {headers: this.headers})
+            .post( url, JSON.stringify( { board } ), {headers: this.headers})
             .map(res => res.json());
     }
 
+    
+    
     public logout() {
         window.location.href = '/logout';
         // let headers = new Headers({ 'Content-Type': 'application/json' });

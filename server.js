@@ -45,8 +45,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 app.use('/',  auth);
-app.use('/api', isLoggedIn, api);
-// app.use('/',  trelloapp);
+app.use('/api', api);
+app.use('/login',  trelloapp);
 
 
 // TODO Refactor - remove to extrenal file

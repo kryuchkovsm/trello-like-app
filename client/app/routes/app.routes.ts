@@ -3,13 +3,13 @@ import { Routes, RouterModule }        from '@angular/router';
 
 
 import { WelcomePageComponent}         from '../components/welcomepage.component/welcomepage.component';
-import { BoardComponent }              from '../components/board.component';
-import { LoginComponent }              from '../components/login.component';
+import { BoardComponent }              from '../components/board.component/board.component';
+import { LoginComponent }              from '../components/login.component/login.component';
 
 
 const appRoutes: Routes = [
     { path: '', component: WelcomePageComponent },
-    // { path: 'board', component: BoardComponent },
+    { path: 'board', component: BoardComponent },
     { path: 'login', component: LoginComponent }
 ];
 

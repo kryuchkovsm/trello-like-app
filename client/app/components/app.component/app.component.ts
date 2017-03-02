@@ -1,12 +1,12 @@
-import { DataService }      from '../services/data.service';
+import { DataService }      from '../../services/data.service';
 import { Component, OnInit }        from '@angular/core';
 // import { User } from './classes/user';
 
 @Component({
     selector: 'my-app',
     providers: [ DataService ],
-    templateUrl: './app/components/html/app.component.html',
-    styleUrls: ['./app/components/css/app.component.css'],
+    templateUrl: './app/components/app.component/app.component.html',
+    styleUrls: ['./app/components/app.component/app.component.css'],
 })
 
 export class AppComponent implements OnInit {
