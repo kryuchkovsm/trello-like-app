@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { DataService }      from '../services/data.service';
 import { List } from './classes/list';
 
-import { User } from './classes/user';
 
 @Component({
     selector: 'board-component',
@@ -12,22 +11,15 @@ import { User } from './classes/user';
 
 export class BoardComponent implements OnInit {    
     lists: List[];
-    
-    user: User;
+    user: any;
     
     addingList: boolean = false;
     addListName: string = '';
 
     constructor( private dataService: DataService) { }
 
-    ngOnInit(): void {        
-        this.getLists();
-        this.getUser();
-    }
-
-    public getUser() {
-        this.dataService.getUser()
-            .subscribe(user => { this.user = user });
+    ngOnInit(): void {
+        // this.getLists();
     }
     
     public getLists() {
@@ -73,5 +65,5 @@ export class BoardComponent implements OnInit {
         this.addingList = false;
         this.addListName = '';
     }
-
+    
 }

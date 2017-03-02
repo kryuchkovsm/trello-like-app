@@ -1,6 +1,6 @@
 import { DataService }      from '../services/data.service';
 import { Component, OnInit }        from '@angular/core';
-
+import { User } from './classes/user';
 
 @Component({
     selector: 'my-app',
@@ -10,25 +10,35 @@ import { Component, OnInit }        from '@angular/core';
 })
 
 export class AppComponent implements OnInit {
-
+    
     dashBoardVisible = false;
-    isAuthenticated = false;
+     
+    // logout() {
+    //     this.dataService.logout();
+    // }
     
-    // user:User; // =  {_id: "123", local: {email:'xz@xz.xz', password: ''}} ;
-    
-    constructor(private dataService: DataService) { }
+    // toggleDashBoard() {
+    //     this.dashBoardVisible = !this.dashBoardVisible;
+    // }
 
-    ngOnInit(): void {
-        
-    }
+    // public getUserEmail() {
+    //     this.dataService.getUserEmail()
+    //         .subscribe(useremail => { this.userEmail = useremail});
+    // }
 
+    // public getUser() {
+    //         this.dataService.getUser()
+    //             .subscribe(user => {
+    //                 this.user = user;
+    //                 console.log('user =>');
+    //                 console.log(user);
+    //             });
+    //         console.log('getUser()');
+    //         console.log(this.user);
+    // }
     
-    
-    logout() {
-        this.dataService.logout();
-    }
-    
-    toggleDashBoard() {
-        this.dashBoardVisible = !this.dashBoardVisible;
-    }
+    // public getUserEmail() {
+    //     this.dataService.getUserEmail()
+    //         .then(useremail => { this.userEmail = useremail});
+    // }
 }

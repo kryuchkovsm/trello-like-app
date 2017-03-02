@@ -1,10 +1,12 @@
 <div class="boards-wrapper">
     <h2>My Boards</h2>
     <div id="boards">
-        <a *ngFor = "let board of boards"
-                class="board">
-            <span class = "title">{{board.name}}</span>
-        </a>
+        <div *ngIf = "boards">
+            <a *ngFor = "let board of boards"
+                    class="board">
+                <span class = "title">{{board.name}}</span>
+            </a>
+        </div>
         <a class="add-board"
           (click) ="enableAddBoard()">
 

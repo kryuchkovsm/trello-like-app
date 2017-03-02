@@ -9,8 +9,7 @@ import { LoginComponent }              from '../components/login.component';
 
 const appRoutes: Routes = [
     { path: '', component: BoardComponent },
-    { path: 'login', component: LoginComponent },
-    { path: '**', redirectTo: '' }
+    { path: 'login', component: LoginComponent }
 ];
 
 export const appRoutingProviders: any[] = [

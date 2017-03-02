@@ -1,5 +1,4 @@
 export class User {
-    _id: string;
-    local: { email : string;
-             password: string };
+    _id: number;
+    // email : string;
 }

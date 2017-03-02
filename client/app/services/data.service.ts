@@ -1,59 +1,57 @@
-import { List } from '../components/classes/list'
 import { Ticket } from '../components/classes/ticket'
-// import { LISTS } from '../mocks/lists-mock';
 import { TICKETS } from '../mocks/tickets-mock';
 
 import { Injectable }      from '@angular/core';
-import { Router }          from '@angular/router';
-import {Http, Headers, RequestOptions} from '@angular/http';
+import {Http, Headers } from '@angular/http';
+
+import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
 
 @Injectable()
 export class DataService {
 
-    // constructor(private router: Router, private http:Http) {
-    constructor(private router: Router, private http:Http) {
-    }
+    private headers = new Headers({'Content-Type': 'application/json'});
+    private apiUrl = 'http://localhost:3000/api';  // URL to web api
+
+
+    constructor(private http:Http) { }
 
     public getBoards() {
-        return this.http.get('http://localhost:3000/api/boards')
+        const url = `${this.apiUrl}/boards`
+        return this.http.get(url)
             .map(res => res.json());
     }
 
     public getLists(){
-        return this.http.get('http://localhost:3000/api/lists')
+        const url = `${this.apiUrl}/lists`
+        return this.http.get(url)
                 .map(res => res.json());
     }
 
     public getUser() {
-        return this.http.get('http://localhost:3000/api/user')
+        const url = `${this.apiUrl}/user`
+        return this.http.get(url)
             .map(res => res.json());
     }
     
-    
-
     public getTickets(listId:string):Ticket[]{
         return TICKETS.filter( ticket => ticket.listId === listId);
     }
 
-    addList(list) {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+    public addList(list) {
         return this.http
-            .post('http://localhost:3000/api/addlist', JSON.stringify( { list } ), options)
+            .post('http://localhost:3000/api/addlist', JSON.stringify( { list } ), {headers: this.headers})
             .map(res => res.json());
     }
 
-    addBoard(board) {
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
+    public addBoard(board) {
         return this.http
-            .post('http://localhost:3000/api/addboard', JSON.stringify( { board } ), options)
+            .post('http://localhost:3000/api/addboard', JSON.stringify( { board } ), {headers: this.headers})
             .map(res => res.json());
     }
 
-    logout() {
+    public logout() {
         window.location.href = '/logout';
         // let headers = new Headers({ 'Content-Type': 'application/json' });
         // let options = new RequestOptions({ headers: headers });
@@ -61,6 +59,26 @@ export class DataService {
         //     .post('http://localhost:3000/logout', {'action':'logout'}, options)
         //     .map(res => res.json());
     }
+
+
+    private handleError(error: any): Promise<any> {
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+    }
+
+
+    public getUserEmail() {
+        const url = `${this.apiUrl}/useremail`;
+        return this.http.get(url)
+            .map(res => res.json());
+    }
+
+    // public getUserEmail():Promise<string> {
+    //     return this.http.get('http://localhost:3000/api/useremail')
+    //         .toPromise()
+    //         .then(response => response.json().useremail as string)
+    //         .catch(this.handleError);
+    // }
 
     // addItem(item) {
     //     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -74,4 +92,6 @@ export class DataService {
     //     return this.http
     //         .delete('http://localhost:3000/api/itemId');
     // }
+    
+
 }

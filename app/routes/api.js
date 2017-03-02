@@ -18,12 +18,22 @@ db.once('open', function() {
 });
 
 
-router.get('/user', isLoggedIn, function(req, res, next) {
-  console.log(req.user);
+router.get('/user', function(req, res, next) {
+    console.log(req.user);
   res.json(req.user);
 })
 
-router.get('/users', isLoggedIn,  function(req, res, next) {
+
+// TODO refactor
+router.get('/useremail', function(req, res, next) {
+  console.log('user ID' + req.user._id);
+    email = req.user.local.email
+    ? req.user.local.email
+    : req.user.facebook.email;
+  res.json(email);
+})
+
+router.get('/users', function(req, res, next) {
   User.find({}, function (err, result) {
     if (err)
       return console.log(err);
@@ -32,9 +42,9 @@ router.get('/users', isLoggedIn,  function(req, res, next) {
 })
 
 router.get('/boards', function(req, res, next) {
-  Board.find({}, function (err, result) {
+  Board.find({'owner': req.user._id }, function (err, result) {
     if (err)
-      return console.log(err);
+      res.json(err);
     res.json(result);
   })
 })
@@ -83,11 +93,11 @@ router.post('/addboard', function(req, res, next) {
   console.log(inputBoard);
   console.log(inputBoard.title);
 
-
   board = new Board({
     _id: inputBoard._id,
     name: inputBoard.name,
-    order: inputBoard.order
+    order: inputBoard.order,
+    owner: req.user._id
   })
   
   console.log(board);

@@ -2,15 +2,16 @@
 
 <header>
     <nav>
-
         <a class="btn"
         (click)="toggleDashBoard()">|||| Boards</a>
-        <a class="logo">Trello learning app</a>
+        <div><a class="logo">Trello learning app</a></div>
 
         <div class = "login">
-            <button class="btn" [routerLink]="['']">Home</button>
-            <span>{{user._id}}</span>
-            <span>{{user.local.email}}</span>
+            <a class="user">{{userEmail}}</a>
+            <!--<button class="btn" [routerLink]="['']">Home</button>-->
+            <!--<span>{{user._id}}</span>-->
+            <!--<span>{{user.local.email}}</span>-->
+            <button class="btn" [routerLink]="['login']">Login</button>
             <button class="btn"
             (click) = "logout()">
                 Log Out
@@ -20,7 +21,6 @@
 </header>
 
 <div id="content-wrapper">
-    <!--<board-component></board-component>-->
     <dashboard-component *ngIf="dashBoardVisible"></dashboard-component>
     <router-outlet></router-outlet>
 

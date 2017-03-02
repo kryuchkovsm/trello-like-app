@@ -7,6 +7,7 @@ import { Routes, RouterModule }        from '@angular/router';
 import { DndModule } from 'ng2-dnd';
 import { AppComponent }   from './components/app.component';
 import { DashboardComponent } from './components/dashboard.component';
+import { DataService } from './services/data.service';
 import { BoardComponent } from './components/board.component';
 import { ListComponent } from './components/list.component';
 import { TicketComponent } from './components/ticket.component';
@@ -38,7 +39,7 @@ const appRoutes: Routes = [
         HomeComponent,
         LoginComponent
     ],
-    providers:    [],
+    providers: [ DataService  ],
     bootstrap: [ AppComponent ]
 })
 

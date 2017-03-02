@@ -12,6 +12,7 @@ const Express = require('express');
 
 const api = require('./app/routes/api')
 const auth   = require('./app/routes/auth')
+const trelloapp = require('./app/routes/trelloapp')
 
 const app = new Express();
 
@@ -42,14 +43,22 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 
-app.use('/api', api);
-app.use('/x', auth)
 // routes ======================================================================
+app.use('/',  auth);
+app.use('/api', isLoggedIn, api);
+// app.use('/',  trelloapp);
 
-require ('./app/routes/routes')(app, passport);
+
+// TODO Refactor - remove to extrenal file
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/forbidden');
+}
 
 
 // launch ======================================================================
 app.listen(port,  function() {
   console.log('Server started on port' + port);
 });
+
