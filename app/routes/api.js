@@ -42,8 +42,8 @@ router.get('/users', function(req, res, next) {
 })
 
 router.get('/boards', function(req, res, next) {
-  Board.find({}, function (err, result) {
-  // Board.find({'owner': req.user._id }, function (err, result) {
+  // Board.find({}, function (err, result) {
+  Board.find({'owner': req.user._id }, function (err, result) {
     if (err)
       res.json(err);
     res.json(result);

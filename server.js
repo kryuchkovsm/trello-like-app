@@ -1,7 +1,9 @@
 const port     = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const path = require('path');
+
 const passport = require('passport');
+
 const flash    = require('connect-flash');
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
@@ -12,12 +14,9 @@ const Express = require('express');
 
 const api = require('./app/routes/api')
 const auth   = require('./app/routes/auth')
-const trelloapp = require('./app/routes/trelloapp')
-
 const app = new Express();
 
-// configuration =========================================================
-require('./config/passport')(passport); // pass passport for configuration
+
 
 // View Engine
 app.set('views', path.join(__dirname, 'views'))
@@ -45,8 +44,8 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
 app.use('/',  auth);
-app.use('/api', api);
-app.use('/login',  trelloapp);
+app.use('/api', isLoggedIn, api);
+// app.use('/login',  trelloapp);
 
 
 // TODO Refactor - remove to extrenal file

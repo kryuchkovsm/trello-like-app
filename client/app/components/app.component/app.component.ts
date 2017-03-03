@@ -1,50 +1,39 @@
-import { DataService }      from '../../services/data.service';
+import { AuthService }      from '../../services/auth.service';
 import { Component, OnInit }        from '@angular/core';
 // import { User } from './classes/user';
 
 @Component({
     selector: 'my-app',
-    providers: [ DataService ],
+    providers: [ AuthService ],
     templateUrl: './app/components/app.component/app.component.html',
     styleUrls: ['./app/components/app.component/app.component.css'],
 })
 
 export class AppComponent implements OnInit {
 
-    isAuthenticated:boolean = false
+    isAuthenticated:boolean;
+    boardListVisible: boolean;
+    userEmail:string;
 
-    dashBoardVisible = false;
+    constructor (private authService: AuthService) { }
 
     ngOnInit() {
-        
+        this.isLoggedIn();
     }
 
-    // logout() {
-    //     this.dataService.logout();
-    // }
-    
-    // toggleDashBoard() {
-    //     this.dashBoardVisible = !this.dashBoardVisible;
-    // }
+    toggleBoardList() {
+        this.boardListVisible = !this.boardListVisible;
+    }
 
-    // public getUserEmail() {
-    //     this.dataService.getUserEmail()
-    //         .subscribe(useremail => { this.userEmail = useremail});
-    // }
+    logout() {
 
-    // public getUser() {
-    //         this.dataService.getUser()
-    //             .subscribe(user => {
-    //                 this.user = user;
-    //                 console.log('user =>');
-    //                 console.log(user);
-    //             });
-    //         console.log('getUser()');
-    //         console.log(this.user);
-    // }
-    
-    // public getUserEmail() {
-    //     this.dataService.getUserEmail()
-    //         .then(useremail => { this.userEmail = useremail});
-    // }
+    }
+
+    public isLoggedIn() {
+        console.log('app component isLoggedIn');
+        this.isAuthenticated = this.authService.getLoginStatus();
+        if (this.isAuthenticated) 
+            this.userEmail = this.authService.getUserEmail();
+    }
+
 }

@@ -3,12 +3,12 @@ import { Board }     from '../../classes/board'
 import { DataService }      from '../../services/data.service';
 
 @Component({
-    selector: 'dashboard-component',
-    templateUrl: './app/components/dashboard.component/dashboard.component.html',
-    styleUrls: ['./app/components/dashboard.component/dashboard.component.css'],
+    selector: 'boardlist-component',
+    templateUrl: './app/components/boardlist.component/boardlist.component.html',
+    styleUrls:  ['./app/components/boardlist.component/boardlist.component.css'],
 })
 
-export class DashBoardComponent implements OnInit {
+export class BoardListComponent implements OnInit {
     boards: Board[];
     addBoardName: string;
     addingBoard: boolean = false;
@@ -23,6 +23,7 @@ export class DashBoardComponent implements OnInit {
         this.dataService.getBoards()
             .subscribe(boards => { this.boards = boards });
     }
+
 
     public enableAddBoard(){
         this.addingBoard = true;

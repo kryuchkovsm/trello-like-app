@@ -10,20 +10,15 @@ import { AuthService }              from './services/auth.service';
 import { routing }                  from './routes/app.routes';
 
 import { AppComponent }             from './components/app.component/app.component';
-import { DashboardComponent }       from './components/dashboard.component/dashboard.component';
+import { BoardListComponent }       from './components/boardlist.component/boardlist.component';
 import { BoardComponent }           from './components/board.component/board.component';
+import { DashBoardComponent}        from './components/dashboard.component/dashboard.component';
 import { ListComponent }            from './components/list.component/list.component';
 import { TicketComponent }          from './components/ticket.component/ticket.component';
 import { WelcomePageComponent }     from './components/welcomepage.component/welcomepage.component';
 import { SimpleDndComponent }       from './components/simple-dnd.component/simple-dnd.component';
 import { LoginComponent }           from './components/login.component/login.component';
 import { HomeComponent }            from './components/home.component/home.component';
-
-// const appRoutes: Routes = [
-//     { path: '', component: BoardComponent },
-//     { path: 'login', component: LoginComponent },
-//     { path: '**', redirectTo: '' }
-// ];
 
 @NgModule({
     imports: [
@@ -32,11 +27,11 @@ import { HomeComponent }            from './components/home.component/home.compo
         HttpModule,
         DndModule.forRoot(),
         routing
-        // RouterModule.forRoot(appRoutes) //, { useHash: true }
     ],
     declarations: [
         AppComponent,
-        DashboardComponent,
+        BoardListComponent,
+        DashBoardComponent,
         BoardComponent,
         ListComponent,
         TicketComponent,

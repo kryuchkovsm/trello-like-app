@@ -7,6 +7,7 @@ const User              = require('../app/models/user');
 const configAuth        = require('./auth');
 
 module.exports = function(passport) {
+  
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
@@ -53,7 +54,6 @@ module.exports = function(passport) {
       passReqToCallback : true
     },
     function(req, email, password, done) { // callback with email and password from our form
-
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
       User.findOne({ 'local.email' :  email }, function(err, user) {
@@ -63,11 +63,11 @@ module.exports = function(passport) {
 
         // if no user is found, return the message
         if (!user)
-          return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+          return done(null, false, { 'loginMessage': 'No user found.'}); // req.flash is the way to set flashdata using connect-flash
 
         // if the user is found but the password is wrong
         if (!user.validPassword(password))
-          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+          return done(null, false, { 'loginMessage' : 'Oops! Wrong password.' } ); // create the loginMessage and save it to session as flashdata
 
         // all is well, return successful user
         return done(null, user);
@@ -127,7 +127,3 @@ module.exports = function(passport) {
     }));
 
 };
-
-
-//[{"_id":"58b698e1b953b225888e0be4","facebook":{"email":"sergey.kryuchkov@dunice.ru","name":"Sergey Kryuchkov","id":"115460688979447"},"__v":0}]
-//[{"_id":"58b69902b953b225888e0be5","local":{"password":"$2a$08$etJKkfYuMD9M8UlzBs9W8.Erq1r2CLSZBhNNksKNaKQacAzqfRUUO","email":"sergey.kryuchkov@dunice.ru"},"__v":0}]

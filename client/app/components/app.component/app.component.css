@@ -1,12 +1,28 @@
 
 header {
     min-width: 650px;
-    position: fixed;
+    position: absolute;
     width: 100%;
     top: 0;
 }
 
+
+.logo{
+    line-height: 30px;
+    font-weight: bold;
+    color:#7FB2D1;
+    text-align: center;
+    white-space: nowrap;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: block;
+    left: 50%;
+}
+
+
 nav {
+    position: absolute;
+    width: 100%;
     background-color: #0067A3;
     padding: 5px;
     height: 45px;
@@ -22,16 +38,6 @@ nav a.btn {
     padding-right: 5px;
 }
 
-nav a.logo{
-    line-height: 30px;
-    font-weight: bold;
-    color:#7FB2D1;
-    width: 60%;
-    text-align: center;
-    white-space: nowrap;
-    padding-left: 10px;
-    padding-right: 10px;
-}
 
 #content-wrapper {
     width: 100%;

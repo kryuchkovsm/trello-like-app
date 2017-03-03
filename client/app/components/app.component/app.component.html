@@ -4,7 +4,7 @@
     <nav >
         <a class="btn"
            *ngIf = 'isAuthenticated'
-            (click)="toggleDashBoard()">|||| Boards
+            (click)="toggleBoardList()">|||| Boards
         </a>
 
         <a class="logo">Trello learning app</a>
@@ -16,8 +16,6 @@
             </a>
 
             <!--<button class="btn" [routerLink]="['']">Home</button>-->
-            <!--<span>{{user._id}}</span>-->
-            <!--<span>{{user.local.email}}</span>-->
             <button class="btn" [routerLink]="['']">Home</button>
             <button class="btn" [routerLink]="['login']">Login</button>
 
@@ -32,7 +30,7 @@
 </header>
 
 <div id="content-wrapper">
-    <dashboard-component *ngIf='dashBoardVisible && isAuthenticated '></dashboard-component>
+    <boardlist-component *ngIf='boardListVisible && isAuthenticated '></boardlist-component>
     <router-outlet></router-outlet>
 
 </div>
