@@ -1,41 +1,8 @@
-
 header {
     min-width: 650px;
     position: absolute;
     width: 100%;
     top: 0;
-}
-
-
-.logo{
-    line-height: 30px;
-    font-weight: bold;
-    color:#7FB2D1;
-    text-align: center;
-    white-space: nowrap;
-    padding-left: 10px;
-    padding-right: 10px;
-    display: block;
-    left: 50%;
-}
-
-
-nav {
-    position: absolute;
-    width: 100%;
-    background-color: #0067A3;
-    padding: 5px;
-    height: 45px;
-}
-
-nav a {
-    float: left;
-    color: white;
-}
-
-nav a.btn {
-    background-color:#4590BC;
-    padding-right: 5px;
 }
 
 
@@ -47,25 +14,3 @@ nav a.btn {
     padding-top: 50px;
     background-color: #0079BF;
 }
-
-
-.login {
-    float: right;
-}
-
-.login .btn {
-    display: inline-block;
-    background-color:#4590BC;
-    color: white;
-}
-
-a.user {
-    font-weight:bold;
-    line-height:30px;
-    margin-right: 10px;
-}
-/*.dashboard-component {*/
-    /*position: absolute;*/
-    /*left: 10px;*/
-    /*top: 10px;*/
-/*}*/

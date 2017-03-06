@@ -1,0 +1,51 @@
+
+
+
+nav {
+    position: absolute;
+    width: 100%;
+    background-color: #0067A3;
+    padding: 5px;
+    height: 45px;
+}
+
+nav a {
+    float: left;
+    color: white;
+}
+
+nav a.btn {
+    background-color:#4590BC;
+    padding-right: 5px;
+}
+
+.logo{
+    position: absolute;
+    left: 50%;
+    line-height: 45px;
+    font-weight: bold;
+    color:#7FB2D1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.login {
+    float: right;
+}
+
+.login .btn {
+    display: inline-block;
+    background-color:#4590BC;
+    color: white;
+}
+
+a.user {
+    font-weight:bold;
+    line-height:30px;
+    margin-right: 10px;
+}
+/*.dashboard-component {*/
+    /*position: absolute;*/
+    /*left: 10px;*/
+    /*top: 10px;*/
+/*}*/

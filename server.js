@@ -13,7 +13,7 @@ const Express = require('express');
 
 
 const api = require('./app/routes/api')
-const auth   = require('./app/routes/auth')
+const routes   = require('./app/routes/routes')
 const app = new Express();
 
 
@@ -43,12 +43,12 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 
 
 // routes ======================================================================
-app.use('/',  auth);
+app.use('/',  routes);
 app.use('/api', isLoggedIn, api);
 // app.use('/login',  trelloapp);
 
 
-// TODO Refactor - remove to extrenal file
+// TODO Refactor - move to extrenal
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
     return next();

@@ -4,9 +4,10 @@ import { List } from '../../classes/list';
 
 
 @Component({
+    moduleId: module.id,
     selector: 'board-component',
-    templateUrl: './app/components/board.component/board.component.html',
-    styleUrls: ['./app/components/board.component/board.component.css'],
+    templateUrl: './board.component.html',
+    styleUrls: ['./board.component.css'],
 })
 
 export class BoardComponent implements OnInit {    

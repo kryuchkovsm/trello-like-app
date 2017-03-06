@@ -1,45 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../../services/auth.service";
-import { DataService } from "../../services/data.service";
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { AlertService } from "../../services/alert.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'login',
-  templateUrl: './app/components/login.component/login.component.html',
-  styleUrls: ['./app/components/login.component/login.component.css'],
-  providers: [AuthService]
+    // moduleId: module.id,
+    selector: 'login',
+    templateUrl: './app/components/login.component/login.component.html',
+    styleUrls: ['./app/components/login.component/login.component.css']
 })
 
 export class LoginComponent implements OnInit {
+    model: any = {};
+    loading = false;
+    returnUrl: string;
 
-    email: string = '';
-    password: string = '';
     info: string = '';
 
-    constructor(private authService:AuthService, private router: Router ) { }
+    constructor(
+        private authService:AuthService,
+        private route: ActivatedRoute,
+        private router: Router
+        // private alertService: AlertService
+    ) { }
+
 
     ngOnInit() {
-
+        this.authService.logout();
+        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
     }
-    
-    // TODO process empty fields in servise
-    login(email, password) {
 
-        if (!email.trim())
-            return this.info = 'EMail should not be empty';
-
-        if (!password.trim())
-            return this.info = 'Password should not be empty';
-
-        this.authService.login(email, password)
-            .subscribe(result => 
-            {
-                console.log(result)
-                if (result.info)
-                    return this.info = result.info.loginMessage;
-                if (result.user)
-                    this.authService.setUser = result.user;
-                    this.router.navigate(['/dashboard'])
-            });
+    login() {
+        this.loading = true;
+        this.authService.login(this.model.email, this.model.password)
+            .subscribe(
+                data => {
+                    this.router.navigate([this.returnUrl]);
+                },
+                error => {
+                    // this.alertService.error(error);
+                    this.loading = false;
+                });
     }
 };

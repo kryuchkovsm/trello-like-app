@@ -1,0 +1,32 @@
+    <nav >
+        <a class="btn"
+           *ngIf = 'isLoggedIn'
+            (click)="toggleBoardList()">|||| Boards
+        </a>
+
+        <boardlist-component
+            *ngIf = 'isLoggedIn && boardListVisible'>
+        </boardlist-component>
+
+        <a class="logo">Trello learning app</a>
+
+        <div class = "login">
+            <a class="user"
+               *ngIf = 'isLoggedIn'>
+                {{userEmail}}
+            </a>
+
+            <button class="btn"
+                [routerLink]="['login']"
+                *ngIf = '!isLoggedIn'>
+                    Login
+            </button>
+
+            <button class="btn"
+                [routerLink]="['login']"
+                *ngIf = 'isLoggedIn'>
+                    Logout
+            </button>
+
+        </div>
+    </nav>

@@ -6,7 +6,7 @@ require('../../config/passport')(passport); // pass passport for configuration
 
 //home page
 router.get('/', function(req, res, next) {
-  res.render('app.html');
+    res.render('app.html');
 })
 
 // redirect to login page in client app
@@ -27,13 +27,33 @@ router.post('/login', function(req, res, next) {
     req.logIn(user, function(err) {
       if (err) { return next(err);
       }
-
       return res.json(result);
     });
   })(req, res, next);
 });
 
-router.get('/dashboard', function(req, res, next) {
+router.post('/signup', function(req, res, next) {
+  passport.authenticate('local-signup', function(err, user, info) {
+    var result = {err, user, info}
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      return res.json(result);
+    }
+    req.logIn(user, function(err) {
+      if (err) { return next(err);
+      }
+      return res.json(result);
+    });
+  })(req, res, next);
+});
+
+
+
+
+
+router.get('/dashboard', isLoggedIn, function(req, res, next) {
   res.render('app.html');
 });
 

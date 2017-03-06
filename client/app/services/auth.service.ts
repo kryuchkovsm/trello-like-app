@@ -1,60 +1,62 @@
-import { Injectable, EventEmitter, Output }      from '@angular/core';
+import { Injectable }      from '@angular/core';
 import { Router } from '@angular/router';
 import { Http, Headers, RequestOptions } from '@angular/http';
-import { User }     from '../classes/user'
 
-import 'rxjs/add/operator/toPromise';
+import { Subject } from 'rxjs/Subject';
+
+// import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
 @Injectable()
 export class AuthService {
-    
-    private headers = new Headers({'Content-Type': 'application/json'});
-    private authUrl = 'http://localhost:3000/login';  // URL to web api
 
-    private isLoggedIn = false;
-    
-    user: User;
-    
-    constructor(private http:Http, private router: Router) { }
+    private headers = new Headers({'Content-Type': 'application/json'});
+    private baseUrl = 'http://localhost:3000';  // URL to web api
+
+    private loginState = { isLoggedIn: false, email: undefined};
+
+    private userLoggedSource = new Subject<any>();
+    userLogged$ = this.userLoggedSource.asObservable();
+
+    announceLogin(loginState: any) {
+        this.userLoggedSource.next(loginState);
+    }
+
+    constructor(private http:Http, private router: Router) {
+        this.announceLogin(this.loginState);
+    }
 
     public login(email:string, password:string) {
+        let url = `${this.baseUrl}/login`;
+        return this.http.post(url, JSON.stringify( {email: email, password: password} ), {headers: this.headers})
+            .map(res => {
+                let result = res.json()
+                if (result.user) {
 
-        let user = {email: email, password: password};
-        let url = `${this.authUrl}`;
-
-        return this.http.post(url, JSON.stringify( user ), {headers: this.headers})
-            .map(res => res.json());
+                    // TODO refactor user model in both sides
+                    let user = {_id : result.user._id, email: result.user.local.email };
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    
+                    this.loginState = { isLoggedIn:true, email:user.email }; 
+                    this.announceLogin(this.loginState);
+                    this.router.navigate(['/dashboard']);
+                }
+            })
     }
 
-    public setUser(user) {
-        this.user = user;
-        this.isLoggedIn = true;
+    logout() {
+        // remove user from local storage to log user out
+        localStorage.removeItem('currentUser');
+        this.loginState.isLoggedIn = false;
+        this.announceLogin(this.loginState);
     }
 
-
-    public getLoginStatus() {
-        return this.isLoggedIn;
-    }
-
-    public getUserEmail() {
-        return this.user.local.email;
-    }
-
-    // not used
-    public getUser() {
-        return this.user;
-    }
-
-    // public addBoard(board) {
-    //     return this.http
-    //         .post('http://localhost:3000/api/addboard', JSON.stringify( { board } ), {headers: this.headers})
-    //         .map(res => res.json());
-    // }
-
-    // public getUser() {
-    //     const url = `${this.apiUrl}/user`
-    //     return this.http.get(url)
+    // public signup(email:string, password:string) {
+    //
+    //     let user = {email: email, password: password};
+    //     let url = `${this.baseUrl}/signup`;
+    //
+    //     return this.http.post(url, JSON.stringify( user ), {headers: this.headers})
     //         .map(res => res.json());
     // }
 }

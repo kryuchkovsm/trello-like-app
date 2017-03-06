@@ -1,41 +1,52 @@
 <div class = 'login-component'>
   <div class="row">
     <div class="col-md-6">
-      <form>
+      <form name = "form"
+            (ngSubmit)="f.form.valid && login()"
+            #f="ngForm"
+            novalidate>
         <div class="form-group">
-          <label for="username">Username</label>
+          <label for="email">Username</label>
           <input
-            id="username"
+            id = "email"
             type="text"
             class="form-control"
-            #username
-            placeholder="Enter your email">
+            name="email"
+            placeholder="Enter your email"
+            [(ngModel)]="model.email"
+            #email="ngModel"
+            required />
         </div>
         <div class="form-group">
           <label for="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            class="form-control"
-            #password
-            placeholder="Enter your password">
+          <input type="password"
+                 id="password"
+                 class="form-control"
+                 name="password"
+                 placeholder="Enter your password"
+                 [(ngModel)]="model.password"
+                 #password="ngModel"
+                 required />
             <div class = 'login-info'>{{info}}</div>
         </div>
+
         <div class = "sign-btns">
             <button
                     type="submit"
-                    class=" btn btn-default btn-primary btn-login "
-                    (click)="login(username.value, password.value)">
+                    [disabled] = "loading"
+                    class=" btn btn-default btn-primary btn-login ">
               Login
             </button>
 
-            <button
-                    type="button"
-                    class=" btn btn-default btn-signup"
-                    (click)="signup(username.value, password.value)">
-                Sign Up
-            </button>
+            <!--<button-->
+                    <!--type="button"-->
+                    <!--class=" btn btn-default btn-signup"-->
+                    <!--(click)="signup(username.value, password.value)">-->
+                <!--Sign Up-->
+            <!--</button>-->
         </div>
+        </form>
+
         <p>OR</p>
         <br>
             <button
@@ -50,7 +61,7 @@
                   (click)="auth.loginWithFacebook()">
               Login with Facebook
             </button>
-      </form>
+
     </div>
   </div>
 </div>

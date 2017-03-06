@@ -6,6 +6,8 @@ const FacebookStrategy  = require('passport-facebook').Strategy;
 const User              = require('../app/models/user');
 const configAuth        = require('./auth');
 
+const expressValidator = require('express-validator');
+
 module.exports = function(passport) {
   
   passport.serializeUser(function(user, done) {
@@ -23,8 +25,9 @@ module.exports = function(passport) {
       passwordField : 'password',
       passReqToCallback : true
     },
-
     function(req, email, password, done) {
+      
+
       User.findOne({ 'local.email' :  email }, function(err, user) {
         if (err)
           return done(err);

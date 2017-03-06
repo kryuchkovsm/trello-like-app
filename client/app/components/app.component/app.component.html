@@ -1,36 +1,10 @@
 <link rel="stylesheet" href="./styles.css">
 
 <header>
-    <nav >
-        <a class="btn"
-           *ngIf = 'isAuthenticated'
-            (click)="toggleBoardList()">|||| Boards
-        </a>
-
-        <a class="logo">Trello learning app</a>
-
-        <div class = "login">
-            <a class="user"
-               *ngIf = 'isAuthenticated'>
-                {{userEmail}}
-            </a>
-
-            <!--<button class="btn" [routerLink]="['']">Home</button>-->
-            <button class="btn" [routerLink]="['']">Home</button>
-            <button class="btn" [routerLink]="['login']">Login</button>
-
-            <button class="btn"
-            (click) = "logout()"
-            *ngIf = 'isAuthenticated'>
-                Log Out
-            </button>
-
-        </div>
-    </nav>
+    <navbar-component></navbar-component>
 </header>
 
 <div id="content-wrapper">
-    <boardlist-component *ngIf='boardListVisible && isAuthenticated '></boardlist-component>
     <router-outlet></router-outlet>
 
 </div>

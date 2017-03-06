@@ -9,6 +9,7 @@ import { DataService }      from '../../services/data.service';
 })
 
 export class DashBoardComponent implements OnInit {
+
     boards: Board[];
     addBoardName: string;
     addingBoard: boolean = false;
@@ -19,6 +20,7 @@ export class DashBoardComponent implements OnInit {
         this.getBoards();
     }
 
+    
     public getBoards() {
         this.dataService.getBoards()
             .subscribe(boards => { this.boards = boards });
