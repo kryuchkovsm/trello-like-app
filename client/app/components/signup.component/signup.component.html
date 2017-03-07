@@ -1,8 +1,8 @@
-<div class = 'login-component'>
+<div class = 'signup-component'>
   <div class="row">
     <div class="col-md-6">
       <form name = "form"
-            (ngSubmit)="f.form.valid && login()"
+            (ngSubmit)="f.form.valid && signup()"
             #f="ngForm"
             novalidate>
         <div class="form-group">
@@ -31,36 +31,20 @@
         </div>
 
         <div class = "sign-btns">
+            <a 
+              class = 'login-href'
+              routerLink='/login' 
+              routerLinkActive='active'>Login
+            </a>
+
             <button
                     type="submit"
                     [disabled] = "loading"
-                    class=" btn btn-default btn-primary btn-login ">
-              Login
-            </button>
-
-            <a 
-              class = 'signup-href'
-              routerLink='/signup' 
-              routerLinkActive='active'>Signup
-            </a>
+                    class=" btn btn-default btn-primary btn-signup ">
+              SignUp
+            </button>            
         </div>
-        </form>
-
-        <p>OR</p>
-        <br>
-            <button
-              type="button"
-              class="btn btn-social btn-auth-google"
-              (click)="auth.loginWithGoogle()">
-                Login with Google
-            </button>
-            <button
-                  type="button"
-                  class="btn btn-social btn-auth-facebook"
-                  (click)="auth.loginWithFacebook()">
-              Login with Facebook
-            </button>
-
+        </form>       
     </div>
   </div>
 </div>

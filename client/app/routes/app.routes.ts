@@ -5,18 +5,18 @@ import { AuthGuard }                   from '../guards/auth.guard'
 import { WelcomePageComponent}         from '../components/welcomepage.component/welcomepage.component';
 import { BoardComponent }              from '../components/board.component/board.component';
 import { LoginComponent }              from '../components/login.component/login.component';
+import { SignUpComponent }              from '../components/signup.component/index';
 import { HomeComponent }               from '../components/home.component/home.component';
 import { DashBoardComponent}           from '../components/dashboard.component/dashboard.component';
 
 const appRoutes: Routes = [
     { path: '', component: WelcomePageComponent },
     { path: 'login', component: LoginComponent },
+    { path: 'signup', component: SignUpComponent },
     { path: 'forbidden', component: LoginComponent},
     { path: 'welcome', component: WelcomePageComponent },
     { path: 'board', component: BoardComponent, canActivate: [AuthGuard] },
-    { path: 'dashboard', component: DashBoardComponent, canActivate: [AuthGuard] }
-    
-    // { path: 'signup', component: HomeComponent },
+    { path: 'dashboard', component: DashBoardComponent, canActivate: [AuthGuard] }    
     // { path: 'failure', component: HomeComponent },
     
 ];

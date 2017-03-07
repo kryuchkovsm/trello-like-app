@@ -9,7 +9,7 @@ import { AuthService }              from './services/auth.service';
 import { AuthGuard }                from './guards/index';
 import { routing }                  from './routes/app.routes';
 
-import { AppComponent }             from './components/app.component/app.component';
+import { AppComponent }             from './components/app.component/index';
 import { NavBarComponent}           from './components/navbar.component/index'
 import { BoardListComponent }       from './components/boardlist.component/boardlist.component';
 import { BoardComponent }           from './components/board.component/board.component';
@@ -18,7 +18,9 @@ import { ListComponent }            from './components/list.component/list.compo
 import { TicketComponent }          from './components/ticket.component/ticket.component';
 import { WelcomePageComponent }     from './components/welcomepage.component/welcomepage.component';
 import { SimpleDndComponent }       from './components/simple-dnd.component/simple-dnd.component';
-import { LoginComponent }           from './components/login.component/login.component';
+import { LoginComponent }           from './components/login.component/index';
+import { SignUpComponent }           from './components/signup.component/index';
+
 import { HomeComponent }            from './components/home.component/home.component';
 
 @NgModule({
@@ -40,6 +42,7 @@ import { HomeComponent }            from './components/home.component/home.compo
         SimpleDndComponent,
         HomeComponent,
         LoginComponent,
+        SignUpComponent,
         WelcomePageComponent
     ],
     providers: [

@@ -1,3 +1,1 @@
-/**
- * Created by dunice on 06.03.17.
- */
+export * from './app.component';

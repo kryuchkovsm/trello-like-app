@@ -1,8 +1,8 @@
     <nav >
-        <a class="btn"
+        <button class="btn"
            *ngIf = 'isLoggedIn'
             (click)="toggleBoardList()">|||| Boards
-        </a>
+        </button>
 
         <boardlist-component
             *ngIf = 'isLoggedIn && boardListVisible'>

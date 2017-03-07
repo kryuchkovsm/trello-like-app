@@ -33,7 +33,7 @@ module.exports = function(passport) {
           return done(err);
 
         if (user) {
-          return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+          return done(null, false, { 'signupMessage' : 'That email is already taken.' });
         }
         else {
           var newUser            = new User();

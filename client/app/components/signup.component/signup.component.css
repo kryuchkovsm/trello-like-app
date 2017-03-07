@@ -6,7 +6,7 @@ input {
     color: black;
 }
 
-.login-component {
+.signup-component {
     width: 300px;
     margin: auto;
     margin-top: 100px;
@@ -26,15 +26,13 @@ input {
 .btn-login {
     display:inline-block;
     float: left;
-    width: 120px;
+    width: 150px;
 }
 
-.signup-href {
+.btn-signup {
     display:inline-block;
     float: right;
-    text-align: center;
-    line-height: 30px;
-    width: 100px;
+    background-color: #61bd4f;
 }
 
 .btn-social {
@@ -54,6 +52,69 @@ input {
 .btn-auth-facebook {
     background-image: url(./app/components/login.component/images/facebook.png);
 }
+
+.sign-btns {
+    /*margin-top: 40px;*/
+    margin-bottom: 15px;
+    height: 30px;
+    width: 250px;
+}
+
+.login-info {
+    width: 250px;
+    margin: auto;
+    height: 30px;
+    line-height: 30px;
+    padding-left: 5px;
+}
+
+
+p {
+    font-weight:bold;
+    align: center;
+    margin: 0;
+}* {
+    color: white;
+}
+
+input {
+    color: black;
+}
+
+.login-component {
+    width: 300px;
+    margin: auto;
+    margin-top: 100px;
+    padding: 15px;
+    background-color: #0067A3;
+    border-radius: 5px;
+}
+
+.form-control {
+    width: 250px;
+}
+
+.btn {
+    display: inline-block;
+}
+
+
+.login-href {
+    display:inline-block;
+    float: left;
+    line-height: 30px;
+    text-align: center;
+    width: 120px;
+}
+
+.btn-signup {
+    display:inline-block;
+    float: right;
+    background-color: #61bd4f;
+    width: 100px;
+}
+
+
 
 .sign-btns {
     /*margin-top: 40px;*/

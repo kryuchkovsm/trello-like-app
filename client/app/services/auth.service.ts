@@ -34,6 +34,7 @@ export class AuthService {
                 if (result.user) {
 
                     // TODO refactor user model in both sides
+                    // TODO refactor to move this section out from loin and signup methods
                     let user = {_id : result.user._id, email: result.user.local.email };
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     
@@ -51,12 +52,20 @@ export class AuthService {
         this.announceLogin(this.loginState);
     }
 
-    // public signup(email:string, password:string) {
-    //
-    //     let user = {email: email, password: password};
-    //     let url = `${this.baseUrl}/signup`;
-    //
-    //     return this.http.post(url, JSON.stringify( user ), {headers: this.headers})
-    //         .map(res => res.json());
-    // }
+    public signup(email:string, password:string) {
+        let url = `${this.baseUrl}/signup`;
+        return this.http.post(url, JSON.stringify( {email: email, password: password} ), {headers: this.headers})
+            .map(res => {
+                let result = res.json()
+                if (result.user) {
+                    console.log('signup service');
+                    // TODO refactor user model in both sides
+                    let user = {_id : result.user._id, email: result.user.local.email };
+                    localStorage.setItem('currentUser', JSON.stringify(user));                    
+                    this.loginState = { isLoggedIn:true, email:user.email }; 
+                    this.announceLogin(this.loginState);
+                    this.router.navigate(['/dashboard']);
+                }
+            })
+    }    
 }

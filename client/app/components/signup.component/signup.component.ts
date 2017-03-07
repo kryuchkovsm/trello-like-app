@@ -5,12 +5,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
     moduleId: module.id,
-    selector: 'login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css']
+    selector: 'signup',
+    templateUrl: './signup.component.html',
+    styleUrls: [ './signup.component.css']
 })
 
-export class LoginComponent implements OnInit {
+export class SignUpComponent implements OnInit {
     model: any = {};
     loading = false;
     returnUrl: string;
@@ -30,9 +30,9 @@ export class LoginComponent implements OnInit {
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
     }
 
-    login() {
+    signup() {
         this.loading = true;
-        this.authService.login(this.model.email, this.model.password)
+        this.authService.signup(this.model.email, this.model.password)
             .subscribe(
                 data => {
                     this.router.navigate([this.returnUrl]);
