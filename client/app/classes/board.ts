@@ -6,6 +6,6 @@ export class Board {
     order: number;
     owner: string;
     // guests: string[];
-    lists: string[];
+    // lists: string[];
     // lists: Lists[];
 }

@@ -1,6 +1,3 @@
-
-
-
 nav {
     position: absolute;
     width: 100%;
@@ -41,11 +38,10 @@ nav a.btn {
 
 a.user {
     font-weight:bold;
-    line-height:30px;
+    line-height:45px;
     margin-right: 10px;
 }
-/*.dashboard-component {*/
-    /*position: absolute;*/
-    /*left: 10px;*/
-    /*top: 10px;*/
-/*}*/
+
+.is-shown {
+    display: none;
+}

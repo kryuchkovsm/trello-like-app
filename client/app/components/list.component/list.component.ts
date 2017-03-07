@@ -12,19 +12,61 @@ import { List } from '../../classes/list'
 export class ListComponent implements OnInit{
     @Input() inputList: List;
 
+    // UI transform from span to input
+    addingTicket: boolean;
 
+    addingTicketText: string;
     tickets: Ticket[];
 
+
+
     // constructor (private dataService: DataService) {
-    constructor (private dataService: DataService) {
+    constructor ( private dataService: DataService ) {
     }
 
     ngOnInit(): void {
-        this.getTickets(this.inputList._id);
+        this.dataService.getTickets(+this.inputList._id)
+            .subscribe(tickets => {
+                this.tickets = tickets;
+            })
+    }
+    
+    public enableAddTicket(){
+        this.addingTicket = true;
     }
 
-    public getTickets(listId) {
-        this.tickets = this.dataService.getTickets(listId);
+    addTicket() {
+        this.tickets = this.tickets || [];
+        let newTicket = <Ticket>{
+            _id: +new Date(),
+            listId: this.inputList._id,
+            boardId: this.inputList.boardId,
+            text: this.addingTicketText,
+            order: (this.tickets.length + 1),
+        };
+        this.dataService.addTicket(newTicket)
+            .subscribe(ticket => {
+                this.tickets.push(ticket);
+            });
+    }
+
+    addTicketOnEnter(event: KeyboardEvent) {
+        if (event.keyCode === 13) {
+            if (this.addingTicketText && this.addingTicketText.trim() !== '') {
+                this.addTicket();
+                this.addingTicketText = '';
+            } else {
+                this.cancelAddTicket();
+            }
+        } else if (event.keyCode === 27) {
+            this.cancelAddTicket();
+        }
+    }
+
+    cancelAddTicket() {
+        console.log('cancel addticket');
+        this.addingTicket = false;
+        this.addingTicketText = '';
     }
 
 }

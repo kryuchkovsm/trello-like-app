@@ -2,10 +2,11 @@ var mongoose = require('mongoose');
 
 var listSchema = mongoose.Schema({
   _id:     Number,
-  name:   String,
+  owner:   String,
+  name:    String,
   boardId: String,
   order:   Number,
-  tickets: [String]
+  // tickets: [String]
 });
 
 module.exports = mongoose.model('List', listSchema);

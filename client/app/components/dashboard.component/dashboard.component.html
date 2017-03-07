@@ -1,45 +1,14 @@
-<!--<div class = "message">-->
-    <!--<h4>You now are looged in</h4>-->
-    <!--<br>-->
-    <!--<p>And can work with any resources you</p>-->
-<!--</div>-->
-
-
 <div class="boards-wrapper">
-    <h2>Boards {{message}}</h2>
-    <!--<div *ngIf = "boards" id="boards">-->
-    <div *ngIf = "boards">
-        <!--<a class="board"  *ngFor = "let board of boards" [routerLink]="['Board', {id: board._id}]">-->
-        <a class="board"  *ngFor = "let board of boards">
+    <h2 *ngIf = 'boards'>Boards {{message}}</h2>
+    <div *ngIf = 'boards'>
+        <a
+                class="board"
+                *ngFor = "let board of boards"
+                [routerLink]="['/b', board._id]">
             <span class="title">{{board.name}}</span>
         </a>
-        <!--<a href="#" class="board add-board" (click)="addBoard()">-->
-            <!--<span class="title">Create a new board...</span>-->
-        <!--</a>-->
+        <a href="#" class="board add-board" (click)="addBoard()">
+            <span class="title">Create a new board...</span>
+        </a>
     </div>
 </div>
-
-<!--<h2>My Boards</h2>-->
-<!--<div id="boards">-->
-    <!--<div *ngIf = "boards">-->
-        <!--<div *ngFor = "let board of boards"-->
-           <!--class="board">-->
-            <!--<span class = "title">{{board.name}}</span>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<a class="add-board"-->
-       <!--(click) ="enableAddBoard()">-->
-
-            <!--<span class = "title"-->
-                  <!--*ngIf="!addingBoard">-->
-               <!--Create a new board...-->
-            <!--</span>-->
-
-        <!--<input *ngIf="addingBoard"-->
-               <!--placeholder= 'Add a board...'-->
-               <!--[attr.autofocus]="addingBoard"-->
-               <!--[(ngModel)]="addBoardName"-->
-               <!--(focusout)="cancelAddBoard()"-->
-               <!--(keyup)="addBoardOnEnter($event)"/>-->
-    <!--</a>-->
-<!--</div>-->

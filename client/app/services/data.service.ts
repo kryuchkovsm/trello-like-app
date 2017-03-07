@@ -14,27 +14,18 @@ export class DataService {
     
     constructor(private http:Http) { }
 
+
+    public addBoard(board) {
+        const url = `${this.apiUrl}/addboard`
+        return this.http
+            .post( url, JSON.stringify( { board } ), {headers: this.headers})
+            .map(res => res.json());
+    }
+    
     public getBoards() {
         const url = `${this.apiUrl}/boards`
         return this.http.get(url)
             .map(res => res.json());
-    }
-
-    public getLists(){
-        const url = `${this.apiUrl}/lists`
-        return this.http.get(url)
-                .map(res => res.json());
-    }
-
-    public getUser() {
-        const url = `${this.apiUrl}/user`
-        return this.http.get(url)
-            .map(res => res.json());
-    }
-    
-    public getTickets(listId:string):Ticket[]{
-        return null;
-        // return TICKETS.filter( ticket => ticket.listId === listId);
     }
 
     public addList(list) {
@@ -43,15 +34,32 @@ export class DataService {
             .post(url, JSON.stringify( { list } ), {headers: this.headers})
             .map(res => res.json());
     }
+    
+    public getLists(boarId){
+        const url = `${this.apiUrl}/lists?id=${boarId}`
+        return this.http.get(url)
+                .map(res => res.json());
+    }
 
-    public addBoard(board) {
-        const url = `${this.apiUrl}/addboard`
+    public addTicket(ticket) {
+        const url = `${this.apiUrl}/addticket`
         return this.http
-            .post( url, JSON.stringify( { board } ), {headers: this.headers})
+            .post(url, JSON.stringify( { ticket } ), {headers: this.headers})
             .map(res => res.json());
     }
 
-    
+    public getTickets(listId){
+        const url = `${this.apiUrl}/tickets?listId=${listId}`
+        return this.http.get(url)
+            .map(res => res.json());
+    }
+
+    public updateTicket(ticket) {
+        const url = `${this.apiUrl}/updateticket`
+        return this.http
+            .post(url, JSON.stringify( { ticket } ), {headers: this.headers})
+            .map(res => res.json());
+    }
     
     public logout() {
         window.location.href = '/logout';
@@ -63,18 +71,25 @@ export class DataService {
     }
 
 
-    private handleError(error: any): Promise<any> {
-        console.error('An error occurred', error); // for demo purposes only
-        return Promise.reject(error.message || error);
-    }
+    // private handleError(error: any): Promise<any> {
+    //     console.error('An error occurred', error); // for demo purposes only
+    //     return Promise.reject(error.message || error);
+    // }
 
 
-    public getUserEmail() {
-        const url = `${this.apiUrl}/useremail`;
+    // public getUserEmail() {
+    //     const url = `${this.apiUrl}/useremail`;
+    //     return this.http.get(url)
+    //         .map(res => res.json());
+    // }
+
+    public getUser() {
+        const url = `${this.apiUrl}/user`
         return this.http.get(url)
             .map(res => res.json());
     }
-
+    
+    
     // public getUserEmail():Promise<string> {
     //     return this.http.get('http://localhost:3000/api/useremail')
     //         .toPromise()

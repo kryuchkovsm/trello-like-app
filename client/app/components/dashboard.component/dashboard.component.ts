@@ -23,7 +23,8 @@ export class DashBoardComponent implements OnInit {
     
     public getBoards() {
         this.dataService.getBoards()
-            .subscribe(boards => { this.boards = boards });
+            .subscribe(boards => {
+                this.boards = boards });
     }
 
     public enableAddBoard(){

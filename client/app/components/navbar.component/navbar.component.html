@@ -5,7 +5,9 @@
         </button>
 
         <boardlist-component
-            *ngIf = 'isLoggedIn && boardListVisible'>
+                *ngIf = 'isLoggedIn'
+                (closeBoardList$)='onCloseBoardList($event)'
+                [ngClass]="{'is-shown':!boardListVisible}">
         </boardlist-component>
 
         <a class="logo">Trello learning app</a>

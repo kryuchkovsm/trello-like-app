@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { DataService } from '../../services/data.service'
 import { Ticket } from '../../classes/ticket';
 
 
@@ -8,8 +9,28 @@ import { Ticket } from '../../classes/ticket';
     styleUrls: ['./app/components/ticket.component/ticket.component.css'],
 })
 
-export class TicketComponent {
-    @Input() inputTicket: Ticket;
+export class TicketComponent implements OnInit{
+    @Input() ticket: Ticket;
 
-    
+    constructor (private dataService: DataService) {}
+
+    ngOnInit() {
+
+    }
+
+    editingTicket: boolean = false;
+
+    enableEditTicket() {
+        this.editingTicket = true;
+    }
+
+    updateTicket() {
+        this.cancelEditTicket();
+        this.dataService.updateTicket(this.ticket)
+            .subscribe(ticket => this.ticket.text = ticket.text);
+    }
+
+    cancelEditTicket() {
+        this.editingTicket = false;
+    }
 }

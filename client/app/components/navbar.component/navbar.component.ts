@@ -36,6 +36,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         }
         else {
             this.isLoggedIn = false;
+            this.boardListVisible = false;
         }
 
     }
@@ -50,6 +51,10 @@ export class NavBarComponent implements OnInit, OnDestroy {
 
     toggleBoardList() {
         this.boardListVisible = !this.boardListVisible;
+    }
+
+    onCloseBoardList() {
+        this.boardListVisible = false;
     }
 
 }

@@ -5,37 +5,28 @@
 
 <section id="main" >
         <!--<div class="sortable-list" >-->
-        <div class="sortable-list"
-             dnd-sortable-container
-             [dropZones]="['list-zone']"
-             [sortableData]="lists">
-
+        <div class="sortable-list">
              <list-component  *ngFor="let list of lists;  let i = index"
-                 [inputList] = "list"
-                 dnd-sortable
-                 [sortableIndex]="i"
-                 [dragEnabled]='true'>
+                 [inputList] = "list">
              </list-component>
 
-            <!--<list-component  *ngFor="let list of lists"-->
-                 <!--[inputList] = "list">-->
-            <!--</list-component>-->
-
-        </div>
-
-        <div class="add-list clearfix"
-             (click)="enableAddList()" >
+            <div class="add-list clearfix"
+                 (click)="enableAddList()" >
             <span *ngIf="!addingList">
                Add a list...
             </span>
 
-            <input *ngIf="addingList"
-                   placeholder= 'Add a list...'
-                   [attr.autofocus]="addingList"
-                   [(ngModel)]="addListName"
-                   (focusout)="cancelAddList()"
-                   (keyup)="addListOnEnter($event)"/>
+                <input *ngIf="addingList"
+                       placeholder= 'Add a list...'
+                       id = 'add-list'
+                       [attr.autofocus]="add-list"
+                       [(ngModel)]="addListName"
+                       (focusout)="cancelAddList()"
+                       (keyup)="addListOnEnter($event)"/>
+            </div>
         </div>
+
+
 
 
     <div class = "dnd-test">

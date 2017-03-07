@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Board }     from '../../classes/board'
 import { DataService }      from '../../services/data.service';
 
@@ -6,9 +6,12 @@ import { DataService }      from '../../services/data.service';
     selector: 'boardlist-component',
     templateUrl: './app/components/boardlist.component/boardlist.component.html',
     styleUrls:  ['./app/components/boardlist.component/boardlist.component.css'],
+
 })
 
 export class BoardListComponent implements OnInit {
+    @Output() closeBoardList$: EventEmitter<boolean> = new EventEmitter<boolean>();
+    
     boards: Board[];
     addBoardName: string;
     addingBoard: boolean = false;
@@ -19,6 +22,10 @@ export class BoardListComponent implements OnInit {
         this.getBoards();
     }
 
+    closeBoardList() {
+        this.closeBoardList$.emit(true)
+    }
+    
     public getBoards() {
         this.dataService.getBoards()
             .subscribe(boards => { this.boards = boards });

@@ -1,20 +1,42 @@
 <li class="ticket-component"
+    (click)="enableEditTicket()"
 >
     <!--[attr.ticket-id]="ticket._id"-->
     <!--[attr.ticket-order]="ticket.order"-->
-    <!--(click)="editTicket()">-->
-    <span>
-        {{inputTicket.title}}
+    <!-->-->
+    <span
+        *ngIf = '!editingTicket'>
+        {{ticket.text}}
     </span>
         <!--<ticket-component> [innerHtml]="ticket.content" [style.display]="editingTicket ? 'none' : ''">-->
 
-    <!--<textarea>-->
-        <!--{{inputTicket.title}}-->
-        <!--[style.display]="editingTicket ? '' : 'none' "-->
-        <!--(keydown)="blurOnEnter($event)"-->
-        <!--(blur)="updateTicket()"-->
-        <!--[(ngModel)]="ticket.content" >-->
-    <!--</textarea>-->
+    <textarea
+        *ngIf = 'editingTicket'
+        [(ngModel)]="ticket.text"
+        (blur)="updateTicket()"
+        >
 
+        {{ticket.text}}
+
+    </textarea>
+
+        <!--[style.display]="editingTicket ? '' : 'none' "-->
+    <!--(keydown)="blurOnEnter($event)"-->
+    <!--(blur)="updateTicket()"-->
+    <!---->
 
 </li>
+
+
+<!--<li class="card"-->
+    <!--[attr.card-id]="card._id"-->
+    <!--[attr.card-order]="card.order"-->
+    <!--(click)="editCard()">-->
+    <!--<span [innerHtml]="card.title" [style.display]="editingCard ? 'none' : ''">-->
+    <!--</span>-->
+    <!--<textarea-->
+            <!--[style.display]="editingCard ? '' : 'none' "-->
+            <!--(keydown)="blurOnEnter($event)"-->
+            <!--(blur)="updateCard()"-->
+            <!--[(ngModel)]="card.title" ></textarea>-->
+<!--</li>-->

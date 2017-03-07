@@ -1,9 +1,12 @@
-<div class="boards-wrapper">
+<div class="boards-wrapper is-shown">
     <h2>My Boards</h2>
     <div id="boards">
         <div *ngIf = "boards">
-            <a *ngFor = "let board of boards"
-                    class="board">
+            <a
+                    class="board"
+                    *ngFor = "let board of boards"
+                    [routerLink]="['/b', board._id]"
+                    (click) = 'closeBoardList()'>
                 <span class = "title">{{board.name}}</span>
             </a>
         </div>

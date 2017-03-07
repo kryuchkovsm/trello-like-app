@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { DataService }      from '../../services/data.service';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { List } from '../../classes/list';
-
+import 'rxjs/add/operator/switchMap';
 
 @Component({
     moduleId: module.id,
@@ -10,22 +11,32 @@ import { List } from '../../classes/list';
     styleUrls: ['./board.component.css'],
 })
 
-export class BoardComponent implements OnInit {    
+export class BoardComponent implements OnInit {
+    // this board id
+    boardId: number;
     lists: List[];
-    user: any;
-    
+
+    // UI transform from span to textarea or input
     addingList: boolean = false;
+    // new list name
     addListName: string = '';
 
-    constructor( private dataService: DataService) { }
+    // to ger this.boardId from route
+    private subscribtion: any;
+
+    constructor(
+        private dataService: DataService,
+        private route: ActivatedRoute) { }
 
     ngOnInit(): void {
-        // this.getLists();
-    }
-    
-    public getLists() {
-        this.dataService.getLists()
-            .subscribe(lists => { this.lists = lists });
+        // get boardId from route
+        this.subscribtion = this.route.params.subscribe(params => {
+            this.boardId = +params['id'] }); // (+) converts string 'id' to a number
+        
+        // read list from data.service
+        this.route.params
+            .switchMap((params: Params) => this.dataService.getLists(+params['id']))
+            .subscribe(lists => this.lists = lists)
     }
 
     public enableAddList(){
@@ -38,14 +49,13 @@ export class BoardComponent implements OnInit {
             _id: +new Date(),
             name: this.addListName,
             order: (this.lists.length + 1),
-            // columnId: this.column._id,
-            // boardId: this.column.boardId
+            boardId: this.boardId
         };
         this.dataService.addList(newList)
             .subscribe(list => {
                 this.lists.push(list);
-                // this.onAddCard.emit(card);
-                // this._ws.addCard(card.boardId, card);
+                // this.onAddList.emit(list);
+                // this._ws.addList(list.boardId, list);
             });
     }
 
@@ -65,6 +75,10 @@ export class BoardComponent implements OnInit {
     cancelAddList() {
         this.addingList = false;
         this.addListName = '';
+    }
+
+    ngOnDestroy() {
+        this.subscribtion.unsubscribe();
     }
     
 }

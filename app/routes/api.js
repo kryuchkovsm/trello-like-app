@@ -36,55 +36,40 @@ router.get('/useremail', function(req, res, next) {
 router.get('/users', function(req, res, next) {
   User.find({}, function (err, result) {
     if (err)
-      return console.log(err);
+      return res.json(err);
     res.json(result);
   })
 })
 
 router.get('/boards', function(req, res, next) {
-  // Board.find({}, function (err, result) {
-  Board.find({'owner': req.user._id }, function (err, result) {
-    if (err)
-      res.json(err);
-    res.json(result);
-  })
+  Board.find(
+      {'owner': req.user._id },
+      {'_id': true, 'name': true},
+      function (err, result) {
+        if (err)
+          return res.json(err);
+        res.json(result);
+      })
 })
 
 router.get('/lists', function(req, res, next) {
-  List.find({}, function (err, result) {
-    if (err)
-      return console.log(err);
+  List.find({'boardId': req.query.id},
+    function (err, result) {
+      if (err)
+        return res.json(err);
     res.json(result);
   })
 })
 
 router.get('/tickets', function(req, res, next) {
-  Ticket.find({}, function (err, result) {
-    if (err)
-      return console.log(err);
-    console.log(result);
+  // console.log(req.query);
+  // console.log(req.query.listId);
+  Ticket.find({'listId': req.query.listId},
+    function (err, result) {
+      if (err)
+        return res.json(err);
     res.json(result);
   })
-})
-
-router.post('/addlist', function(req, res, next) {
-  var inputList = req.body.list;
-
-  list = new List({
-    _id: inputList._id,
-    name: inputList.name,
-    boardId: inputList.boardId,
-    order: inputList.order,
-    tickets:[]
-  })
-
-  list.save(function(err, result) {
-    if (err) {
-      console.log(err);
-    }
-    res.json(result);
-  })
-
 })
 
 router.post('/addboard', function(req, res, next) {
@@ -100,23 +85,81 @@ router.post('/addboard', function(req, res, next) {
     order: inputBoard.order,
     owner: req.user._id
   })
-  
+
   console.log(board);
-  
+
   board.save(function(err, result) {
     if (err) {
-      console.log(err);
+      return res.json(err);
     }
     res.json(result);
   })
 
 })
 
+router.post('/addlist', function(req, res, next) {
+  var inputList = req.body.list;
+
+  list = new List({
+    _id: inputList._id,
+    name: inputList.name,
+    boardId: inputList.boardId,
+    order: inputList.order,
+    tickets:[]
+  })
+
+  list.save(function(err, result) {
+    if (err) {
+      return res.json(err);
+    }
+    res.json(result);
+  })
+
+})
+
+router.post('/addticket', function(req, res, next) {
+  var inputTicket = req.body.ticket;
+
+  ticket = new Ticket({
+    _id: inputTicket._id,
+    text: inputTicket.text,
+    boardId: inputTicket.boardId,
+    listId: inputTicket.listId,
+    order: inputTicket.order
+  })
+
+  ticket.save(function(err, result) {
+    if (err) {
+      return res.json(err);
+    }
+    res.json(result);
+  })
+
+})
+
+router.post('/updateticket', function(req, res, next) {
+  var inputTicket = req.body.ticket;
+
+  Ticket.findById(inputTicket._id, function (err, ticket) {
+    if (err) {
+      return res.json(err);
+    }
+    ticket.text = inputTicket.text;
+    ticket.save(function(err, result) {
+      if (err)
+        return res.json(err)
+      res.json(result);
+    })
+  })
+})
+
+
+
+
 module.exports = router;
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
-
   // if user is authenticated in the session, carry on
   if (req.isAuthenticated())
     return next();
