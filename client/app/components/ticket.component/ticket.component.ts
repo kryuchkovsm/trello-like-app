@@ -4,9 +4,10 @@ import { Ticket } from '../../classes/ticket';
 
 
 @Component({
+    moduleId: module.id,
     selector: 'ticket-component',
-    templateUrl: './app/components/ticket.component/ticket.component.html',
-    styleUrls: ['./app/components/ticket.component/ticket.component.css'],
+    templateUrl: './ticket.component.html',
+    styleUrls: ['./ticket.component.css'],
 })
 
 export class TicketComponent implements OnInit{

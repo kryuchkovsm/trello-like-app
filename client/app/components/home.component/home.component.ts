@@ -4,10 +4,10 @@ import { User }         from '../../classes/user';
 
 
 @Component({
-  // moduleId: module.id,
+  moduleId: module.id,
   selector: 'home',
-  templateUrl: './app/components/home.component/home.component.html',
-  styleUrls: ['./app/components/home.component/home.component.css'],
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
 })
 
 export class HomeComponent implements OnInit {

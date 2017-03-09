@@ -5,10 +5,8 @@ header {
     top: 0;
 }
 
-
 #content-wrapper {
     width: 100%;
-    display: block;
     height: calc(100% - 40px);
     overflow: auto;
     padding-top: 50px;

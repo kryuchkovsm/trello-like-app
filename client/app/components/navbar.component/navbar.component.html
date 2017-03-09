@@ -10,7 +10,12 @@
                 [ngClass]="{'is-shown':!boardListVisible}">
         </boardlist-component>
 
-        <a class="logo">Trello learning app</a>
+        <a
+            class="logo"
+            routerLink='/dashboard'
+            routerLinkActive='active'>
+            Trello learning app
+        </a>
 
         <div class = "login">
             <a class="user"

@@ -1,9 +1,10 @@
 import { Component }        from '@angular/core';
 
 @Component({
+    moduleId: module.id,
     selector: 'welcomepage-component',
-    templateUrl: './app/components/welcomepage.component/welcomepage.component.html',
-    styleUrls: ['./app/components/welcomepage.component/welcomepage.component.css'],
+    templateUrl: './welcomepage.component.html',
+    styleUrls: ['./welcomepage.component.css'],
 })
 
 export class WelcomePageComponent {

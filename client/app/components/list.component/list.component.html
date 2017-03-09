@@ -1,10 +1,31 @@
 <div class = 'list-component'>
+    <div class = 'handle'>
+        Emplty handle
+    </div>
+    <div class = 'handle'>
+        h4 handle
+        <h4>test1</h4>
+        h4 handle
+    </div>
+    <div class = 'handle'>
+        ouside div handle
+        <div class = "test">inside div handle</div>
+    </div>
+    <div class = 'handle'>
+        outside href handle
+        <a>inside href handle</a>
+    </div>
+    <div class = 'handle list-component-header'>
+        double class component with handle
+
+    </div>
+
     <div class = 'list-component-header'>
         <h4>{{inputList.name}}</h4>
     </div>
-
-    <ul class = 'ticket-list'>
-
+    <ul class = 'ticket-list'
+        [dragula]="'ticket-list'"
+        [dragulaModel]="tickets">
         <ticket-component
                 *ngFor="let ticket of tickets"
                 [ticket]="ticket">
@@ -20,7 +41,7 @@
 
         <input
                 class = 'ticketName'
-                placeholder= 'Add a ticket...'
+                placeholder= 'Add a card...'
                *ngIf='addingTicket'
                [attr.autofocus]='addingTicket'
                [(ngModel)]='addingTicketText'

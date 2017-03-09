@@ -1,38 +1,29 @@
 <div class="board-title">
-    <span> Test Board </span>
-    <!--<input />-->
+    <span> There should be editable board name </span>
 </div>
 
 <section id="main" >
-        <!--<div class="sortable-list" >-->
-        <div class="sortable-list">
-             <list-component  *ngFor="let list of lists;  let i = index"
-                 [inputList] = "list">
+        <div
+            [dragula]="'dragula-lists'"
+            [dragulaModel]="lists">
+             <list-component
+                     *ngFor="let list of lists"
+                    [inputList] = "list">
              </list-component>
-
-            <div class="add-list clearfix"
-                 (click)="enableAddList()" >
-            <span *ngIf="!addingList">
-               Add a list...
-            </span>
-
-                <input *ngIf="addingList"
-                       placeholder= 'Add a list...'
-                       id = 'add-list'
-                       [attr.autofocus]="add-list"
-                       [(ngModel)]="addListName"
-                       (focusout)="cancelAddList()"
-                       (keyup)="addListOnEnter($event)"/>
-            </div>
         </div>
 
-
-
-
-    <div class = "dnd-test">
-        <!--<simple-dnd></simple-dnd>-->
-    </div>
-
-
+        <div class="add-list"
+             (click)="enableAddList()" >
+        <span *ngIf="!addingList">
+           Add a list...
+        </span>
+            <input *ngIf="addingList"
+                   placeholder= 'Add a list...'
+                   id = 'add-list'
+                   [attr.autofocus]="add-list"
+                   [(ngModel)]="addListName"
+                   (focusout)="cancelAddList()"
+                   (keyup)="addListOnEnter($event)"/>
+        </div>
 </section>
 

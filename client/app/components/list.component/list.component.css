@@ -1,11 +1,16 @@
+.handle {
+    border: 1px dotted blue;
+
+}
+
 .list-component {
+    float: left;
     background-color: #E2E4E6;
     border-radius: 3px;
     width: 270px;
     margin-left: 10px;
     margin-bottom: 15px;
     box-sizing: border-box;
-    display: inline-block;
     vertical-align: top;
     white-space: nowrap;
 }
@@ -70,10 +75,15 @@
     padding: 5px 5px 4px 5px;
     width: calc(100% - 10px);
 }
+
 ul.ticket-list {
+    /*flex-flow: column;*/
     padding: 31px 11px 32px 9px;
     margin: -26px 0 -31px 0;
 }
-ul.ticket-list > li {
+
+.ticket {
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
     list-style: none;
 }
+

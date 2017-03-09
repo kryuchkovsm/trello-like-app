@@ -1,4 +1,5 @@
 .ticket-component {
+    width: 230px;
     background-color: #fff;
     text-decoration: none;
     padding: 7px;
@@ -23,8 +24,10 @@
     transition-timing-function: ease;
 }
 
-.ticket-component:hover{
+.ticket-component:hover,
+.ticket-component:focus{
     background-color: #ddd;
+    cursor: pointer;
 }
 
 .ticket-component textarea {

@@ -4,8 +4,6 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
-import { Ticket } from '../classes/ticket'
-
 @Injectable()
 export class DataService {
 

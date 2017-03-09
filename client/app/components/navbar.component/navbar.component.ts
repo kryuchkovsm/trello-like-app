@@ -15,9 +15,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
     boardListVisible: boolean;
 
     subscription: Subscription;
-
+    
     constructor(private authService: AuthService) {
-
         // in SPA service login
         authService.userLogged$.subscribe(
             loginState => {

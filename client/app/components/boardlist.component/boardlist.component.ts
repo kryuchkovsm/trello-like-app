@@ -3,9 +3,10 @@ import { Board }     from '../../classes/board'
 import { DataService }      from '../../services/data.service';
 
 @Component({
+    moduleId: module.id,
     selector: 'boardlist-component',
-    templateUrl: './app/components/boardlist.component/boardlist.component.html',
-    styleUrls:  ['./app/components/boardlist.component/boardlist.component.css'],
+    templateUrl: './boardlist.component.html',
+    styleUrls:  ['./boardlist.component.css'],
 
 })
 

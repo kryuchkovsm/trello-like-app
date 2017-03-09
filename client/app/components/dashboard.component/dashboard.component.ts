@@ -3,9 +3,10 @@ import { Board }     from '../../classes/board'
 import { DataService }      from '../../services/data.service';
 
 @Component({
+    moduleId: module.id,
     selector: 'dashboard-component',
-    templateUrl: './app/components/dashboard.component/dashboard.component.html',
-    styleUrls: ['./app/components/dashboard.component/dashboard.component.css'],
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.css'],
 })
 
 export class DashBoardComponent implements OnInit {
@@ -13,8 +14,23 @@ export class DashBoardComponent implements OnInit {
     boards: Board[];
     addBoardName: string;
     addingBoard: boolean = false;
+
+    homeList: Array<Object> = [
+        {id: 1, name: 'apples'},
+        {id: 2, name: 'oranges'},
+        {id: 3, name: 'bananas'},
+        {id: 4, name: 'watermelon'},
+        {id: 5, name: 'pineapple'},
+        {id: 6, name: 'peaches'},
+        {id: 7, name: 'pears'},
+        {id: 8, name: 'kiwis'}
+    ];
+
+    firstList: Array<Object> = [];
+    secondList: Array<Object> = [];
+
+    constructor( private dataService: DataService) {};
     
-    constructor( private dataService: DataService) { }
 
     ngOnInit(): void {
         this.getBoards();

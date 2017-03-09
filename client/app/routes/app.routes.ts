@@ -18,7 +18,6 @@ const appRoutes: Routes = [
     { path: 'welcome', component: WelcomePageComponent },
     { path: 'b/:id', component: BoardComponent, canActivate: [AuthGuard] },
     { path: 'dashboard', component: DashBoardComponent, canActivate: [AuthGuard] }
-    
 ];
 
 export const routing: ModuleWithProviders = RouterModule.forRoot(appRoutes);
