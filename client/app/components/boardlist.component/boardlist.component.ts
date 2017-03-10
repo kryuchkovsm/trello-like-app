@@ -7,7 +7,7 @@ import { DataService }      from '../../services/data.service';
     selector: 'boardlist-component',
     templateUrl: './boardlist.component.html',
     styleUrls:  ['./boardlist.component.css'],
-
+    
 })
 
 export class BoardListComponent implements OnInit {

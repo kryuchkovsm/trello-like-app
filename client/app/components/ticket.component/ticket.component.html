@@ -1,4 +1,4 @@
-<li class="ticket-component"
+<div class="ticket-component" [attr.ticket-id] = ticket._id [attr.ticket-order] = ticket.order
     (click)="enableEditTicket()">
 
     <!--[attr.ticket-id]="ticket._id"-->
@@ -13,19 +13,15 @@
     <textarea
         *ngIf = 'editingTicket'
         [(ngModel)]="ticket.text"
-        (blur)="updateTicket()"
-        >
-
+        (blur)="updateTicket()">
         {{ticket.text}}
-
     </textarea>
-
         <!--[style.display]="editingTicket ? '' : 'none' "-->
     <!--(keydown)="blurOnEnter($event)"-->
     <!--(blur)="updateTicket()"-->
     <!---->
+</div>
 
-</li>
 
 
 <!--<li class="card"-->

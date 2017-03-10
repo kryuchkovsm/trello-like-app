@@ -1,5 +1,4 @@
 .ticket-component {
-    width: 230px;
     background-color: #fff;
     text-decoration: none;
     padding: 7px;
@@ -16,7 +15,6 @@
     cursor: pointer;
     white-space: normal;
     word-wrap: break-word;
-    list-style: none;
     border-bottom: solid 1px #ccc;
     transition: all;
     transition-property: all;

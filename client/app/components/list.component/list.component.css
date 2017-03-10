@@ -1,10 +1,4 @@
-.handle {
-    border: 1px dotted blue;
-
-}
-
 .list-component {
-    float: left;
     background-color: #E2E4E6;
     border-radius: 3px;
     width: 270px;
@@ -13,6 +7,7 @@
     box-sizing: border-box;
     vertical-align: top;
     white-space: nowrap;
+
 }
 
 .list-component h4 {
@@ -77,13 +72,14 @@
 }
 
 ul.ticket-list {
-    /*flex-flow: column;*/
+    flex-flow: column;
+    list-style-type: none;
     padding: 31px 11px 32px 9px;
     margin: -26px 0 -31px 0;
 }
 
-.ticket {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .26);
-    list-style: none;
-}
 
+.flex {
+    display: flex;
+    flex-direction: column;
+}

@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service'
-import { Ticket } from '../../classes/ticket';
-
+import { Component, Input, OnInit }    from '@angular/core';
+import { DataService }                 from '../../services/data.service'
+import { Ticket }                      from '../../classes/ticket';
 
 @Component({
     moduleId: module.id,
@@ -13,11 +12,10 @@ import { Ticket } from '../../classes/ticket';
 export class TicketComponent implements OnInit{
     @Input() ticket: Ticket;
 
-    constructor (private dataService: DataService) {}
+    constructor (
+        private dataService: DataService) { }
 
-    ngOnInit() {
-
-    }
+    ngOnInit() { }
 
     editingTicket: boolean = false;
 

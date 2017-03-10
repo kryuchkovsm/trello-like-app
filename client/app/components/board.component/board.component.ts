@@ -1,8 +1,8 @@
 import { Component, OnInit, Input }         from '@angular/core';
-import { Router, ActivatedRoute, Params }   from '@angular/router';
-import { List }                             from '../../classes/list';
-import { DragulaService }                   from 'ng2-dragula'
 import { DataService }                      from '../../services/data.service';
+import { DragulaService }                   from 'ng2-dragula'
+import { List }                             from '../../classes/list';
+import { Router, ActivatedRoute, Params }   from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -11,6 +11,7 @@ import 'rxjs/add/operator/switchMap';
     selector: 'board-component',
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.css'],
+    viewProviders: [DragulaService],
 })
 
 export class BoardComponent implements OnInit {
@@ -32,20 +33,25 @@ export class BoardComponent implements OnInit {
         private dragulaService: DragulaService,
         private route: ActivatedRoute) {
 
-        dragulaService.setOptions('dragula-lists', {
-            moves: function (el, container, handle) {
-                return handle.className == 'handle';
-            }
-        })
+        console.log('construct board');
+        dragulaService
+            .setOptions('dragula-lists', {
+                moves: function (el, container, handle) {
+                    console.log('dragula set options');
+                    return handle.className === 'handle'
+                }
 
-        dragulaService.drag.subscribe((value) => {
-            console.log('drag subscribe');
-            console.log(value);
-            this.onDrop(value.slice(1));
-        });
+            })
+
+        // dragulaService.dropModel
+        //     .subscribe(value => {
+        //         console.log('============= dragulasevice dropmodel board =============');
+        //         console.log(value);
+        //     })
     }
 
     ngOnInit(): void {
+        console.log('init board');
         // get boardId from route
         this.subscribtion = this.route.params.subscribe(params => {
             this.boardId = +params['id'] }); // (+) converts string 'id' to a number
@@ -56,31 +62,31 @@ export class BoardComponent implements OnInit {
             .subscribe(lists => this.lists = lists)
     }
 
-    private onDrop( args ): void {
-        console.log('onDrop');
-        console.log(args);
-
-        let [e, eModel, target, source] = args;
-        let found = false;
-        for( let i in this.lists ){
-            if( this.lists[i].order == eModel.id ){
-                found = true;
-                break;
-            }
-        }
-
-        this.message = "Item '" + eModel.name + "' was ";
-
-        if( found ){
-            this.message += 'added.';
-        }
-        else{
-            this.message += 'removed.';
-        }
-        
-        console.log(this.message);
-    }
-    
+    // private onDrop( args ): void {
+    //     // console.log('onDrop');
+    //     // console.log(args);
+    //
+    //     let [e, eModel, target, source] = args;
+    //     let found = false;
+    //     for( let i in this.lists ){
+    //         if( this.lists[i].order == eModel.id ){
+    //             found = true;
+    //             break;
+    //         }
+    //     }
+    //
+    //     this.message = "Item '" + eModel.name + "' was ";
+    //
+    //     if( found ){
+    //         this.message += 'added.';
+    //     }
+    //     else{
+    //         this.message += 'removed.';
+    //     }
+    //    
+    //     // console.log(this.message);
+    // }
+    //
 
     public enableAddList(){
         this.addingList = true;
@@ -121,7 +127,9 @@ export class BoardComponent implements OnInit {
     }
 
     ngOnDestroy() {
+        console.log('destroy board');
         this.subscribtion.unsubscribe();
+        this.dragulaService.destroy('dragula-lists');
     }
     
 }

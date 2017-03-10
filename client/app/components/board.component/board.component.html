@@ -2,17 +2,18 @@
     <span> There should be editable board name </span>
 </div>
 
-<section id="main" >
-        <div
+<section id="main">
+        <div class = "flex"
+            *ngIf = 'lists'
             [dragula]="'dragula-lists'"
             [dragulaModel]="lists">
-             <list-component
-                     *ngFor="let list of lists"
-                    [inputList] = "list">
-             </list-component>
+                 <list-component
+                         *ngFor="let list of lists"
+                        [inputList] = "list">
+                 </list-component>
         </div>
 
-        <div class="add-list"
+        <div class="add-list flex"
              (click)="enableAddList()" >
         <span *ngIf="!addingList">
            Add a list...
@@ -25,5 +26,6 @@
                    (focusout)="cancelAddList()"
                    (keyup)="addListOnEnter($event)"/>
         </div>
+
 </section>
 

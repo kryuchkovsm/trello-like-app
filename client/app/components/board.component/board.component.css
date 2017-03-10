@@ -65,3 +65,8 @@
     margin: 50px;
     width: 1000px;
 }
+
+.flex {
+    display: flex;
+    flex-direction: row;
+}

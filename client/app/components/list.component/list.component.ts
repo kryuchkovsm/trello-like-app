@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { DataService }              from '../../services/data.service'
 import { DragulaService }           from 'ng2-dragula'
 import { Ticket }                   from '../../classes/ticket'
 import { List }                     from '../../classes/list'
+import {OrderBy}                    from '../../pipes/orderby.pipe';
 
 @Component({
     moduleId: module.id,
@@ -11,7 +12,7 @@ import { List }                     from '../../classes/list'
     styleUrls: ['./list.component.css'],
 })
 
-export class ListComponent implements OnInit{
+export class ListComponent implements OnInit, OnDestroy{
     @Input() inputList: List;
 
 
@@ -29,44 +30,29 @@ export class ListComponent implements OnInit{
     constructor (
         private dataService: DataService,
         private dragulaService: DragulaService) {
-
-      
             
-        dragulaService.dropModel.subscribe((value) => {
-            console.log('dragulasevice dropmodel');
-            this.onDrop(value.slice(1));
-        });
+        // dragulaService.dropModel.subscribe((value) => {
+        //     console.log('============= dragulasevice dropmodel list =============');
+        //     console.log(value);
+        //     // this.onDrop(value.slice(1));
+        // });
+
         dragulaService.drop.subscribe((value) => {
-            console.log('dragulasevice drop');
-            console.log(value);
+            console.log(`drop: ${value[0]}`);
             this.onDrop(value.slice(1));
         });
     }
 
-    private onDrop( args ): void {
-        console.log('onDrop');
-        console.log(args);
-
-        let [e, eModel, target, source] = args;
-        let found = false;
-        for( let i in this.tickets ){
-            if( this.tickets[i].order == eModel.id ){
-                found = true;
-                break;
-            }
-        }
-
-        this.message = "Item '" + eModel.text + "' was ";
-
-        if( found ){
-            this.message += 'added.';
-        }
-        else{
-            this.message += 'removed.';
-        }
-
-        console.log(this.message);
+    private onDrop(args) {
+        let [e, el] = args;
+        console.log('e');
+        console.log(e);
+        console.log('el');
+        console.log(el);
+        console.log(this.tickets);
+        // do something
     }
+
 
 
     ngOnInit(): void {
@@ -87,7 +73,7 @@ export class ListComponent implements OnInit{
             listId: this.inputList._id,
             boardId: this.inputList.boardId,
             text: this.addingTicketText,
-            order: (this.tickets.length + 1),
+            order: (this.tickets.length + 1) * 1000,
         };
         this.dataService.addTicket(newTicket)
             .subscribe(ticket => {
@@ -112,6 +98,66 @@ export class ListComponent implements OnInit{
         console.log('cancel addticket');
         this.addingTicket = false;
         this.addingTicketText = '';
+    }
+
+
+    // Call on onDrop event
+    updateTicketsOrder(event) {
+        // get list of current elements
+        // ticketArr = get tickets from list
+        // current order
+        // i: number = 0,
+        // previous item init
+        //     elBefore: number = -1,
+        // next item init
+        //     elAfter: number = -1,
+        // new order init
+        //     newOrder: number = 0;
+
+        // search
+        // for (i = 0; i < ticketArr.length - 1; i++) {
+        //     if (ticketArr[i].getAttribute('ticket-id') == event.ticketId) {
+        //         break;
+        //     }
+        // }
+
+        // if ticket array not empty
+        // if (ticketArr.length > 1) {
+        //     if current ticket is between elements
+        //     if (i > 0 && i < cardArr.length - 1) {
+        //         elBefore = +cardArr[i - 1].getAttribute('card-order');
+        //         elAfter = +cardArr[i + 1].getAttribute('card-order');
+        //
+        //         newOrder = elBefore + ((elAfter - elBefore) / 2);
+        //     }
+        //      else if current ticket in end of list
+        //     else if (i == cardArr.length - 1) {
+        //         elBefore = +cardArr[i - 1].getAttribute('card-order');
+        //         newOrder = elBefore + 1000;
+        //      else if current ticket on start of list
+        //     } else if (i == 0) {
+        //         elAfter = +cardArr[i + 1].getAttribute('card-order');
+        //
+        //         newOrder = elAfter / 2;
+        //     }
+        // if list empty - init order
+        // } else {
+        //     newOrder = 1000;
+        // }
+        //
+        //
+        // let ticket = this.tickets.filter(x => x._id === event.cardId)[0];
+        // let oldListId = ticket.listId;
+        // ticket.order = newOrder;
+        // ticket.listId = event.listId;
+        // this.dataService.putTicket(ticket).then(res => {
+        //     this.dataService.updateTicket(this.list.boardId, ticket);
+        // });
+    }
+
+
+    ngOnDestroy() {
+        console.log('List ' + this.inputList._id + ' destroyed');
     }
 
 }
