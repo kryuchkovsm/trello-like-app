@@ -1,6 +1,6 @@
 # Trello clone learning app
 
-Education project to learn skills in nodejs, angular 2 e.t.c.
+Education project, assigned to learn skills in node.js, angular 2 and web technologies e.t.c.
 
 ## Getting Started
 
@@ -63,5 +63,5 @@ Open your browser on page 'localhost:3000'
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License.
 
