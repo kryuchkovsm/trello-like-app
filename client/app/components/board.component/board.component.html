@@ -3,13 +3,14 @@
 </div>
 
 <section id="main">
+
         <div class = "flex"
             *ngIf = 'lists'
             [dragula]="'dragula-lists'"
             [dragulaModel]="lists">
                  <list-component
                          *ngFor="let list of lists"
-                        [inputList] = "list">
+                        [list] = "list">
                  </list-component>
         </div>
 

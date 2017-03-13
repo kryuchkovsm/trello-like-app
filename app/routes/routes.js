@@ -50,13 +50,15 @@ router.post('/signup', function(req, res, next) {
 });
 
 
-
-
+router.get('/b/:id', isLoggedIn, function(req, res, next) {
+  console.log('------------------')
+  console.log(req.params.id);
+  res.render('app.html');
+});
 
 router.get('/dashboard', isLoggedIn, function(req, res, next) {
   res.render('app.html');
 });
-
 
 router.get('/forbidden', function (req, res, next) {
   res.render('app.html');
@@ -94,20 +96,19 @@ router.post('/signup', passport.authenticate('local-signup', {
 }));
 
 
-
 // FACEBOOK ROUTES =====================
 
-router.get('/auth/facebook', passport.authenticate('facebook'));
-
-router.get('/auth/facebook/callback',
-  passport.authenticate('facebook', {
-    successRedirect : '/app',
-    failureRedirect : '/'
-  }));
+// router.get('/auth/facebook', passport.authenticate('facebook'));
+//
+// router.get('/auth/facebook/callback',
+//   passport.authenticate('facebook', {
+//     successRedirect : '/app',
+//     failureRedirect : '/'
+//   }));
 
 router.get('/logout', function(req, res) {
   req.logout();
-  res.redirect('/');
+  res.render('app.html');
 });
 
 
@@ -116,5 +117,5 @@ module.exports = router;
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
     return next();
-  res.redirect('/forbidden');
+  res.render('app.html');
 }

@@ -10,12 +10,20 @@ import { Ticket }                      from '../../classes/ticket';
 })
 
 export class TicketComponent implements OnInit{
-    @Input() ticket: Ticket;
 
+    private _index: number;
+
+
+    @Input() ticket: Ticket;
+    
     constructor (
         private dataService: DataService) { }
 
     ngOnInit() { }
+
+
+
+
 
     editingTicket: boolean = false;
 

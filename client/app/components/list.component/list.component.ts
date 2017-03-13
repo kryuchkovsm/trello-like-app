@@ -3,7 +3,6 @@ import { DataService }              from '../../services/data.service'
 import { DragulaService }           from 'ng2-dragula'
 import { Ticket }                   from '../../classes/ticket'
 import { List }                     from '../../classes/list'
-import {OrderBy}                    from '../../pipes/orderby.pipe';
 
 @Component({
     moduleId: module.id,
@@ -13,50 +12,68 @@ import {OrderBy}                    from '../../pipes/orderby.pipe';
 })
 
 export class ListComponent implements OnInit, OnDestroy{
-    @Input() inputList: List;
-
+    @Input() list: List;
 
     // dragula debug message
     message : string;
 
     // UI transform from span to input
     addingTicket: boolean;
-
     addingTicketText: string;
+    
+    // tickets in current list
     tickets: Ticket[];
 
-
-
     constructor (
-        private dataService: DataService,
-        private dragulaService: DragulaService) {
-            
+        private dataService: DataService
+        // private dragulaService: DragulaService
+    ) {
+
+        // dragulaService
+        //     .setOptions('dragula-tickets', { });
+        // const bag: any = this.dragulaService.find('dragula-tickets');
+        // console.log('dragula-tickets bag from lists.component:');
+        // console.log(bag);
+        // console.log('"dragula-tickets" bag from lists.component')
+        // console.log(bag);
+        //
+        //
+        // if (bag === undefined ) {
+        //     console.log('set options for dragula-tickets');
+        //     dragulaService
+        //         .setOptions('dragula-tickets', {});
+        // }
+
         // dragulaService.dropModel.subscribe((value) => {
-        //     console.log('============= dragulasevice dropmodel list =============');
+        //     console.log('============= dragulasevice DROPmODEL in list.component.ts =============');
         //     console.log(value);
         //     // this.onDrop(value.slice(1));
         // });
-
-        dragulaService.drop.subscribe((value) => {
-            console.log(`drop: ${value[0]}`);
-            this.onDrop(value.slice(1));
-        });
+        //
+        // dragulaService.drop.subscribe((value) => {
+        //     console.log('--------------- dragulasevice "DROP" in list.component.ts ----------------');
+        //     console.log(value);
+        //     // console.log(`drop: ${value[0]}`);
+        //     // this.onDrop(value.slice(1));
+        // });
     }
 
-    private onDrop(args) {
-        let [e, el] = args;
-        console.log('e');
-        console.log(e);
-        console.log('el');
-        console.log(el);
-        console.log(this.tickets);
-        // do something
-    }
+    // private onDrop(args) {
+    //     let [e, el] = args;
+    //     console.log('e:');
+    //     console.log(e);
+    //     console.log('el:');
+    //     console.log(el);
+    //     console.log('list tickets list:');
+    //     console.log(this.tickets);
+    //     console.log('======================');
+    //     // do something
+    // }
 
 
 
     ngOnInit(): void {
-        this.dataService.getTickets(+this.inputList._id)
+        this.dataService.getTickets(+this.list._id)
             .subscribe(tickets => {
                 this.tickets = tickets;
             })
@@ -70,8 +87,8 @@ export class ListComponent implements OnInit, OnDestroy{
         this.tickets = this.tickets || [];
         let newTicket = <Ticket>{
             _id: +new Date(),
-            listId: this.inputList._id,
-            boardId: this.inputList.boardId,
+            listId: this.list._id,
+            boardId: this.list.boardId,
             text: this.addingTicketText,
             order: (this.tickets.length + 1) * 1000,
         };
@@ -157,7 +174,11 @@ export class ListComponent implements OnInit, OnDestroy{
 
 
     ngOnDestroy() {
-        console.log('List ' + this.inputList._id + ' destroyed');
+        // const bag: any = this.dragulaService.find('dragula-tickets');
+        // if (bag !== undefined )
+        //     this.dragulaService.destroy('dragula-tickets');
+
+        console.log('List ' + this.list._id + ' destroyed');
     }
 
 }

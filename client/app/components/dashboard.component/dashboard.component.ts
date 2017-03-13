@@ -15,20 +15,6 @@ export class DashBoardComponent implements OnInit {
     addBoardName: string;
     addingBoard: boolean = false;
 
-    homeList: Array<Object> = [
-        {id: 1, name: 'apples'},
-        {id: 2, name: 'oranges'},
-        {id: 3, name: 'bananas'},
-        {id: 4, name: 'watermelon'},
-        {id: 5, name: 'pineapple'},
-        {id: 6, name: 'peaches'},
-        {id: 7, name: 'pears'},
-        {id: 8, name: 'kiwis'}
-    ];
-
-    firstList: Array<Object> = [];
-    secondList: Array<Object> = [];
-
     constructor( private dataService: DataService) {};
     
 

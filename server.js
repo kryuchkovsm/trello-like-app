@@ -47,12 +47,11 @@ app.use('/',  routes);
 app.use('/api', isLoggedIn, api);
 // app.use('/login',  trelloapp);
 
-
-// TODO Refactor - move to extrenal
+// TODO Refactor - move to routes.js
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
     return next();
-  res.redirect('/forbidden');
+  res.render('app.html');
 }
 
 

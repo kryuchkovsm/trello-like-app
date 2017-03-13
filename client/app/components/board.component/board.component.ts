@@ -18,7 +18,6 @@ export class BoardComponent implements OnInit {
     // this board id
     boardId: number;
     lists: List[];
-    
     message: string;
     // UI transform from span to textarea or input
     addingList: boolean = false;
@@ -34,19 +33,35 @@ export class BoardComponent implements OnInit {
         private route: ActivatedRoute) {
 
         console.log('construct board');
+
         dragulaService
             .setOptions('dragula-lists', {
                 moves: function (el, container, handle) {
                     console.log('dragula set options');
                     return handle.className === 'handle'
-                }
+            }
+        });
 
+        // const bag: any = this.dragulaService.find('dragula-tickets');
+        // console.log('"dragula-tickets" bag from boards.component')
+        // console.log(bag);
+        //
+        // const bag1: any = this.dragulaService.find('dragula-lists');
+        // console.log('"dragula-lists" bag from boards.component')
+        // console.log(bag1);
+        
+        dragulaService.drop
+            .subscribe(value => {
+                console.log('------------- dragulasevice drop in board.component.ts ---------------');
+                // console.log(value);
+                this.onDrop(value);
             })
-
+        
         // dragulaService.dropModel
         //     .subscribe(value => {
-        //         console.log('============= dragulasevice dropmodel board =============');
+        //         console.log('============= dragulasevice dropmodel in board.component.ts =============');
         //         console.log(value);
+        //         console.log(this.lists)
         //     })
     }
 
@@ -62,31 +77,51 @@ export class BoardComponent implements OnInit {
             .subscribe(lists => this.lists = lists)
     }
 
-    // private onDrop( args ): void {
-    //     // console.log('onDrop');
-    //     // console.log(args);
-    //
-    //     let [e, eModel, target, source] = args;
-    //     let found = false;
-    //     for( let i in this.lists ){
-    //         if( this.lists[i].order == eModel.id ){
-    //             found = true;
-    //             break;
-    //         }
-    //     }
-    //
-    //     this.message = "Item '" + eModel.name + "' was ";
-    //
-    //     if( found ){
-    //         this.message += 'added.';
-    //     }
-    //     else{
-    //         this.message += 'removed.';
-    //     }
-    //    
-    //     // console.log(this.message);
-    // }
-    //
+    private onDrop( args ): void {
+        console.log(args);
+        let [type, eModel, target, source] = args;
+        switch(type) {
+            case 'dragula-lists': {
+                console.log('list dragged');
+                break;
+            }
+            case 'dragula-tickets': {
+                console.log('ticket dragged');
+
+
+
+                // TODO get parentID, and set to dragged item
+                let parent = target;
+
+
+                // TODO get orders of siblings
+                break;
+            }
+            default: {
+                console.log('unknown dragged object');
+                break;
+            }
+        }
+        // let found = false;
+        // for( let i in this.lists ){
+        //     if( this.lists[i].order == eModel.id ){
+        //         found = true;
+        //         break;
+        //     }
+        // }
+        //
+        // this.message = "Item '" + eModel.name + "' was ";
+        //
+        // if( found ){
+        //     this.message += 'added.';
+        // }
+        // else{
+        //     this.message += 'removed.';
+        // }
+
+        // console.log(this.message);
+    }
+
 
     public enableAddList(){
         this.addingList = true;
@@ -97,7 +132,7 @@ export class BoardComponent implements OnInit {
         let newList = <List>{
             _id: +new Date(),
             name: this.addListName,
-            order: (this.lists.length + 1),
+            order: (this.lists.length + 1) * 1000,
             boardId: this.boardId
         };
         this.dataService.addList(newList)

@@ -1,11 +1,13 @@
-<div class = 'list-component flex'>
+<div class = 'list-component flex' [attr.list-id] = list._id [attr.list-order] = list.order>
     <div class = 'list-component-header'>
-        <h4 class = 'handle'>{{inputList.name}}</h4>
+        <h4 class = 'handle'>{{list.name}}</h4>
     </div>
+
     <ul class = 'ticket-list flex'
+
         [dragula]="'dragula-tickets'"
         [dragulaModel]="tickets">
-        <li *ngFor="let ticket of tickets | orderBy:'order'">
+        <li *ngFor="let ticket of tickets| orderBy:'order'">
             <ticket-component [ticket]="ticket"></ticket-component>
         </li>
     </ul>

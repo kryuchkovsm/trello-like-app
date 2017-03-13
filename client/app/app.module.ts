@@ -5,7 +5,7 @@ import { FormsModule }              from '@angular/forms';
 import { HttpModule }               from '@angular/http';
 
 // Libraries
-import { DragulaModule }            from 'ng2-dragula';
+import { DragulaModule, DragulaService } from 'ng2-dragula';
 
 // Guards
 import { AuthGuard }                from './guards/index';
@@ -67,6 +67,7 @@ import { Where } from './pipes/where.pipe';
         AuthService,
         AuthGuard,
         DataService,
+        // DragulaService
     ],
     bootstrap: [ AppComponent ]
 })

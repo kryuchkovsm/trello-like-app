@@ -7,8 +7,21 @@
                 [routerLink]="['/b', board._id]">
             <span class="title">{{board.name}}</span>
         </a>
-        <a href="#" class="board add-board" (click)="addBoard()">
-            <span class="title">Create a new board...</span>
+
+        <a class="board add-board"
+            (click) ="enableAddBoard()">
+            <span class = "title"
+                  *ngIf="!addingBoard">
+               Create a new board...
+            </span>
+
+            <input *ngIf="addingBoard"
+                   class = "add-board-input"
+                   placeholder= 'Create a new board...'
+                   [attr.autofocus]="addingBoard"
+                   [(ngModel)]="addBoardName"
+                   (focusout)="cancelAddBoard()"
+                   (keyup)="addBoardOnEnter($event)"/>
         </a>
     </div>
 </div>
