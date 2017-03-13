@@ -15,10 +15,10 @@ See deployment for notes on how to deploy the project on a live system.
 
 [Nodejs v5.11.1+](https://nodejs.org/en/download/package-manager/)
 
-https://www.typescriptlang.org/
-
 Globally installed [typescript compiller 2.1.6](https://www.typescriptlang.org/) or later
-
+```
+npm install -g typescript
+```
 
 ### Installing
 
