@@ -8,9 +8,12 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-MongoDB v2.4.9 running on localhost at port: 27017
+[MongoDB v2.4.9](https://docs.mongodb.com/manual/installation/) running on localhost at port: 27017
+[Npm v4.2.0+](https://nodejs.org/en/download/package-manager/)
+[Nodejs v5.11.1+](https://nodejs.org/en/download/package-manager/)
+https://www.typescriptlang.org/
 
-Globally installed typescript compiller 2.1.6 or later
+Globally installed [typescript compiller 2.1.6](https://www.typescriptlang.org/) or later
 
 
 ### Installing
@@ -45,6 +48,8 @@ Go to home directory 'trello-like-app', and run server
 ```
 node server.js
 ```
+
+Open your browser on page 'localhost:3000'
 
 
 ## Authors
