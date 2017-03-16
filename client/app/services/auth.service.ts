@@ -35,7 +35,7 @@ export class AuthService {
 
                     // TODO refactor user model in both sides
                     // TODO refactor to move this section out from loin and signup methods
-                    let user = {_id : result.user._id, email: result.user.local.email };
+                    let user = {_id : result.user._id, email: result.user.email };
                     localStorage.setItem('currentUser', JSON.stringify(user));
                     
                     this.loginState = { isLoggedIn:true, email:user.email }; 
@@ -60,7 +60,7 @@ export class AuthService {
                 if (result.user) {
                     console.log('signup service');
                     // TODO refactor user model in both sides
-                    let user = {_id : result.user._id, email: result.user.local.email };
+                    let user = {_id : result.user._id, email: result.user.email };
                     localStorage.setItem('currentUser', JSON.stringify(user));                    
                     this.loginState = { isLoggedIn:true, email:user.email }; 
                     this.announceLogin(this.loginState);

@@ -4,6 +4,9 @@ import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
+
+// TODO refactor or split DataService
+
 @Injectable()
 export class DataService {
 
@@ -19,9 +22,17 @@ export class DataService {
             .post( url, JSON.stringify( { board } ), {headers: this.headers})
             .map(res => res.json());
     }
-    
-    public getBoards() {
-        const url = `${this.apiUrl}/boards`
+
+    public deleteBoard(boardId) {
+        const url = `${this.apiUrl}/delboard`
+        return this.http
+            .post( url, JSON.stringify( { boardId } ), {headers: this.headers})
+            .map(res => res.json());
+    }
+
+
+    public getBoardList() {
+        const url = `${this.apiUrl}/boardlist`
         return this.http.get(url)
             .map(res => res.json());
     }
@@ -32,9 +43,16 @@ export class DataService {
             .post(url, JSON.stringify( { list } ), {headers: this.headers})
             .map(res => res.json());
     }
+
+    public deleteList(listId) {
+        const url = `${this.apiUrl}/dellist`
+        return this.http
+            .post( url, JSON.stringify( { listId } ), {headers: this.headers})
+            .map(res => res.json());
+    }
     
     public getLists(boarId){
-        const url = `${this.apiUrl}/lists?id=${boarId}`
+        const url = `${this.apiUrl}/lists?_id=${boarId}`
         return this.http.get(url)
                 .map(res => res.json());
     }
@@ -43,6 +61,13 @@ export class DataService {
         const url = `${this.apiUrl}/addticket`
         return this.http
             .post(url, JSON.stringify( { ticket } ), {headers: this.headers})
+            .map(res => res.json());
+    }
+
+    public deleteTicket(ticketId) {
+        const url = `${this.apiUrl}/delticket`
+        return this.http
+            .post( url, JSON.stringify( { ticketId } ), {headers: this.headers})
             .map(res => res.json());
     }
 
@@ -59,14 +84,34 @@ export class DataService {
             .map(res => res.json());
     }
     
-    public logout() {
-        window.location.href = '/logout';
-        // let headers = new Headers({ 'Content-Type': 'application/json' });
-        // let options = new RequestOptions({ headers: headers });
-        // return this.http
-        //     .post('http://localhost:3000/logout', {'action':'logout'}, options)
-        //     .map(res => res.json());
+    
+    public assignUser(boardId, user) {
+        const url = `${this.apiUrl}/assignuser`
+        return this.http
+            .post(url, JSON.stringify( { "boardId":boardId, "user":user } ), {headers: this.headers})
+            .map(res => res.json());
     }
+
+    public removeAssignedUser(boardId, userId) {
+        const url = `${this.apiUrl}/removeassigneduser`
+        return this.http
+            .post(url, JSON.stringify( { "boardId":boardId, "userId":userId } ), {headers: this.headers})
+            .map(res => res.json());
+    }
+        
+    public getAassignedUses(boardId) {
+        const url = `${this.apiUrl}/assignedusers?_id=${boardId}`
+        return this.http.get(url)
+            .map(res => res.json());
+    }
+    // public logout() {
+    //     window.location.href = '/logout';
+    //     // let headers = new Headers({ 'Content-Type': 'application/json' });
+    //     // let options = new RequestOptions({ headers: headers });
+    //     // return this.http
+    //     //     .post('http://localhost:3000/logout', {'action':'logout'}, options)
+    //     //     .map(res => res.json());
+    // }
 
 
     // private handleError(error: any): Promise<any> {
@@ -81,11 +126,11 @@ export class DataService {
     //         .map(res => res.json());
     // }
 
-    public getUser() {
-        const url = `${this.apiUrl}/user`
-        return this.http.get(url)
-            .map(res => res.json());
-    }
+    // public getUser() {
+    //     const url = `${this.apiUrl}/user`
+    //     return this.http.get(url)
+    //         .map(res => res.json());
+    // }
     
     
     // public getUserEmail():Promise<string> {

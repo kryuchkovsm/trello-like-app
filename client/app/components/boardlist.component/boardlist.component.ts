@@ -20,16 +20,18 @@ export class BoardListComponent implements OnInit {
     constructor( private dataService: DataService) { }
 
     ngOnInit(): void {
-        this.getBoards();
+        this.getBoardList();
     }
 
     closeBoardList() {
         this.closeBoardList$.emit(true)
     }
-    
-    public getBoards() {
-        this.dataService.getBoards()
-            .subscribe(boards => { this.boards = boards });
+
+    public getBoardList() {
+        this.dataService.getBoardList()
+            .subscribe(boards => {
+                this.boards = boards
+            });
     }
 
 
@@ -40,17 +42,16 @@ export class BoardListComponent implements OnInit {
     addBoard() {
         this.boards = this.boards || [];
         let newBoard = <Board>{
-            _id: +new Date(),
             name: this.addBoardName,
-            order: (this.boards.length + 1),
+            order: (this.boards.length + 1) * 1000,
         };
         this.dataService.addBoard(newBoard)
             .subscribe(board => {
                 this.boards.push(board);
-                // this.onAddCard.emit(card);
-                // this._ws.addCard(card.boardId, card);
+                // this.onAddBoard.emit(board);
             });
     }
+
 
     addBoardOnEnter(event: KeyboardEvent) {
         if (event.keyCode === 13) {

@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { 
+    Component, 
+    Input, 
+    Output, 
+    OnInit, 
+    OnDestroy, 
+    EventEmitter } from '@angular/core';
+
 import { DataService }              from '../../services/data.service'
 import { DragulaService }           from 'ng2-dragula'
 import { Ticket }                   from '../../classes/ticket'
@@ -13,7 +20,8 @@ import { List }                     from '../../classes/list'
 
 export class ListComponent implements OnInit, OnDestroy{
     @Input() list: List;
-
+    @Output() removeListFromBoard$: EventEmitter<string> = new EventEmitter<string>();
+    
     // dragula debug message
     message : string;
 
@@ -25,8 +33,8 @@ export class ListComponent implements OnInit, OnDestroy{
     tickets: Ticket[];
 
     constructor (
-        private dataService: DataService
-        // private dragulaService: DragulaService
+        private dataService: DataService,
+        private dragulaService: DragulaService
     ) {
 
         // dragulaService
@@ -36,44 +44,23 @@ export class ListComponent implements OnInit, OnDestroy{
         // console.log(bag);
         // console.log('"dragula-tickets" bag from lists.component')
         // console.log(bag);
-        //
-        //
-        // if (bag === undefined ) {
-        //     console.log('set options for dragula-tickets');
-        //     dragulaService
-        //         .setOptions('dragula-tickets', {});
-        // }
 
-        // dragulaService.dropModel.subscribe((value) => {
-        //     console.log('============= dragulasevice DROPmODEL in list.component.ts =============');
-        //     console.log(value);
-        //     // this.onDrop(value.slice(1));
-        // });
-        //
-        // dragulaService.drop.subscribe((value) => {
-        //     console.log('--------------- dragulasevice "DROP" in list.component.ts ----------------');
-        //     console.log(value);
-        //     // console.log(`drop: ${value[0]}`);
-        //     // this.onDrop(value.slice(1));
-        // });
+        dragulaService.dropModel.subscribe((value) => {
+            // console.log('============= dragulasevice DROPmODEL in list.component.ts =============');
+            // console.log(value);
+            // this.onDrop(value.slice(1));
+        });
+        
+        dragulaService.drop.subscribe((value) => {
+            // console.log('--------------- dragulasevice "DROP" in list.component.ts ----------------');
+            // console.log(value);
+            // console.log(`drop: ${value[0]}`);
+            // this.onDrop(value.slice(1));
+        });
     }
 
-    // private onDrop(args) {
-    //     let [e, el] = args;
-    //     console.log('e:');
-    //     console.log(e);
-    //     console.log('el:');
-    //     console.log(el);
-    //     console.log('list tickets list:');
-    //     console.log(this.tickets);
-    //     console.log('======================');
-    //     // do something
-    // }
-
-
-
     ngOnInit(): void {
-        this.dataService.getTickets(+this.list._id)
+        this.dataService.getTickets(this.list._id)
             .subscribe(tickets => {
                 this.tickets = tickets;
             })
@@ -86,7 +73,7 @@ export class ListComponent implements OnInit, OnDestroy{
     addTicket() {
         this.tickets = this.tickets || [];
         let newTicket = <Ticket>{
-            _id: +new Date(),
+            // _id: +new Date(),
             listId: this.list._id,
             boardId: this.list.boardId,
             text: this.addingTicketText,
@@ -172,7 +159,24 @@ export class ListComponent implements OnInit, OnDestroy{
         // });
     }
 
-
+    deleteList() {
+        this.dataService.deleteList(this.list._id)
+            .subscribe( result => {
+                if (result[this.list._id] === "ok") {
+                    this.removeListFromBoard$.emit(this.list._id);
+                }
+                else {
+                    console.log('something wrong when list deletion');
+                }
+            })
+    }
+    
+    
+    onRemoveTicket(ticketId) {
+        this.tickets = this.tickets.filter(ticket => ticket._id !== ticketId);
+    }
+    
+    
     ngOnDestroy() {
         // const bag: any = this.dragulaService.find('dragula-tickets');
         // if (bag !== undefined )

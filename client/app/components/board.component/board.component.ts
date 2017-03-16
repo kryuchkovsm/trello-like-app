@@ -1,4 +1,4 @@
-import { Component, OnInit, Input }         from '@angular/core';
+import { Component, OnInit, Input, OnDestroy }         from '@angular/core';
 import { DataService }                      from '../../services/data.service';
 import { DragulaService }                   from 'ng2-dragula'
 import { List }                             from '../../classes/list';
@@ -14,9 +14,9 @@ import 'rxjs/add/operator/switchMap';
     viewProviders: [DragulaService],
 })
 
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
     // this board id
-    boardId: number;
+    boardId: string;
     lists: List[];
     message: string;
     // UI transform from span to textarea or input
@@ -24,6 +24,8 @@ export class BoardComponent implements OnInit {
     // new list name
     addListName: string = '';
 
+    setupVisible: boolean = false;
+    
     // to ger this.boardId from route
     private subscribtion: any;
 
@@ -34,12 +36,15 @@ export class BoardComponent implements OnInit {
 
         console.log('construct board');
 
-        dragulaService
+        this.dragulaService
             .setOptions('dragula-lists', {
                 moves: function (el, container, handle) {
-                    console.log('dragula set options');
+                    // console.log('dragula set options xxxxx');
                     return handle.className === 'handle'
-            }
+                        
+            },
+                direction: 'horizontal'
+                
         });
 
         // const bag: any = this.dragulaService.find('dragula-tickets');
@@ -49,31 +54,32 @@ export class BoardComponent implements OnInit {
         // const bag1: any = this.dragulaService.find('dragula-lists');
         // console.log('"dragula-lists" bag from boards.component')
         // console.log(bag1);
-        
-        dragulaService.drop
-            .subscribe(value => {
-                console.log('------------- dragulasevice drop in board.component.ts ---------------');
-                // console.log(value);
-                this.onDrop(value);
-            })
+
+        // dragulaService.drop
+        //     .subscribe(value => {
+        //         console.log('------------- dragulasevice drop in board.component.ts ---------------');
+        //         // console.log(value);
+        //         this.onDrop(value);
+        //     })
         
         // dragulaService.dropModel
         //     .subscribe(value => {
-        //         console.log('============= dragulasevice dropmodel in board.component.ts =============');
-        //         console.log(value);
-        //         console.log(this.lists)
-        //     })
+                // console.log('============= dragulasevice dropmodel in board.component.ts =============');
+                // console.log(value);
+                // console.log(this.lists)
+            // })
     }
 
     ngOnInit(): void {
         console.log('init board');
+
         // get boardId from route
         this.subscribtion = this.route.params.subscribe(params => {
-            this.boardId = +params['id'] }); // (+) converts string 'id' to a number
-        
+            this.boardId = params['id'] });
+
         // read list from data.service
         this.route.params
-            .switchMap((params: Params) => this.dataService.getLists(+params['id']))
+            .switchMap((params: Params) => this.dataService.getLists(params['id']))
             .subscribe(lists => this.lists = lists)
     }
 
@@ -82,11 +88,11 @@ export class BoardComponent implements OnInit {
         let [type, eModel, target, source] = args;
         switch(type) {
             case 'dragula-lists': {
-                console.log('list dragged');
+                // console.log('list dragged');
                 break;
             }
             case 'dragula-tickets': {
-                console.log('ticket dragged');
+                // console.log('ticket dragged');
 
 
 
@@ -123,6 +129,11 @@ export class BoardComponent implements OnInit {
     }
 
 
+    
+    toggleSetup() {
+        this.setupVisible = !this.setupVisible;
+    }
+    
     public enableAddList(){
         this.addingList = true;
     }
@@ -130,7 +141,7 @@ export class BoardComponent implements OnInit {
     addList() {
         this.lists = this.lists || [];
         let newList = <List>{
-            _id: +new Date(),
+            // _id: +new Date(),
             name: this.addListName,
             order: (this.lists.length + 1) * 1000,
             boardId: this.boardId
@@ -156,10 +167,20 @@ export class BoardComponent implements OnInit {
         }
     }
 
+    
+    onRemoveList(listId) {
+        this.lists = this.lists.filter(list => list._id !== listId);
+    }
+
     cancelAddList() {
         this.addingList = false;
         this.addListName = '';
     }
+
+    onCloseBoardSettings() {
+        this.setupVisible = false;
+    }
+
 
     ngOnDestroy() {
         console.log('destroy board');

@@ -17,8 +17,7 @@
       'rxjs': 'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api',
       'ng2-dragula': 'npm:ng2-dragula/bundles/ng2-dragula.umd.js',
-      // 'ng2-dragula': 'npm:ng2-dragula/bundles/ng2-dragula.umd.js',
-      // 'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
+      'ng2-dnd': 'node_modules/ng2-dnd/bundles/index.umd.js',
       'angular2-jwt': 'node_modules/angular2-jwt/angular2-jwt.js',
     },
     packages: {

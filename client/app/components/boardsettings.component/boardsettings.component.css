@@ -1,0 +1,117 @@
+.settings-wrapper {
+    padding: 10px;
+    background-color: white;
+    width: 300px;
+    position: absolute;
+    right: 5px;
+    top: 45px;
+    border-radius: 3px;
+    box-shadow: 0 3px 6px rgba(0,0,0,.4);
+
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding-left: 10px;
+}
+
+h4 {
+    color: #333;
+    font-weight: bold;
+    float: left;
+    font-size: 12pt;
+    margin-bottom: 20px;
+}
+
+h5 {
+    font-weight:bold;
+}
+
+.btn {
+    padding: 0;
+    margin: 5px;
+    float: right;
+    height: 30px;
+    border: none;
+    background-color: #cdced0;
+}
+
+.delete-board{
+    width: 100%;
+    height: 40px;
+}
+.btn-20-20 {
+    height: 20px;
+    width: 20px;
+}
+
+.btn-del-board {
+    width: 95%;
+}
+
+.btn-yes{
+    float: left;
+    background-color: red;
+    color: white;
+    font-weight: bold;
+    width: 30%;
+}
+
+.btn-no{
+    float: right;
+    background-color: #61bd4f;
+    color: white;
+    font-weight: bold;
+    width: 60%;
+}
+
+
+.user {
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 3px;
+    background-color: #e2e4e6;
+    border-radius: 5px;
+}
+
+input {
+
+}
+
+.search-result {
+    width: 230px;
+    padding: 5px;
+    margin-top: 10px;
+    background-color: #e2e4e6;
+    border-radius: 3px;
+}
+
+.search-title {
+    height: 35px;
+}
+
+.search-item{
+    width:210px;
+    height: 30px;
+    padding: 5px;
+    background-color: #e2e4e6;
+    cursor: pointer;
+    border-bottom: 1px solid #b4b4b4;
+}
+.search-item:hover {
+    color: black;
+    background-color: #dddfe1;
+}
+.search-result h5 {
+    float: left;
+}
+.cancel-search-btn {
+    float: right;
+}
+

@@ -14,6 +14,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
     userEmail: string = 'user email from localstorage';
     isLoggedIn: boolean;
     boardListVisible: boolean;
+    setupVisible: boolean;
 
     subscription: Subscription;
     
@@ -39,6 +40,7 @@ export class NavBarComponent implements OnInit, OnDestroy {
         else {
             this.isLoggedIn = false;
             this.boardListVisible = false;
+            this.setupVisible = false;
         }
 
     }
@@ -63,6 +65,8 @@ export class NavBarComponent implements OnInit, OnDestroy {
     toggleBoardList() {
         this.boardListVisible = !this.boardListVisible;
     }
+
+
 
     onCloseBoardList() {
         this.boardListVisible = false;

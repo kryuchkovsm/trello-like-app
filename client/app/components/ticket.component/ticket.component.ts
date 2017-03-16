@@ -1,4 +1,10 @@
-import { Component, Input, OnInit }    from '@angular/core';
+import { 
+    Component, 
+    Input, 
+    Output, 
+    OnInit, 
+    EventEmitter }    from '@angular/core';
+
 import { DataService }                 from '../../services/data.service'
 import { Ticket }                      from '../../classes/ticket';
 
@@ -10,11 +16,8 @@ import { Ticket }                      from '../../classes/ticket';
 })
 
 export class TicketComponent implements OnInit{
-
-    private _index: number;
-
-
     @Input() ticket: Ticket;
+    @Output() removeTicketFromList$: EventEmitter<string> = new EventEmitter<string>();
     
     constructor (
         private dataService: DataService) { }
@@ -39,5 +42,17 @@ export class TicketComponent implements OnInit{
 
     cancelEditTicket() {
         this.editingTicket = false;
+    }
+
+    deleteTicket() {
+        this.dataService.deleteTicket(this.ticket._id)
+            .subscribe( result => {
+                if (result[this.ticket._id] === "ok") {
+                    this.removeTicketFromList$.emit(this.ticket._id);
+                }
+                else {
+                    console.log('something wrong when ticket deletion');
+                }
+            })
     }
 }

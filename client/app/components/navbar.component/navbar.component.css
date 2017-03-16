@@ -26,17 +26,17 @@ nav a.btn {
     white-space: nowrap;
 }
 
-.login {
+.user {
     float: right;
 }
 
-.login .btn {
+.user .btn {
     display: inline-block;
     background-color:#4590BC;
     color: white;
 }
 
-a.user {
+a.useremail {
     font-weight:bold;
     line-height:45px;
     margin-right: 10px;

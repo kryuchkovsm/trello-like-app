@@ -10,7 +10,7 @@
     margin-bottom: 15px;
 }
 
-.board-title span {
+.board-title > span {
     font-size: 18px;
     font-weight: bold;
     color: white;
@@ -40,9 +40,10 @@
     cursor: hand;
 }
 
-.add-list span {
+.add-list > span {
     color: rgba(255,255,255,.7);
-    line-height: 40px;
+    height: 40px;
+    line-height: 20px;
     vertical-align: middle;
     padding: 7px;
     font-size: 14px;
@@ -51,13 +52,14 @@
 }
 
 .add-list input {
-    margin-left: 5px;
-    margin-top: 5px;
-    line-height: 18px;
+    margin-left: 4px;
+    margin-top: 3px;
+    line-height: 20px;
     font-size: 14px;
     border: none;
     border-radius: 3px;
     padding: 5px 5px 4px 5px;
+    height: 30px;
     width: calc(100% - 10px);
 }
 
@@ -69,4 +71,33 @@
 .flex {
     display: flex;
     flex-direction: row;
+}
+
+
+.is-shown {
+    display: none;
+}
+
+.setup-btn {
+    background: none;
+    border: none;
+    height: 30px;
+    width: 100px;
+    border-radius: 3px;
+    margin-right: 10px;
+    line-height: 30px;
+    text-align: center;
+    float: right;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.setup-btn > span {
+    text-decoration: underline;
+}
+
+
+.setup-btn:hover {
+    background-color: #0067A3;
 }

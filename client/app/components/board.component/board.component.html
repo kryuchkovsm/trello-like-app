@@ -1,5 +1,17 @@
 <div class="board-title">
     <span> There should be editable board name </span>
+    <!--*ngIf = 'isLoggedIn'-->
+
+    <a class="setup-btn"
+            (click)="toggleSetup()">
+        ... <span>Show menu</span>
+    </a>
+
+    <boardsettings-component
+            (closeBoardSettings$)='onCloseBoardSettings($event)'
+            [ngClass]="{'is-shown':!setupVisible}"
+            [boardId]='boardId'>
+    </boardsettings-component>
 </div>
 
 <section id="main">
@@ -10,15 +22,18 @@
             [dragulaModel]="lists">
                  <list-component
                          *ngFor="let list of lists"
+                         (removeListFromBoard$)='onRemoveList($event)'
                         [list] = "list">
                  </list-component>
         </div>
 
         <div class="add-list flex"
              (click)="enableAddList()" >
-        <span *ngIf="!addingList">
-           Add a list...
-        </span>
+
+            <span *ngIf="!addingList">
+               Add a list...
+            </span>
+
             <input *ngIf="addingList"
                    placeholder= 'Add a list...'
                    id = 'add-list'

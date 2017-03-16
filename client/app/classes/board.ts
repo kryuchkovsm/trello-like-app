@@ -1,7 +1,7 @@
 import {List} from './list';
 
 export class Board {
-    _id: number;
+    _id: string;
     name: string;
     order: number;
     owner: string;

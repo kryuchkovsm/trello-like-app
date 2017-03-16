@@ -1,10 +1,20 @@
-<div class="ticket-component" [attr.ticket-id] = ticket._id [attr.ticket-order] = ticket.order
-    (click)="enableEditTicket()">
+<div    class="ticket-component clearfix"
+        [attr.ticket-id] = ticket._id
+        [attr.ticket-order] = ticket.order>
 
-    <span
-        *ngIf = '!editingTicket'>
+    <div
+        class = 'ticket-text '
+        *ngIf = '!editingTicket'
+        (click)="enableEditTicket()">
         {{ticket.text}}
-    </span>
+    </div>
+
+    <button
+            *ngIf = '!editingTicket'
+            class = 'btn btn-del-ticket'
+            (click) = deleteTicket()>
+        x
+    </button>
 
     <textarea
         *ngIf = 'editingTicket'

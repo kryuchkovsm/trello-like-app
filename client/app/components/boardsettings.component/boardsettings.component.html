@@ -1,0 +1,81 @@
+<div class = "settings-wrapper">
+    <div class = "settings-header clearfix">
+        <h4> Board Settings</h4>
+        <button class = 'btn btn-20-20 cancel-search-btn'
+        (click) = 'closeBoardSettings()'>x
+        </button>
+    </div>
+
+    <div class = 'delete-board'>
+        <button *ngIf = 'confirmingDel'
+                class = 'btn btn-yes'
+                (click) = 'deleteBoard()'>
+                Yes
+        </button>
+        <button
+                *ngIf = 'confirmingDel'
+                class = 'btn btn-no'
+                (click) = 'confirmDel(false)'>
+                No
+        </button>
+        <button
+                *ngIf = '!confirmingDel'
+                (click) = 'confirmDel(true)'
+                class = 'btn btn-del-board'>
+                Delete board
+        </button>
+    </div>
+
+    <h5 *ngIf='!usersempty'>Users list:</h5>
+    <ul *ngIf='!usersempty'>
+        <li
+            class = 'user'
+            *ngFor = 'let user of users'>
+            <span>{{user.email}}</span>
+
+            <span
+                    class = 'owner'
+                    *ngIf = 'currentUser.email === user.email'>[owner]</span>
+
+            <button
+                    *ngIf = 'currentUser.email !== user.email'
+                    class="btn btn-20-20"
+                    (click)="removeUser(user._id)"
+            >x</button>
+        </li>
+    </ul>
+
+    <h5> Invite user:</h5>
+
+    <input
+            id="search-box"
+            class="form-control"
+            placeholder="user email"
+            (keyup)='this.search(searchString)'
+            [(ngModel)]='searchString'/>
+
+    <div
+            class="search-result"
+            *ngIf = 'searchBoxVisible'
+    >
+        <div class = "search-title">
+            <h5>Search result:</h5>
+            <button
+                class = 'btn cancel-search-btn'
+                (click) = 'cancelSearch()'>x
+            </button>
+        </div>
+
+        <ul>
+            <li *ngFor="let result of searchResult | async"
+                class="search-item"
+                (click) = 'addUser(result)'>
+                {{result.email}}
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+

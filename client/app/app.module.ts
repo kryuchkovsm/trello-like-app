@@ -7,6 +7,8 @@ import { HttpModule }               from '@angular/http';
 // Libraries
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 
+import { DndModule }                from 'ng2-dnd';
+
 // Guards
 import { AuthGuard }                from './guards/index';
 
@@ -16,7 +18,8 @@ import { routing }                  from './routes/app.routes';
 // Services
 import { 
         DataService,
-        AuthService
+        AuthService,
+
     } from './services/index';
 
 
@@ -25,6 +28,7 @@ import {
         AppComponent,
         NavBarComponent,
         BoardComponent,
+        BoardSettingsComponent,
         BoardListComponent,
         DashBoardComponent,
         ListComponent,
@@ -46,12 +50,14 @@ import { Where } from './pipes/where.pipe';
         FormsModule,
         HttpModule,
         DragulaModule,
+        DndModule.forRoot(),
         routing
     ],
     declarations: [
         AppComponent,
         NavBarComponent,
         BoardListComponent,
+        BoardSettingsComponent,
         DashBoardComponent,
         BoardComponent,
         ListComponent,

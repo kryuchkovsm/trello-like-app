@@ -1,16 +1,24 @@
 <div class = 'list-component flex' [attr.list-id] = list._id [attr.list-order] = list.order>
     <div class = 'list-component-header'>
         <h4 class = 'handle'>{{list.name}}</h4>
+        <button
+                class = 'btn btn-del-list'
+                (click) = deleteList()>
+                x
+        </button>
     </div>
 
-    <ul class = 'ticket-list flex'
+    <div class = 'ticket-list flex'
 
         [dragula]="'dragula-tickets'"
         [dragulaModel]="tickets">
-        <li *ngFor="let ticket of tickets| orderBy:'order'">
-            <ticket-component [ticket]="ticket"></ticket-component>
-        </li>
-    </ul>
+        <div *ngFor="let ticket of tickets| orderBy:'order'">
+            <ticket-component
+                    (removeTicketFromList$)='onRemoveTicket($event)'
+                    [ticket]="ticket">
+            </ticket-component>
+        </div>
+    </div>
 
     <div class="add-ticket"
          (click)="enableAddTicket()" >

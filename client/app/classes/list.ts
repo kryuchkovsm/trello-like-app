@@ -1,9 +1,9 @@
 import { Ticket } from './ticket';
 
 export class List {
-    _id: number;
+    _id: string;
     name: string;
-    boardId: number;
+    boardId: string;
     order: number;
     // tickets: Ticket[];
 }

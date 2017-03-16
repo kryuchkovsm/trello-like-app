@@ -11,7 +11,7 @@ import { DataService }      from '../../services/data.service';
 
 export class DashBoardComponent implements OnInit {
 
-    boards: Board[];
+    boards: any[];
     addBoardName: string;
     addingBoard: boolean = false;
 
@@ -19,14 +19,15 @@ export class DashBoardComponent implements OnInit {
     
 
     ngOnInit(): void {
-        this.getBoards();
+        this.getBoardList();
     }
 
     
-    public getBoards() {
-        this.dataService.getBoards()
+    public getBoardList() {
+        this.dataService.getBoardList()
             .subscribe(boards => {
-                this.boards = boards });
+                this.boards = boards 
+            });
     }
 
     public enableAddBoard(){
@@ -36,15 +37,13 @@ export class DashBoardComponent implements OnInit {
     addBoard() {
         this.boards = this.boards || [];
         let newBoard = <Board>{
-            _id: +new Date(),
             name: this.addBoardName,
-            order: (this.boards.length + 1),
+            order: (this.boards.length + 1) * 1000,
         };
         this.dataService.addBoard(newBoard)
             .subscribe(board => {
                 this.boards.push(board);
-                // this.onAddCard.emit(card);
-                // this._ws.addCard(card.boardId, card);
+                // this.onAddBoard.emit(board);
             });
     }
 

@@ -10,6 +10,13 @@
 
 }
 
+.ticket-list {
+    flex-flow: column;
+    list-style-type: none;
+    padding: 31px 11px 32px 9px;
+    margin: -26px 0 -31px 0;
+}
+
 .list-component h4 {
     color: #4d4d4d;
     line-height: 100%;
@@ -20,7 +27,7 @@
     font-size: 14px;
     margin-bottom: 3px;
     height: 18px;
-    width: 260px;
+    width: 220px;
     display: inline-block;
     cursor: pointer;
     cursor: hand;
@@ -71,15 +78,16 @@
     width: calc(100% - 10px);
 }
 
-ul.ticket-list {
-    flex-flow: column;
-    list-style-type: none;
-    padding: 31px 11px 32px 9px;
-    margin: -26px 0 -31px 0;
-}
-
 
 .flex {
     display: flex;
     flex-direction: column;
+}
+
+.btn-del-list {
+    margin: 5px;
+    padding: 0;
+    float: right;
+    height: 24px;
+    width: 24px;
 }
