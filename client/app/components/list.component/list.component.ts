@@ -28,6 +28,9 @@ export class ListComponent implements OnInit, OnDestroy{
     // UI transform from span to input
     addingTicket: boolean;
     addingTicketText: string;
+
+    editingListName: boolean;
+    editingListNameBuffer: string;
     
     // tickets in current list
     tickets: Ticket[];
@@ -65,6 +68,9 @@ export class ListComponent implements OnInit, OnDestroy{
                 this.tickets = tickets;
             })
     }
+
+
+    // ============================== ADD TICKET SECTION =============================
     
     public enableAddTicket(){
         this.addingTicket = true;
@@ -99,9 +105,46 @@ export class ListComponent implements OnInit, OnDestroy{
     }
 
     cancelAddTicket() {
-        console.log('cancel addticket');
         this.addingTicket = false;
         this.addingTicketText = '';
+    }
+
+    
+    
+    // ============================== LIST RENAME SECTION =============================
+    
+    editListName() {
+        this.editingListName = true;
+        this.editingListNameBuffer = this.list.name;
+    }
+
+
+    renameListOnEnter(event: KeyboardEvent) {
+        if (event.keyCode === 13) {
+            if (this.editingListNameBuffer && this.editingListNameBuffer.trim() !== '') {
+                this.updateListName();
+                this.editingListNameBuffer = '';
+            } else {
+                this.cancelListRename();
+            }
+        } else if (event.keyCode === 27) {
+            this.cancelListRename();
+        }
+    }
+    
+    // TODO update list from subscribe result
+    updateListName() {
+        if (this.editingListName) {
+            this.list.name = this.editingListNameBuffer;
+            this.dataService
+                .updateList(this.list)
+                .subscribe(result => this.editingListName = false);
+        }
+    }
+
+    cancelListRename() {
+        this.editingListName = false;
+        this.editingListNameBuffer = '';
     }
 
 

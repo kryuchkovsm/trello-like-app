@@ -4,24 +4,14 @@
 
     <div
         class = 'ticket-text '
-        *ngIf = '!editingTicket'
-        (click)="showTicketDetails()"
-        >
-        <!--(click)="enableEditTicket()"-->
+        (click)="showTicketDetails()">
         {{ticket.text}}
     </div>
 
     <button
             *ngIf = '!editingTicket'
             class = 'btn btn-del-ticket'
-            (click) = deleteTicket()>
-        x
+            (click) = deleteTicket()>x
     </button>
 
-    <textarea
-        *ngIf = 'editingTicket'
-        [(ngModel)]="ticket.text"
-        (blur)="updateTicket()">
-        {{ticket.text}}
-    </textarea>
 </div>

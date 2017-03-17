@@ -1,5 +1,5 @@
 import { Injectable }      from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { Http, Headers, RequestOptions } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
@@ -38,16 +38,28 @@ export class DataService {
     }
 
     public addList(list) {
-        const url = `${this.apiUrl}/addlist`
+        const url = `${this.apiUrl}/list`
         return this.http
             .post(url, JSON.stringify( { list } ), {headers: this.headers})
             .map(res => res.json());
     }
 
-    public deleteList(listId) {
-        const url = `${this.apiUrl}/dellist`
+    public updateList(list) {
+        const url = `${this.apiUrl}/list`
         return this.http
-            .post( url, JSON.stringify( { listId } ), {headers: this.headers})
+            .put(url, JSON.stringify( { list } ), {headers: this.headers})
+            .map(res => res.json());
+    }
+
+    public deleteList(listId) {
+        const url = `${this.apiUrl}/list`;
+        let body = JSON.stringify( { listId } )
+        let options = new RequestOptions({ 
+            headers: this.headers,
+            body: body });
+
+        return this.http
+            .delete( url, options)
             .map(res => res.json());
     }
     
@@ -89,7 +101,7 @@ export class DataService {
             .post(url, JSON.stringify( { ticket } ), {headers: this.headers})
             .map(res => res.json());
     }
-    
+
     
     public assignUser(boardId, user) {
         const url = `${this.apiUrl}/assignuser`

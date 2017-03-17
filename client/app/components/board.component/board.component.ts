@@ -19,13 +19,13 @@ export class BoardComponent implements OnInit, OnDestroy {
     // this board id
     boardId: string;
     lists: List[];
+    
     message: string;
     // UI transform from span to textarea or input
     addingList: boolean = false;
     // new list name
     addListName: string = '';
     setupVisible: boolean = false;
-    
     
     // better to move ouside board component?
     ticketDetailsVisible: boolean;

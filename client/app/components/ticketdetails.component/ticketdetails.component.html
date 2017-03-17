@@ -7,7 +7,7 @@
             <textarea
                     rows="1"
                     autosize
-                    (focusout) = 'updateTicket()'
+                    (blur) = 'updateTicket()'
                     [(ngModel)] = ticket.text
                     class = ticket-title>
                 {{ticket.text}}
@@ -32,7 +32,7 @@
                 <!--(focusout) = editDescription(false);-->
                 <textarea class = 'description-textarea'
                           [(ngModel)] = 'descriptionEditBuffer'
-
+                          myAutofocus
                           placeholder="ticket description...">
                 </textarea>
 
@@ -52,11 +52,13 @@
                     *ngIf = '!descriptionEditing && ticket.description'>
                 {{ticket.description}}
             </div>
+
             <a      class = 'description-add-href'
                     (click) = 'editDescription(true)'
                     *ngIf = '!ticket.description && !descriptionEditing'>
                 Add description...
             </a>
+
             <a      class = 'description-add-href'
                     (click) = 'editDescription(true)'
                     *ngIf = 'ticket.description && !descriptionEditing'>

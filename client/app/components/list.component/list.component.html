@@ -1,6 +1,20 @@
 <div class = 'list-component flex' [attr.list-id] = list._id [attr.list-order] = list.order>
     <div class = 'list-component-header'>
-        <h4 class = 'handle'>{{list.name}}</h4>
+        <div class = 'header-title clearfix'>
+            <h4
+                    (click) = this.editListName();
+                    *ngIf = '!editingListName'
+                    class = 'handle'>{{list.name}}
+            </h4>
+
+            <input class = 'listName'
+                   myAutofocus
+                   *ngIf='editingListName'
+                   [(ngModel)]='editingListNameBuffer'
+                   (blur)='this.cancelListRename()'
+                   (keyup)='this.renameListOnEnter($event)'>
+        </div>
+
         <button
                 class = 'btn btn-del-list'
                 (click) = deleteList()>
@@ -28,12 +42,11 @@
         </span>
 
         <input
-                class = 'ticketName'
-                placeholder= 'Add a card...'
+               myAutofocus
+               placeholder= 'Add a card...'
                *ngIf='addingTicket'
-               [attr.autofocus]='addingTicket'
                [(ngModel)]='addingTicketText'
-               (focusout)='this.cancelAddTicket()'
+               (blur)='this.cancelAddTicket()'
                (keyup)='this.addTicketOnEnter($event)'/>
     </div>
 </div>

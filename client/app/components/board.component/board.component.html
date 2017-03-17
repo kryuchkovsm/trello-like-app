@@ -21,10 +21,13 @@
 
 <section id="main">
 
+    <!--[dragula]="'dragula-lists'"-->
+    <!--[dragulaModel]="lists">-->
+
+
         <div class = "flex"
-            *ngIf = 'lists'
-            [dragula]="'dragula-lists'"
-            [dragulaModel]="lists">
+            *ngIf = 'lists'>
+
                  <list-component
                          *ngFor="let list of lists"
                          (removeListFromBoard$)='onRemoveList($event)'

@@ -7,7 +7,10 @@ import { HttpModule }               from '@angular/http';
 // Libraries
 import { DragulaModule, DragulaService } from 'ng2-dragula';
 import { DndModule }                from 'ng2-dnd';
-import { Autosize }                 from './directives/autosize.directive';
+
+// Directives
+import { AutosizeDirecitve,
+         AutofocusDirective }       from './directives/index';
 
 // Guards
 import { AuthGuard }                from './guards/index';
@@ -55,7 +58,8 @@ import { Where } from './pipes/where.pipe';
         routing
     ],
     declarations: [
-        Autosize,
+        AutosizeDirecitve,
+        AutofocusDirective,
         AppComponent,
         NavBarComponent,
         BoardListComponent,
