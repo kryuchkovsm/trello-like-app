@@ -5,7 +5,9 @@
     <div
         class = 'ticket-text '
         *ngIf = '!editingTicket'
-        (click)="enableEditTicket()">
+        (click)="showTicketDetails()"
+        >
+        <!--(click)="enableEditTicket()"-->
         {{ticket.text}}
     </div>
 

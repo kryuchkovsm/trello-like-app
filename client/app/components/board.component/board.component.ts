@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, OnDestroy }         from '@angular/core';
 import { DataService }                      from '../../services/data.service';
+import { SharedService }                    from '../../services/shared.service';
 import { DragulaService }                   from 'ng2-dragula'
 import { List }                             from '../../classes/list';
 import { Router, ActivatedRoute, Params }   from '@angular/router';
@@ -23,8 +24,13 @@ export class BoardComponent implements OnInit, OnDestroy {
     addingList: boolean = false;
     // new list name
     addListName: string = '';
-
     setupVisible: boolean = false;
+    
+    
+    // better to move ouside board component?
+    ticketDetailsVisible: boolean;
+    ticketDetailsTicketId: string;
+    
     
     // to ger this.boardId from route
     private subscribtion: any;
@@ -32,6 +38,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     constructor(
         private dataService: DataService,
         private dragulaService: DragulaService,
+        private sharedService: SharedService,
         private route: ActivatedRoute) {
 
         console.log('construct board');
@@ -44,9 +51,13 @@ export class BoardComponent implements OnInit, OnDestroy {
                         
             },
                 direction: 'horizontal'
-                
         });
 
+        this.sharedService.showTicketDetails$.subscribe(
+            ticket => {
+                this.ticketDetailsVisible = ticket.visibility;
+                this.ticketDetailsTicketId = ticket._id;
+            });
         // const bag: any = this.dragulaService.find('dragula-tickets');
         // console.log('"dragula-tickets" bag from boards.component')
         // console.log(bag);
@@ -168,19 +179,23 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     
-    onRemoveList(listId) {
-        this.lists = this.lists.filter(list => list._id !== listId);
-    }
-
     cancelAddList() {
         this.addingList = false;
         this.addListName = '';
     }
+    
+    
+    // remove list from gui, after deletion on server
+    onRemoveList(listId) {
+        this.lists = this.lists.filter(list => list._id !== listId);
+    }
 
+    
     onCloseBoardSettings() {
         this.setupVisible = false;
     }
-
+    
+   
 
     ngOnDestroy() {
         console.log('destroy board');

@@ -6,8 +6,8 @@ import { HttpModule }               from '@angular/http';
 
 // Libraries
 import { DragulaModule, DragulaService } from 'ng2-dragula';
-
 import { DndModule }                from 'ng2-dnd';
+import { Autosize }                 from './directives/autosize.directive';
 
 // Guards
 import { AuthGuard }                from './guards/index';
@@ -19,9 +19,9 @@ import { routing }                  from './routes/app.routes';
 import { 
         DataService,
         AuthService,
+        SharedService,
 
     } from './services/index';
-
 
 // Components
 import {
@@ -33,6 +33,7 @@ import {
         DashBoardComponent,
         ListComponent,
         TicketComponent,
+        TicketDetailsComponent,
         WelcomePageComponent,
         LoginComponent,
         SignUpComponent,
@@ -54,6 +55,7 @@ import { Where } from './pipes/where.pipe';
         routing
     ],
     declarations: [
+        Autosize,
         AppComponent,
         NavBarComponent,
         BoardListComponent,
@@ -62,6 +64,7 @@ import { Where } from './pipes/where.pipe';
         BoardComponent,
         ListComponent,
         TicketComponent,
+        TicketDetailsComponent,
         HomeComponent,
         LoginComponent,
         SignUpComponent,
@@ -73,6 +76,7 @@ import { Where } from './pipes/where.pipe';
         AuthService,
         AuthGuard,
         DataService,
+        SharedService,
         // DragulaService
     ],
     bootstrap: [ AppComponent ]

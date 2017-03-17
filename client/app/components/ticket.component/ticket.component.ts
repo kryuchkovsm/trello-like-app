@@ -6,6 +6,7 @@ import {
     EventEmitter }    from '@angular/core';
 
 import { DataService }                 from '../../services/data.service'
+import { SharedService }               from '../../services/shared.service'
 import { Ticket }                      from '../../classes/ticket';
 
 @Component({
@@ -20,29 +21,18 @@ export class TicketComponent implements OnInit{
     @Output() removeTicketFromList$: EventEmitter<string> = new EventEmitter<string>();
     
     constructor (
-        private dataService: DataService) { }
+        private dataService: DataService,
+        private sharedService: SharedService) {
+
+        this.sharedService.showTicketDetails$.subscribe(
+            ticket => {
+                if (this.ticket._id === ticket._id) {
+                    this.ticket.text = ticket.text;
+                }
+            });
+    }
 
     ngOnInit() { }
-
-
-
-
-
-    editingTicket: boolean = false;
-
-    enableEditTicket() {
-        this.editingTicket = true;
-    }
-
-    updateTicket() {
-        this.cancelEditTicket();
-        this.dataService.updateTicket(this.ticket)
-            .subscribe(ticket => this.ticket.text = ticket.text);
-    }
-
-    cancelEditTicket() {
-        this.editingTicket = false;
-    }
 
     deleteTicket() {
         this.dataService.deleteTicket(this.ticket._id)
@@ -55,4 +45,12 @@ export class TicketComponent implements OnInit{
                 }
             })
     }
+
+    showTicketDetails() {
+        let ticket = {};
+        ticket['visibility'] = true;
+        ticket['_id'] = this.ticket._id;
+        this.sharedService.setTicketDetails(ticket);
+    }
+    
 }

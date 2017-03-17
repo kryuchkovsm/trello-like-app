@@ -6,6 +6,7 @@ export { BoardComponent }           from './board.component/index';
 export { DashBoardComponent}        from './dashboard.component/index';
 export { ListComponent }            from './list.component/index';
 export { TicketComponent }          from './ticket.component/index';
+export { TicketDetailsComponent }   from './ticketdetails.component/index';
 export { WelcomePageComponent }     from './welcomepage.component/index';
 export { LoginComponent }           from './login.component/index';
 export { SignUpComponent }          from './signup.component/index';

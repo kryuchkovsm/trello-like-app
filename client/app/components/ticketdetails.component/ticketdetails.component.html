@@ -1,0 +1,76 @@
+<!--(click)="close()"-->
+<div class = window-overlay>
+    <div  *ngIf = 'ticket'
+          class = 'ticket-details clearfix'>
+
+        <div class = 'header'>
+            <textarea
+                    rows="1"
+                    autosize
+                    (focusout) = 'updateTicket()'
+                    [(ngModel)] = ticket.text
+                    class = ticket-title>
+                {{ticket.text}}
+            </textarea>
+
+            <button
+                    class = 'btn-close btn'
+                    (click)="close()">X
+            </button>
+        </div>
+
+        <div
+
+                class = 'date-field clearfix'>
+            Last update: <span class = 'date'>{{ticket.lastUpdate | date:'medium'}}</span>
+        </div>
+
+        <div class = 'description'>
+            <div    *ngIf = 'descriptionEditing'
+                    class = 'description-editbox'>
+
+                <!--(focusout) = editDescription(false);-->
+                <textarea class = 'description-textarea'
+                          [(ngModel)] = 'descriptionEditBuffer'
+
+                          placeholder="ticket description...">
+                </textarea>
+
+                <button
+                        (click) = 'saveDescription()'
+                        class = 'btn btn-save-description'>Save
+                </button>
+
+                <button
+                        (click) = 'editDescription(false)'
+                        class = 'btn btn-cancel-edit-desc'>X
+                </button>
+            </div>
+
+            <div    class = 'description-div'
+                    (click) = 'editDescription(true)'
+                    *ngIf = '!descriptionEditing && ticket.description'>
+                {{ticket.description}}
+            </div>
+            <a      class = 'description-add-href'
+                    (click) = 'editDescription(true)'
+                    *ngIf = '!ticket.description && !descriptionEditing'>
+                Add description...
+            </a>
+            <a      class = 'description-add-href'
+                    (click) = 'editDescription(true)'
+                    *ngIf = 'ticket.description && !descriptionEditing'>
+                Edit description...
+            </a>
+        </div>
+
+        <!--<div class = 'right-menu'>-->
+            <!--<h5>Menu:</h5>-->
+            <!--<ul>-->
+                <!--<li><a>Menuitem 1</a></li>-->
+                <!--<li><a>Menuitem 2</a></li>-->
+                <!--<li><a>Menuitem 3</a></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    </div>
+</div>

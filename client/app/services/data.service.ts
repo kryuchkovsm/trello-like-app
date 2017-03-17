@@ -77,6 +77,12 @@ export class DataService {
             .map(res => res.json());
     }
 
+    public getTicket(ticketId){
+        const url = `${this.apiUrl}/ticket?ticketId=${ticketId}`
+        return this.http.get(url)
+            .map(res => res.json());
+    }
+
     public updateTicket(ticket) {
         const url = `${this.apiUrl}/updateticket`
         return this.http
