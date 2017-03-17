@@ -26,7 +26,7 @@ export class TicketComponent implements OnInit{
 
         this.sharedService.showTicketDetails$.subscribe(
             ticket => {
-                if (this.ticket._id === ticket._id) {
+                if (this.ticket._id === ticket._id && (!ticket.visibility)) {
                     this.ticket.text = ticket.text;
                 }
             });
