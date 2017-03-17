@@ -131,7 +131,7 @@ router.post('/addboard', function(req, res, next) {
   })
 })
 
-// TODO error processing need to be added
+// TODO update to callback-style
 router.post('/delboard', function(req, res, next) {
   var boardId = req.body.boardId;
   var result = {};
@@ -148,20 +148,8 @@ router.post('/delboard', function(req, res, next) {
 })
 
 
-// TODO error processing need to be added
-router.post('/dellist', function(req, res, next) {
-  var listId = req.body.listId;
-  var result = {};
-  result[listId] = 'ok';
 
-  console.log('delList ', listId);
-  deleteObjects(Ticket,   'listId', listId);
-  deleteObjects(List,     '_id', listId);
-  
-  res.json(result);
-})
-
-// TODO error processing need to be added
+// TODO update to callback-style
 router.post('/delticket', function(req, res, next) {
   var ticketId = req.body.ticketId;
   var result = {};
@@ -174,15 +162,16 @@ router.post('/delticket', function(req, res, next) {
   res.json(result);
 })
 
-router.post('/addlist', function(req, res, next) {
+router.post('/list', function(req, res, next) {
   var inputList = req.body.list;
-
+  console.log('add list');
+  console.log(inputList.action);
   list = new List({
-    // _id: inputList._id,
-    name: inputList.name,
-    boardId: inputList.boardId,
-    order: inputList.order,
-    tickets:[]
+    _id:      mongoose.Types.ObjectId(),
+    name:     inputList.name,
+    boardId:  inputList.boardId,
+    order:    inputList.order,
+    // tickets:  []
   })
 
   list.save(function(err, result) {
@@ -191,8 +180,37 @@ router.post('/addlist', function(req, res, next) {
     }
     res.json(result);
   })
-
 })
+
+router.put('/list', function(req, res, next) {
+  var inputList = req.body.list;
+  List.findOneAndUpdate(
+    {_id:inputList._id},
+    {name:inputList.name},
+    {upsert:true},
+    function(err, doc){
+      if (err) {
+        return res.send(500, { error: err });
+        }
+      res.json(doc);
+  });
+})
+
+
+// TODO update to callback-style
+router.delete('/list', function(req, res, next) {
+  var listId = req.body.listId;
+  var result = {};
+  result[listId] = 'ok';
+
+  console.log('delList ', listId);
+  deleteObjects(Ticket,   'listId', listId);
+  deleteObjects(List,     '_id', listId);
+
+  res.json(result);
+})
+
+
 
 router.post('/addticket', function(req, res, next) {
   var inputTicket = req.body.ticket;
@@ -313,7 +331,7 @@ module.exports = router;
 
 function deleteObjects(Object, fieldName, Id) {
   var query = {};
-  query[fieldName] = Id;;
+  query[fieldName] = Id;
   Object.find(query, function(err, res) {
     if (err) {
       console.log(err);

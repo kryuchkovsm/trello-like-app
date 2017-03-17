@@ -1,7 +1,8 @@
 var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
 var listSchema = mongoose.Schema({
-  // _id:     Number,
+  _id:     Schema.Types.ObjectId,
   owner:   String,
   name:    String,
   boardId: String,
