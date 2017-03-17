@@ -84,7 +84,7 @@ router.get('/lists', function(req, res, next) {
 
 router.get('/tickets', function(req, res, next) {
   Ticket.find({'listId': req.query.listId},
-              {'text':true, 'order': true },
+              // {'text':true, 'order': true },
     function (err, result) {
       if (err)
         return res.json(err);
