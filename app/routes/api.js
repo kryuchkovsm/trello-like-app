@@ -1,14 +1,17 @@
-const router = require('express').Router();
+const router   = require('express').Router();
 const mongoose = require('mongoose');
 
-const User = require('../models/user');
-const Board = require('../models/board');
-const List = require('../models/list');
-const Ticket = require('../models/ticket');
+const User     = require('../models/user');
+const Board    = require('../models/board');
+const List     = require('../models/list');
+const Ticket   = require('../models/ticket');
+const Relation = require('../models/relation');
+const Schema   = mongoose.Schema;
 
 const db = mongoose.connection;
 
 mongoose.connect('mongodb://localhost:27017/trelloAppDb');
+
 
 db.on('error', function(err) {
   console.log('connection error:' + err)
@@ -25,35 +28,53 @@ router.get('/user', function(req, res, next) {
 
 
 // TODO refactor
-router.get('/useremail', function(req, res, next) {
-  console.log('user ID' + req.user._id);
-    email = req.user.local.email
-    ? req.user.local.email
-    : req.user.facebook.email;
-  res.json(email);
-})
+// router.get('/useremail', function(req, res, next) {
+//   console.log('user ID' + req.user._id);
+//     email = req.user.local.email
+//     ? req.user.local.email
+//     : req.user.facebook.email;
+//   res.json(email);
+// })
 
 router.get('/users', function(req, res, next) {
-  User.find({}, function (err, result) {
-    if (err)
-      return res.json(err);
-    res.json(result);
-  })
+  var email = req.query.email;
+  if (email) {
+    var regex = new RegExp( "^" + email, 'i' );
+    User.find({'email': regex}, {'email': true, '_id': true}, function (err, result) {
+      if (err)
+        return res.json(err);
+      console.log('/users')
+      console.log(result);
+      res.json(result);
+    })
+  }
+
 })
 
-router.get('/boards', function(req, res, next) {
-  Board.find(
-      {'owner': req.user._id },
-      {'_id': true, 'name': true},
-      function (err, result) {
-        if (err)
-          return res.json(err);
-        res.json(result);
-      })
+
+router.get('/boardlist', function(req, res, next) {
+  Relation.find(
+    {'userId': req.user._id },
+    {'boardId' : true},
+    function(err, boardIDs) {
+      if (err) {
+        return res.json(err);
+      }
+      var ids = boardIDs.map(function(boardId) { return boardId.boardId });
+      
+      Board.find({_id: {$in: ids}}, function(err, boards) {
+        if (err) {
+          console.log(err);
+        }
+        res.json(boards);
+      });
+    }
+  )
 })
+
 
 router.get('/lists', function(req, res, next) {
-  List.find({'boardId': req.query.id},
+  List.find({'boardId': req.query._id},
     function (err, result) {
       if (err)
         return res.json(err);
@@ -62,9 +83,8 @@ router.get('/lists', function(req, res, next) {
 })
 
 router.get('/tickets', function(req, res, next) {
-  // console.log(req.query);
-  // console.log(req.query.listId);
   Ticket.find({'listId': req.query.listId},
+              {'text':true, 'order': true },
     function (err, result) {
       if (err)
         return res.json(err);
@@ -72,36 +92,93 @@ router.get('/tickets', function(req, res, next) {
   })
 })
 
+router.get('/ticket', function(req, res, next) {
+  Ticket.findOne({'_id': req.query.ticketId},
+    function (err, result) {
+      if (err)
+        return res.json(err);
+      res.json(result);
+    })
+})
+
 router.post('/addboard', function(req, res, next) {
   console.log('addBoard');
   var inputBoard = req.body.board;
-
-  console.log(inputBoard);
-  console.log(inputBoard.title);
-
   board = new Board({
-    _id: inputBoard._id,
+    _id: mongoose.Types.ObjectId(),
     name: inputBoard.name,
     order: inputBoard.order,
-    owner: req.user._id
   })
-
-  console.log(board);
 
   board.save(function(err, result) {
     if (err) {
-      return res.json(err);
+      console.log(err);
     }
     res.json(result);
   })
 
+  relation = new Relation({
+    userId: req.user._id,
+    boardId: board._id,
+    boardName: inputBoard.name,
+    rights: ['Owner', 'Read', 'Write']
+  })
+
+  relation.save(function(err, result) {
+    if (err) {
+      return res.json(err);
+    }
+  })
+})
+
+// TODO error processing need to be added
+router.post('/delboard', function(req, res, next) {
+  var boardId = req.body.boardId;
+  var result = {};
+  result[boardId] = 'ok';
+  
+  console.log('delBoard: ', boardId);
+
+  deleteObjects(Ticket,   'boardId', boardId);
+  deleteObjects(List,     'boardId', boardId);
+  deleteObjects(Board,    '_id',     boardId);
+  deleteObjects(Relation, 'boardId', boardId);
+  
+  res.json(result);
+})
+
+
+// TODO error processing need to be added
+router.post('/dellist', function(req, res, next) {
+  var listId = req.body.listId;
+  var result = {};
+  result[listId] = 'ok';
+
+  console.log('delList ', listId);
+  deleteObjects(Ticket,   'listId', listId);
+  deleteObjects(List,     '_id', listId);
+  
+  res.json(result);
+})
+
+// TODO error processing need to be added
+router.post('/delticket', function(req, res, next) {
+  var ticketId = req.body.ticketId;
+  var result = {};
+  result[ticketId] = 'ok';
+
+  console.log('delTicket: ', ticketId);
+
+  deleteObjects(Ticket,   '_id', ticketId);
+  
+  res.json(result);
 })
 
 router.post('/addlist', function(req, res, next) {
   var inputList = req.body.list;
 
   list = new List({
-    _id: inputList._id,
+    // _id: inputList._id,
     name: inputList.name,
     boardId: inputList.boardId,
     order: inputList.order,
@@ -121,11 +198,12 @@ router.post('/addticket', function(req, res, next) {
   var inputTicket = req.body.ticket;
 
   ticket = new Ticket({
-    _id: inputTicket._id,
-    text: inputTicket.text,
-    boardId: inputTicket.boardId,
-    listId: inputTicket.listId,
-    order: inputTicket.order
+    _id:        mongoose.Types.ObjectId(),
+    text:       inputTicket.text,
+    boardId:    inputTicket.boardId,
+    listId:     inputTicket.listId,
+    order:      inputTicket.order,
+    lastUpdate: new Date()
   })
 
   ticket.save(function(err, result) {
@@ -139,12 +217,17 @@ router.post('/addticket', function(req, res, next) {
 
 router.post('/updateticket', function(req, res, next) {
   var inputTicket = req.body.ticket;
-
+  console.log(inputTicket);
+  
   Ticket.findById(inputTicket._id, function (err, ticket) {
     if (err) {
       return res.json(err);
     }
     ticket.text = inputTicket.text;
+    ticket.description = inputTicket.description;
+    ticket.lastUpdate = new Date();
+    
+    console.log(ticket);
     ticket.save(function(err, result) {
       if (err)
         return res.json(err)
@@ -153,10 +236,100 @@ router.post('/updateticket', function(req, res, next) {
   })
 })
 
+router.post('/assignuser', function(req, res, next) {
+  console.log('/assignuser');
+  
+  console.log(req.body.boardId);
 
+  relation = new Relation({
+    boardId: req.body.boardId,
+    userId: req.body.user._id,
+    rights: ['Read']
+  })
 
+  relation.save(function(err, result) {
+    if (err) {
+      return res.json(err);
+    }
+    console.log(result)
+
+    User.findOne(
+      {_id: result.userId},
+      {_id: true, email: true},
+      function(err, user) {
+        if (err) {
+          console.log(err);
+        }
+        console.log(user);
+        res.json(user);
+      });
+  })
+})
+
+router.post('/removeassigneduser', function(req, res, next) {
+
+  // TODO is there need to ckeck owner?..
+   Relation
+     .find({ boardId: req.body.boardId, userId: req.body.userId },
+       function(err, result) {
+         if (err) {
+           res.send(req, err);
+         }
+       })
+     .remove(function(err, result) {
+       if (err) {
+         res.send(err)
+       }
+        res.json(result);
+      })
+})
+
+router.get('/assignedusers', function(req, res, next) {
+  Relation.find(
+    {'boardId': req.query._id },
+    {'userId' : true},
+    function(err, userIDs) {
+      if (err) {
+        return res.json(err);
+      }
+
+      var ids = userIDs.map(function(userId) { return userId.userId });
+
+      User.find(
+        {_id: {$in: ids}},
+        {_id: true, email: true},
+        function(err, users) {
+          if (err) {
+            res.send(req, err);
+          }
+          res.json(users);
+        });
+    }
+  )
+})
 
 module.exports = router;
+
+
+function deleteObjects(Object, fieldName, Id) {
+  var query = {};
+  query[fieldName] = Id;;
+  Object.find(query, function(err, res) {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    }
+    console.log(res);
+  }).remove(function(err, res) {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    }
+    console.log(res);
+  });
+}
+
+
 
 // route middleware to make sure a user is logged in
 // function isLoggedIn(req, res, next) {

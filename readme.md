@@ -11,9 +11,9 @@ See deployment for notes on how to deploy the project on a live system.
 
 [MongoDB v2.4.9](https://docs.mongodb.com/manual/installation/) running on localhost at port: 27017
 
-[Npm v4.2.0+](https://nodejs.org/en/download/package-manager/)
+[npm v4.2.0+](https://nodejs.org/en/download/package-manager/)
 
-[Nodejs v5.11.1+](https://nodejs.org/en/download/package-manager/)
+[node.js v5.11.1+](https://nodejs.org/en/download/package-manager/)
 
 Globally installed [typescript compiller 2.1.6](https://www.typescriptlang.org/) or later
 ```

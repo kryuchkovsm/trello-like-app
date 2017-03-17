@@ -1,9 +1,20 @@
 // config/passport.js
 
+
 const LocalStrategy     = require('passport-local').Strategy;
+// const JWTLocalStrategy  = require('passport-jwtlocal').Strategy;
 const FacebookStrategy  = require('passport-facebook').Strategy;
 
 const User              = require('../app/models/user');
+
+var passportJWT = require("passport-jwt");
+var ExtractJwt = passportJWT.ExtractJwt;
+var Strategy = passportJWT.Strategy;
+// var params = {
+//   secretOrKey: cfg.jwtSecret,
+//   jwtFromRequest: ExtractJwt.fromAuthHeader()
+// };
+
 const configAuth        = require('./auth');
 
 const expressValidator = require('express-validator');
@@ -13,13 +24,34 @@ module.exports = function(passport) {
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
-
+  
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
       done(err, user);
     });
   });
 
+  // var strategy = new Strategy(params, function(payload, done) {
+  //   var user = users[payload.id] || null;
+  //   if (user) {
+  //     return done(null, {
+  //       id: user.id
+  //     });
+  //   } else {
+  //     return done(new Error("User not found"), null);
+  //   }
+  // });
+  // passport.use(strategy);
+  // return {
+  //   initialize: function() {
+  //     return passport.initialize();
+  //   },
+  //   authenticate: function() {
+  //     return passport.authenticate("jwt", cfg.jwtSession);
+  //   }
+  // };
+  //
+  
   passport.use('local-signup', new LocalStrategy({
       usernameField : 'email',
       passwordField : 'password',
@@ -28,7 +60,7 @@ module.exports = function(passport) {
     function(req, email, password, done) {
       
 
-      User.findOne({ 'local.email' :  email }, function(err, user) {
+      User.findOne({ 'email' :  email }, function(err, user) {
         if (err)
           return done(err);
 
@@ -37,9 +69,8 @@ module.exports = function(passport) {
         }
         else {
           var newUser            = new User();
-
-          newUser.local.email    = email;
-          newUser.local.password = newUser.generateHash(password);
+          newUser.email    = email;
+          newUser.password = newUser.generateHash(password);
           newUser.save(function(err) {
             if (err)
               throw err;
@@ -59,7 +90,7 @@ module.exports = function(passport) {
     function(req, email, password, done) { // callback with email and password from our form
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
-      User.findOne({ 'local.email' :  email }, function(err, user) {
+      User.findOne({ 'email' :  email }, function(err, user) {
         // if there are any errors, return the error before anything else
         if (err)
           return done(err);

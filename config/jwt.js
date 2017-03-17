@@ -1,3 +1,6 @@
-/**
- * Created by dunice on 14.03.17.
- */
+module.exports = {
+  jwtSecret: "MyS3cr3tK3Y",
+  jwtSession: {
+    session: false
+  }
+};

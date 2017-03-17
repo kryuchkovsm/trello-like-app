@@ -1,5 +1,10 @@
 module.exports = {
-  
+
+  'jwtAuth' : {
+    'jwtSecret': "supersecretjwtkeyomfg",
+    'jwtSession': { 'session': 'false' }
+  },
+
   'facebookAuth' : {
     'clientID'      : '1351737858219109', // your App ID
     'clientSecret'  : '30b4e0c9857098103802080e50dcb7d8', // your App Secret

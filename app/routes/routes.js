@@ -17,6 +17,9 @@ router.get('/login', function(req, res, next) {
 // it's work ^_^
 router.post('/login', function(req, res, next) {
   passport.authenticate('local-login', function(err, user, info) {
+    console.log(err);
+    console.log(user);
+    console.log(info);
     var result = {err, user, info}
     if (err) {
       return next(err);
@@ -79,8 +82,6 @@ router.get('/failure', function(req,res, next) {
 router.get('/signup', function(req, res, next) {
   res.render('app.html', { message: 'signup server message' });
 });
-
-
 
 // router.get('/', isLoggedIn, function(req, res) {
 //   res.render('app.html', {
