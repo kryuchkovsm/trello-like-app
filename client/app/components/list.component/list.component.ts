@@ -16,6 +16,7 @@ import { List }                     from '../../classes/list'
     selector: 'list-component',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css'],
+    viewProviders: [DragulaService],
 })
 
 export class ListComponent implements OnInit, OnDestroy{
@@ -40,8 +41,8 @@ export class ListComponent implements OnInit, OnDestroy{
         private dragulaService: DragulaService
     ) {
 
-        // dragulaService
-        //     .setOptions('dragula-tickets', { });
+        
+        
         // const bag: any = this.dragulaService.find('dragula-tickets');
         // console.log('dragula-tickets bag from lists.component:');
         // console.log(bag);
@@ -49,13 +50,13 @@ export class ListComponent implements OnInit, OnDestroy{
         // console.log(bag);
 
         dragulaService.dropModel.subscribe((value) => {
-            // console.log('============= dragulasevice DROPmODEL in list.component.ts =============');
+            console.log('============= dragulasevice DROPmODEL in list.component.ts =============');
             // console.log(value);
             // this.onDrop(value.slice(1));
         });
         
         dragulaService.drop.subscribe((value) => {
-            // console.log('--------------- dragulasevice "DROP" in list.component.ts ----------------');
+            console.log('--------------- dragulasevice "DROP" in list.component.ts ----------------');
             // console.log(value);
             // console.log(`drop: ${value[0]}`);
             // this.onDrop(value.slice(1));
@@ -67,6 +68,10 @@ export class ListComponent implements OnInit, OnDestroy{
             .subscribe(tickets => {
                 this.tickets = tickets;
             })
+
+        if (this.list._id) {
+            this.dragulaService.setOptions(this.list._id, {  });
+        }
     }
 
 

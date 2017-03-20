@@ -24,7 +24,7 @@
 
     <div class = 'ticket-list flex'
 
-        [dragula]="'dragula-tickets'"
+        [dragula]="list._id"
         [dragulaModel]="tickets">
         <div *ngFor="let ticket of tickets| orderBy:'order'">
             <ticket-component

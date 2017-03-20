@@ -81,7 +81,7 @@ import { Where } from './pipes/where.pipe';
         AuthGuard,
         DataService,
         SharedService,
-        // DragulaService
+        DragulaService
     ],
     bootstrap: [ AppComponent ]
 })

@@ -66,19 +66,19 @@ export class BoardComponent implements OnInit, OnDestroy {
         // console.log('"dragula-lists" bag from boards.component')
         // console.log(bag1);
 
-        // dragulaService.drop
-        //     .subscribe(value => {
-        //         console.log('------------- dragulasevice drop in board.component.ts ---------------');
-        //         // console.log(value);
-        //         this.onDrop(value);
-        //     })
+        dragulaService.drop
+            .subscribe(value => {
+                console.log('------------- dragulasevice drop in board.component.ts ---------------');
+                // console.log(value);
+                // this.onDrop(value);
+            })
         
-        // dragulaService.dropModel
-        //     .subscribe(value => {
-                // console.log('============= dragulasevice dropmodel in board.component.ts =============');
+        dragulaService.dropModel
+            .subscribe(value => {
+                console.log('============= dragulasevice dropmodel in board.component.ts =============');
                 // console.log(value);
                 // console.log(this.lists)
-            // })
+            })
     }
 
     ngOnInit(): void {
