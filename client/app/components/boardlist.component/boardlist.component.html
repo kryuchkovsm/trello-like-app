@@ -19,6 +19,7 @@
             </span>
 
             <input *ngIf="addingBoard"
+                   myAutofocus
                    placeholder= 'Add a board...'
                    [attr.autofocus]="addingBoard"
                    [(ngModel)]="addBoardName"

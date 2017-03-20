@@ -25,7 +25,7 @@
 
         <div class = "flex"
             [dragula]="'dragula-lists'"
-            [dragulaModel]="lists">
+            [dragulaModel]="lists"
             *ngIf = 'lists'>
 
                  <list-component
@@ -43,6 +43,7 @@
             </span>
 
             <input *ngIf="addingList"
+                   myAutofocus
                    placeholder= 'Add a list...'
                    id = 'add-list'
                    [attr.autofocus]="add-list"
