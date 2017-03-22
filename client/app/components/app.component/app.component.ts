@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit }        from '@angular/core';
+import { Component }        from '@angular/core';
 
 @Component({
     moduleId: module.id,
@@ -7,16 +7,4 @@ import { Component, OnDestroy, OnInit }        from '@angular/core';
     styleUrls: ['./app.component.css']
 })
 
-export class AppComponent implements OnInit, OnDestroy {
-
-    ngOnInit() {
-        
-    }
-
-    ngOnDestroy() {
-
-    }
-}
-
-
-
+export class AppComponent { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Board }     from '../../classes/board'
 import { DataService }      from '../../services/data.service';
 
@@ -9,26 +9,21 @@ import { DataService }      from '../../services/data.service';
     styleUrls: ['./dashboard.component.css'],
 })
 
-export class DashBoardComponent implements OnInit {
-
+export class DashBoardComponent {
     boards: any[];
     addBoardName: string;
     addingBoard: boolean = false;
-
-    constructor( private dataService: DataService) {};
     
-
-    ngOnInit(): void {
-        this.getBoardList();
-    }
-
-    
-    public getBoardList() {
-        this.dataService.getBoardList()
-            .subscribe(boards => {
-                this.boards = boards 
-            });
-    }
+    constructor( private dataService: DataService) {
+        // init read boardlist from db, and create observable object
+        
+        this.dataService.initSharedBoarList();
+        
+        // subscribe to boards list to realtime update
+        this.dataService
+            .sharedBoarList$
+            .subscribe( boards => this.boards = boards );
+    };
 
     public enableAddBoard(){
         this.addingBoard = true;
@@ -43,7 +38,6 @@ export class DashBoardComponent implements OnInit {
         this.dataService.addBoard(newBoard)
             .subscribe(board => {
                 this.boards.push(board);
-                // this.onAddBoard.emit(board);
             });
     }
 

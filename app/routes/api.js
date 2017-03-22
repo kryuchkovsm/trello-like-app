@@ -41,8 +41,10 @@ router.get('/users', function(req, res, next) {
   if (email) {
     var regex = new RegExp( "^" + email, 'i' );
     User.find({'email': regex}, {'email': true, '_id': true}, function (err, result) {
-      if (err)
-        return res.json(err);
+      if (err) {
+        res.send(err);
+        return;
+      }
       console.log('/users')
       console.log(result);
       res.json(result);
@@ -52,13 +54,14 @@ router.get('/users', function(req, res, next) {
 })
 
 
-router.get('/boardlist', function(req, res, next) {
+router.get('/boardlist', canRead, function(req, res, next) {
   Relation.find(
     {'userId': req.user._id },
     {'boardId' : true},
     function(err, boardIDs) {
       if (err) {
-        return res.json(err);
+        res.send(err);
+        return;
       }
       var ids = boardIDs.map(function(boardId) { return boardId.boardId });
       
@@ -72,12 +75,24 @@ router.get('/boardlist', function(req, res, next) {
   )
 })
 
+router.get('/board', function(req, res, next) {
+  Board.findOne({'_id': req.query._id},
+    function(err, result) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+        res.json(result);
+      });
+})
 
 router.get('/lists', function(req, res, next) {
   List.find({'boardId': req.query._id},
     function (err, result) {
-      if (err)
-        return res.json(err);
+      if (err) {
+        res.send(err);
+        return;
+      }
     res.json(result);
   })
 })
@@ -86,8 +101,10 @@ router.get('/tickets', function(req, res, next) {
   Ticket.find({'listId': req.query.listId},
               // {'text':true, 'order': true },
     function (err, result) {
-      if (err)
-        return res.json(err);
+      if (err) {
+        res.send(err);
+        return;
+      }
     res.json(result);
   })
 })
@@ -95,13 +112,15 @@ router.get('/tickets', function(req, res, next) {
 router.get('/ticket', function(req, res, next) {
   Ticket.findOne({'_id': req.query.ticketId},
     function (err, result) {
-      if (err)
-        return res.json(err);
+      if (err) {
+        res.send(err);
+        return;
+      }
       res.json(result);
     })
 })
 
-router.post('/addboard', function(req, res, next) {
+router.post('/board', function(req, res, next) {
   console.log('addBoard');
   var inputBoard = req.body.board;
   board = new Board({
@@ -112,7 +131,8 @@ router.post('/addboard', function(req, res, next) {
 
   board.save(function(err, result) {
     if (err) {
-      console.log(err);
+      res.send(err);
+      return;
     }
     res.json(result);
   })
@@ -131,8 +151,28 @@ router.post('/addboard', function(req, res, next) {
   })
 })
 
+router.put('/board', function(req, res, next) {
+  
+  var inputBoard = req.body.board;
+  console.log('input board');
+  console.log(inputBoard);
+  Board.findOneAndUpdate(
+    { _id:  inputBoard._id },
+    { $set: { name: inputBoard.name }},
+    { new:  true },
+    function(err, doc){
+      if (err) {
+        res.send(500, { error: err });
+        return;
+      }
+      console.log('update result');
+      console.log(doc);
+      res.json(doc);
+    });
+})
+
 // TODO update to callback-style
-router.post('/delboard', function(req, res, next) {
+router.post('/delboard',  function(req, res, next) {
   var boardId = req.body.boardId;
   var result = {};
   result[boardId] = 'ok';
@@ -176,7 +216,8 @@ router.post('/list', function(req, res, next) {
 
   list.save(function(err, result) {
     if (err) {
-      return res.json(err);
+      res.send(err);
+      return;
     }
     res.json(result);
   })
@@ -185,13 +226,14 @@ router.post('/list', function(req, res, next) {
 router.put('/list', function(req, res, next) {
   var inputList = req.body.list;
   List.findOneAndUpdate(
-    {_id:inputList._id},
-    {name:inputList.name},
-    {upsert:true},
+    { _id:  inputList._id },
+    { name: inputList.name },
+    { new:  true},
     function(err, doc){
       if (err) {
-        return res.send(500, { error: err });
-        }
+        res.send(500, { error: err });
+        return;
+      }
       res.json(doc);
   });
 })
@@ -226,7 +268,8 @@ router.post('/addticket', function(req, res, next) {
 
   ticket.save(function(err, result) {
     if (err) {
-      return res.json(err);
+      res.send({ error: err });
+      return;
     }
     res.json(result);
   })
@@ -239,7 +282,8 @@ router.post('/updateticket', function(req, res, next) {
   
   Ticket.findById(inputTicket._id, function (err, ticket) {
     if (err) {
-      return res.json(err);
+      res.send({ error: err });
+      return;
     }
     ticket.text = inputTicket.text;
     ticket.description = inputTicket.description;
@@ -267,7 +311,8 @@ router.post('/assignuser', function(req, res, next) {
 
   relation.save(function(err, result) {
     if (err) {
-      return res.json(err);
+      res.send({ error: err });
+      return;
     }
     console.log(result)
 
@@ -276,7 +321,8 @@ router.post('/assignuser', function(req, res, next) {
       {_id: true, email: true},
       function(err, user) {
         if (err) {
-          console.log(err);
+          res.send({ error: err });
+          return;
         }
         console.log(user);
         res.json(user);
@@ -291,7 +337,8 @@ router.post('/removeassigneduser', function(req, res, next) {
      .find({ boardId: req.body.boardId, userId: req.body.userId },
        function(err, result) {
          if (err) {
-           res.send(req, err);
+           res.send({ error: err });
+           return;
          }
        })
      .remove(function(err, result) {
@@ -308,7 +355,8 @@ router.get('/assignedusers', function(req, res, next) {
     {'userId' : true},
     function(err, userIDs) {
       if (err) {
-        return res.json(err);
+        res.send({ error: err });
+        return;
       }
 
       var ids = userIDs.map(function(userId) { return userId.userId });
@@ -318,7 +366,8 @@ router.get('/assignedusers', function(req, res, next) {
         {_id: true, email: true},
         function(err, users) {
           if (err) {
-            res.send(req, err);
+            res.send({ error: err });
+            return;
           }
           res.json(users);
         });
@@ -326,22 +375,23 @@ router.get('/assignedusers', function(req, res, next) {
   )
 })
 
+
 module.exports = router;
 
-
+// TODO update to callback-style
 function deleteObjects(Object, fieldName, Id) {
   var query = {};
   query[fieldName] = Id;
   Object.find(query, function(err, res) {
     if (err) {
-      console.log(err);
-      res.send(err);
+      res.send({ error: err });
+      return;
     }
     console.log(res);
   }).remove(function(err, res) {
     if (err) {
-      console.log(err);
-      res.send(err);
+      res.send({ error: err });
+      return;
     }
     console.log(res);
   });
@@ -350,14 +400,15 @@ function deleteObjects(Object, fieldName, Id) {
 
 
 // route middleware to make sure a user is logged in
-// function isLoggedIn(req, res, next) {
-//   // if user is authenticated in the session, carry on
-//   if (req.isAuthenticated())
-//     return next();
-//
-//   // if they aren't redirect them to the home page
-//   res.render('app.html');
-// }
+function canRead(req, res, next) {
+  return next();
+  // if user is authenticated in the session, carry on
+  // if (req.user._id)
+  //   return next();
+
+  // if they aren't redirect them to the home page
+  // res.render('app.html');
+}
 
 
 

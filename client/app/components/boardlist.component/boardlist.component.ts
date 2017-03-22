@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { Board }     from '../../classes/board'
 import { DataService }      from '../../services/data.service';
 
@@ -10,31 +10,26 @@ import { DataService }      from '../../services/data.service';
     
 })
 
-export class BoardListComponent implements OnInit {
+export class BoardListComponent {
     @Output() closeBoardList$: EventEmitter<boolean> = new EventEmitter<boolean>();
     
     boards: Board[];
     addBoardName: string;
     addingBoard: boolean = false;
     
-    constructor( private dataService: DataService) { }
-
-    ngOnInit(): void {
-        this.getBoardList();
+    // subscribe to boards list to realtime update
+    constructor( private dataService: DataService) {
+        this.dataService
+            .sharedBoarList$
+            .subscribe( boards => {
+                this.boards = boards;
+            });
     }
 
     closeBoardList() {
         this.closeBoardList$.emit(true)
     }
-
-    public getBoardList() {
-        this.dataService.getBoardList()
-            .subscribe(boards => {
-                this.boards = boards
-            });
-    }
-
-
+    
     public enableAddBoard(){
         this.addingBoard = true;
     }
@@ -51,7 +46,6 @@ export class BoardListComponent implements OnInit {
                 // this.onAddBoard.emit(board);
             });
     }
-
 
     addBoardOnEnter(event: KeyboardEvent) {
         if (event.keyCode === 13) {

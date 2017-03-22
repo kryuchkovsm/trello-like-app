@@ -14,14 +14,44 @@ router.get('/login', function(req, res, next) {
   res.render('app.html');
 })
 
+router.post('/custom', function(req, res, next) {
+  console.log(req.body);
+  passport.authenticate('jwt', { session: false }, function(err, user, info) {
+    console.log('==== err, user, info, req.user: ====');
+    console.log(err);
+    console.log(user);
+    console.log(info);
+    const result = {err, user, info};
+    console.log(req.user);
+    console.log('----------------------------------')
+    // console.log(res);
+    if (err) {
+      console.log('err:');
+      console.log(err);
+      res.json(err);
+      return;
+    }
+    if (!user) {
+      console.log('info:');
+      console.log(info);
+      res.json(info);
+      return;
+    }
+    
+    res.json({_id: user._id, email: user.email});
+    })(req, res, next)
+  }
+);
+
 // it's work ^_^
 router.post('/login', function(req, res, next) {
   passport.authenticate('local-login', function(err, user, info) {
     console.log(err);
     console.log(user);
     console.log(info);
-    var result = {err, user, info}
+    const result = {err, user, info};
     if (err) {
+      // console.log(err);
       return next(err);
     }
     if (!user) {
@@ -63,32 +93,13 @@ router.get('/dashboard', isLoggedIn, function(req, res, next) {
   res.render('app.html');
 });
 
-router.get('/forbidden', function (req, res, next) {
-  res.render('app.html');
-})
-
-router.get('/board', function(req,res, next) {
-  res.render('app.html');
-})
-
-router.get('/app', function(req,res, next) {
-  res.render('app.html');
-})
-
-router.get('/failure', function(req,res, next) {
-  res.json({'result':'401', 'navigate':'failure'});
+router.get('/forbidden', function(req,res, next) {
+  res.json({'result':'401', 'navigate':'forbidden'});
 })
 
 router.get('/signup', function(req, res, next) {
   res.render('app.html', { message: 'signup server message' });
 });
-
-// router.get('/', isLoggedIn, function(req, res) {
-//   res.render('app.html', {
-//     user : req.user // get the user out of session and pass to template
-//   });
-// });
-
 
 router.post('/signup', passport.authenticate('local-signup', {
   successRedirect : '/app', // redirect to the secure profile section
@@ -111,7 +122,6 @@ router.get('/logout', function(req, res) {
   req.logout();
   res.render('app.html');
 });
-
 
 module.exports = router;
 

@@ -16,7 +16,7 @@ import { List }                     from '../../classes/list'
     selector: 'list-component',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css'],
-    viewProviders: [DragulaService],
+    // viewProviders: [DragulaService],
 })
 
 export class ListComponent implements OnInit, OnDestroy{
@@ -41,14 +41,6 @@ export class ListComponent implements OnInit, OnDestroy{
         private dragulaService: DragulaService
     ) {
 
-        
-        
-        // const bag: any = this.dragulaService.find('dragula-tickets');
-        // console.log('dragula-tickets bag from lists.component:');
-        // console.log(bag);
-        // console.log('"dragula-tickets" bag from lists.component')
-        // console.log(bag);
-
         dragulaService.dropModel.subscribe((value) => {
             console.log('============= dragulasevice DROPmODEL in list.component.ts =============');
             // console.log(value);
@@ -69,9 +61,9 @@ export class ListComponent implements OnInit, OnDestroy{
                 this.tickets = tickets;
             })
 
-        if (this.list._id) {
-            this.dragulaService.setOptions(this.list._id, {  });
-        }
+        // if (this.list._id) {
+        //     this.dragulaService.setOptions(this.list._id, {  });
+        // }
     }
 
 
@@ -143,68 +135,14 @@ export class ListComponent implements OnInit, OnDestroy{
             this.list.name = this.editingListNameBuffer;
             this.dataService
                 .updateList(this.list)
-                .subscribe(result => this.editingListName = false);
+                .subscribe(list => this.list.name = list.name);
+            this.editingListName = false;
         }
     }
 
     cancelListRename() {
         this.editingListName = false;
         this.editingListNameBuffer = '';
-    }
-
-
-    // Call on onDrop event
-    updateTicketsOrder(event) {
-        // get list of current elements
-        // ticketArr = get tickets from list
-        // current order
-        // i: number = 0,
-        // previous item init
-        //     elBefore: number = -1,
-        // next item init
-        //     elAfter: number = -1,
-        // new order init
-        //     newOrder: number = 0;
-
-        // search
-        // for (i = 0; i < ticketArr.length - 1; i++) {
-        //     if (ticketArr[i].getAttribute('ticket-id') == event.ticketId) {
-        //         break;
-        //     }
-        // }
-
-        // if ticket array not empty
-        // if (ticketArr.length > 1) {
-        //     if current ticket is between elements
-        //     if (i > 0 && i < cardArr.length - 1) {
-        //         elBefore = +cardArr[i - 1].getAttribute('card-order');
-        //         elAfter = +cardArr[i + 1].getAttribute('card-order');
-        //
-        //         newOrder = elBefore + ((elAfter - elBefore) / 2);
-        //     }
-        //      else if current ticket in end of list
-        //     else if (i == cardArr.length - 1) {
-        //         elBefore = +cardArr[i - 1].getAttribute('card-order');
-        //         newOrder = elBefore + 1000;
-        //      else if current ticket on start of list
-        //     } else if (i == 0) {
-        //         elAfter = +cardArr[i + 1].getAttribute('card-order');
-        //
-        //         newOrder = elAfter / 2;
-        //     }
-        // if list empty - init order
-        // } else {
-        //     newOrder = 1000;
-        // }
-        //
-        //
-        // let ticket = this.tickets.filter(x => x._id === event.cardId)[0];
-        // let oldListId = ticket.listId;
-        // ticket.order = newOrder;
-        // ticket.listId = event.listId;
-        // this.dataService.putTicket(ticket).then(res => {
-        //     this.dataService.updateTicket(this.list.boardId, ticket);
-        // });
     }
 
     deleteList() {
@@ -229,7 +167,6 @@ export class ListComponent implements OnInit, OnDestroy{
         // const bag: any = this.dragulaService.find('dragula-tickets');
         // if (bag !== undefined )
         //     this.dragulaService.destroy('dragula-tickets');
-
         console.log('List ' + this.list._id + ' destroyed');
     }
 

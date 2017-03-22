@@ -28,7 +28,6 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         
     }
 
-
     ngOnInit() {
         console.log(this.ticketId);
         this.getTicket();
@@ -81,9 +80,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
         ticket['visibility'] = false;
         ticket['_id'] = this.ticket._id;
         ticket['text'] = this.ticket.text;
-
         this.sharedService.setTicketDetails(ticket);
-        // this.sharedService.updateTicketDetails(ticket);
     }
 
     // just debug for this time

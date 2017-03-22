@@ -3,6 +3,7 @@ import { DataService }                      from '../../services/data.service';
 import { SharedService }                    from '../../services/shared.service';
 import { DragulaService }                   from 'ng2-dragula'
 import { List }                             from '../../classes/list';
+import { Board }                             from '../../classes/board';
 import { Router, ActivatedRoute, Params }   from '@angular/router';
 
 import 'rxjs/add/operator/switchMap';
@@ -18,11 +19,15 @@ import 'rxjs/add/operator/switchMap';
 export class BoardComponent implements OnInit, OnDestroy {
     // this board id
     boardId: string;
+    board: Board;
     lists: List[];
     
     message: string;
     // UI transform from span to textarea or input
     addingList: boolean = false;
+    // same for board name
+    editingBoardName: boolean = false;
+    editingBoardNameBuffer: string;
     // new list name
     addListName: string = '';
     setupVisible: boolean = false;
@@ -30,8 +35,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     // better to move ouside board component?
     ticketDetailsVisible: boolean;
     ticketDetailsTicketId: string;
-    
-    
+
+
+
     // to ger this.boardId from route
     private subscribtion: any;
 
@@ -43,6 +49,12 @@ export class BoardComponent implements OnInit, OnDestroy {
 
         console.log('construct board');
 
+        this.sharedService.showTicketDetails$.subscribe(
+            ticket => {
+                this.ticketDetailsVisible = ticket.visibility;
+                this.ticketDetailsTicketId = ticket._id;
+            });
+
         this.dragulaService
             .setOptions('dragula-lists', {
                 moves: function (el, container, handle) {
@@ -53,19 +65,9 @@ export class BoardComponent implements OnInit, OnDestroy {
                 direction: 'horizontal'
         });
 
-        this.sharedService.showTicketDetails$.subscribe(
-            ticket => {
-                this.ticketDetailsVisible = ticket.visibility;
-                this.ticketDetailsTicketId = ticket._id;
-            });
-        // const bag: any = this.dragulaService.find('dragula-tickets');
-        // console.log('"dragula-tickets" bag from boards.component')
-        // console.log(bag);
-        //
-        // const bag1: any = this.dragulaService.find('dragula-lists');
-        // console.log('"dragula-lists" bag from boards.component')
-        // console.log(bag1);
-
+        this.dragulaService
+            .setOptions('dragula-tickets', { });
+        
         dragulaService.drop
             .subscribe(value => {
                 console.log('------------- dragulasevice drop in board.component.ts ---------------');
@@ -84,9 +86,16 @@ export class BoardComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         console.log('init board');
 
-        // get boardId from route
-        this.subscribtion = this.route.params.subscribe(params => {
-            this.boardId = params['id'] });
+        // get boardId from route         
+        this.subscribtion = this.route.params
+            .subscribe(params => {
+                this.boardId = params['id']
+            });
+
+        if (this.boardId) {
+            this.dataService.getBoard(this.boardId)
+                .subscribe(board => this.board = board);
+        }
 
         // read list from data.service
         this.route.params
@@ -155,15 +164,14 @@ export class BoardComponent implements OnInit, OnDestroy {
             // _id: +new Date(),
             name: this.addListName,
             order: (this.lists.length + 1) * 1000,
-            boardId: this.boardId
+            boardId: this.board._id
         };
         this.dataService.addList(newList)
             .subscribe(list => {
                 this.lists.push(list);
-                // this.onAddList.emit(list);
-                // this._ws.addList(list.boardId, list);
             });
     }
+
 
     addListOnEnter(event: KeyboardEvent) {
         if (event.keyCode === 13) {
@@ -195,12 +203,44 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.setupVisible = false;
     }
     
+    
+    
    
 
+    editBoardName() {
+        this.editingBoardName = true;
+        this.editingBoardNameBuffer = this.board.name;
+    }
+
+    cancelEditingBoardName() {
+        this.editingBoardName = false;
+        this.editingBoardNameBuffer = '';
+    }
+
+    renameBoardOnEnter(event: KeyboardEvent) {
+        if (event.keyCode === 13) {
+                this.renameBoard();
+        } else if (event.keyCode === 27) {
+            this.cancelEditingBoardName();
+        }
+    }
+    
+    renameBoard() {
+        if (this.editingBoardNameBuffer && this.editingBoardNameBuffer.trim() !== '') {
+            this.board.name = this.editingBoardNameBuffer;
+            this.dataService.updateBoard(this.board)
+                .subscribe(board => {
+                    this.board = board
+                    //update board names for dashboard and boardlist
+                    this.dataService.initSharedBoarList();
+                });
+        }
+        this.cancelEditingBoardName();
+    }
+    
     ngOnDestroy() {
         console.log('destroy board');
         this.subscribtion.unsubscribe();
         this.dragulaService.destroy('dragula-lists');
     }
-    
 }

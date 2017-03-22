@@ -80,8 +80,7 @@ export class BoardSettingsComponent implements OnInit {
     }
 
     addUser(selectedUser) {
-         this.users = this.users || [];
-        // TODO not like this decision to check current users list to exclude dublicates
+        this.users = this.users || [];
         if (this.users.filter(user => user.email === selectedUser.email).length === 0) {
             this.dataService.assignUser(this.boardId, selectedUser)
                 .subscribe(user => {

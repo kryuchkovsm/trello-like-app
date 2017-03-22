@@ -1,56 +1,56 @@
 // config/passport.js
-
-
 const LocalStrategy     = require('passport-local').Strategy;
-// const JWTLocalStrategy  = require('passport-jwtlocal').Strategy;
 const FacebookStrategy  = require('passport-facebook').Strategy;
+const GoogleStrategy    = require('passport-google-oauth').Strategy;
+const JwtStrategy       = require('passport-jwt').Strategy;
+const ExtractJwt        = require('passport-jwt').ExtractJwt;
 
+const jwt               = require('jsonwebtoken');
 const User              = require('../app/models/user');
-
-var passportJWT = require("passport-jwt");
-var ExtractJwt = passportJWT.ExtractJwt;
-var Strategy = passportJWT.Strategy;
-// var params = {
-//   secretOrKey: cfg.jwtSecret,
-//   jwtFromRequest: ExtractJwt.fromAuthHeader()
-// };
-
-const configAuth        = require('./auth');
-
-const expressValidator = require('express-validator');
+const authConfig        = require('./auth');
 
 module.exports = function(passport) {
-  
+
   passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
-  
+
   passport.deserializeUser(function(id, done) {
     User.findById(id, function(err, user) {
       done(err, user);
     });
   });
+  
+// ==========================================================================
+// =================================== JWT ==================================
+// ==========================================================================
+//
+  const jwtOptions = {
+    jwtFromRequest: ExtractJwt.fromAuthHeader(),
+    secretOrKey: authConfig.jwtAuth.jwtSecret,
+  };
+  
+  passport.use(new JwtStrategy(jwtOptions,
+    function (jwt_payload, done) {
+      console.log('jwt-strategy');
+      console.log(jwt_payload);
+      User.findById(jwt_payload._id, (err, user) => {
+        if (err) {
+          return done(err);
+        }
+        if (user) {
+          return done(null, user);
+        } else {
+          return done(null, false, { 'jwt auth Message': 'No user found.'});
+        }
+      })
+    })
+  );
 
-  // var strategy = new Strategy(params, function(payload, done) {
-  //   var user = users[payload.id] || null;
-  //   if (user) {
-  //     return done(null, {
-  //       id: user.id
-  //     });
-  //   } else {
-  //     return done(new Error("User not found"), null);
-  //   }
-  // });
-  // passport.use(strategy);
-  // return {
-  //   initialize: function() {
-  //     return passport.initialize();
-  //   },
-  //   authenticate: function() {
-  //     return passport.authenticate("jwt", cfg.jwtSession);
-  //   }
-  // };
-  //
+
+  // ==========================================================================
+  // ==========================================================================
+  // ==========================================================================
   
   passport.use('local-signup', new LocalStrategy({
       usernameField : 'email',
@@ -58,8 +58,6 @@ module.exports = function(passport) {
       passReqToCallback : true
     },
     function(req, email, password, done) {
-      
-
       User.findOne({ 'email' :  email }, function(err, user) {
         if (err)
           return done(err);
@@ -68,7 +66,9 @@ module.exports = function(passport) {
           return done(null, false, { 'signupMessage' : 'That email is already taken.' });
         }
         else {
-          var newUser            = new User();
+
+         var newUser            = new User();
+          newUser._id      = mongoose.Types.ObjectId();
           newUser.email    = email;
           newUser.password = newUser.generateHash(password);
           newUser.save(function(err) {
@@ -88,6 +88,8 @@ module.exports = function(passport) {
       passReqToCallback : true
     },
     function(req, email, password, done) { // callback with email and password from our form
+      console.log('local-lognin');
+      console.log(req.body);
       // find a user whose email is the same as the forms email
       // we are checking to see if the user trying to login already exists
       User.findOne({ 'email' :  email }, function(err, user) {
@@ -103,6 +105,15 @@ module.exports = function(passport) {
         if (!user.validPassword(password))
           return done(null, false, { 'loginMessage' : 'Oops! Wrong password.' } ); // create the loginMessage and save it to session as flashdata
 
+
+        // Create token for logged User
+        user.jwt = jwt.sign({'_id'  :user._id, 
+                               'email':user.email}, 
+                               authConfig.jwtAuth.jwtSecret, 
+                               { expiresIn: 631139040 });         
+        
+        // return {null, user: user.displayName, token: 'JWT ' + token};
+        
         // all is well, return successful user
         return done(null, user);
       });
@@ -117,10 +128,10 @@ module.exports = function(passport) {
   passport.use(new FacebookStrategy({
 
       // pull in our app id and secret from our auth.js file
-      clientID        : configAuth.facebookAuth.clientID,
-      clientSecret    : configAuth.facebookAuth.clientSecret,
-      callbackURL     : configAuth.facebookAuth.callbackURL,
-      profileFields   : configAuth.facebookAuth.profileFields
+      clientID        : authConfig.facebookAuth.clientID,
+      clientSecret    : authConfig.facebookAuth.clientSecret,
+      callbackURL     : authConfig.facebookAuth.callbackURL,
+      profileFields   : authConfig.facebookAuth.profileFields
     },
 
     // facebook will send back the token and profile
@@ -143,7 +154,7 @@ module.exports = function(passport) {
 
           // set all of the facebook information in our user model
           newUser.facebook.id    = profile.id; // set the users facebook id
-          newUser.facebook.name = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+          newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
           newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
           // save our user to the database

@@ -22,9 +22,9 @@
         </button>
     </div>
 
+    <!--[dragula]="list._id"-->
     <div class = 'ticket-list flex'
-
-        [dragula]="list._id"
+        [dragula]="tickets"
         [dragulaModel]="tickets">
         <div *ngFor="let ticket of tickets| orderBy:'order'">
             <ticket-component

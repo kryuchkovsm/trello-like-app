@@ -4,8 +4,18 @@
 </ticketdetails-component>
 
 <div class="board-title">
-    <span> There should be editable board name </span>
-    <!--*ngIf = 'isLoggedIn'-->
+    <span *ngIf = "board && !editingBoardName"
+          (click) = "this.editBoardName()">
+          {{board.name}}
+    </span>
+
+    <input myAutofocus
+           *ngIf='editingBoardName'
+           placeholder= {{board.name}}
+           [(ngModel)]='editingBoardNameBuffer'
+           (blur)='this.renameBoard()'
+           (keyup)='this.renameBoardOnEnter($event)'>
+
 
     <a class="setup-btn"
             (click)="toggleSetup()">

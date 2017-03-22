@@ -1,25 +1,48 @@
-import { Injectable }      from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
+import { AuthHttp, tokenNotExpired } from 'angular2-jwt';
+import { AuthService } from "./auth.service";
+import { Injectable }      from '@angular/core';
+import { Subject } from 'rxjs/Subject';
+import { Board } from '../classes/board'
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
-
 // TODO refactor or split DataService
-
 @Injectable()
 export class DataService {
+    public headers = new Headers({'Content-Type': 'application/json'});
 
-    private headers = new Headers({'Content-Type': 'application/json'});
     private apiUrl = 'http://localhost:3000/api';  // URL to web api
+
+    // to use in dashboard and baordlist comonent realtime update
+    private sharedBoarList  = new Subject<any>();
+    public  sharedBoarList$ = this.sharedBoarList.asObservable();
     
-    constructor(private http:Http) { }
+    boards: Board[];
+    
+    constructor(private http:Http,
+                // private authHttp: AuthHttp,
+                private authService: AuthService) { }
 
-
+    public getBoard(boardId) {
+        const url = `${this.apiUrl}/board?_id=${boardId}`
+        return this.http.get(url)
+            .map(res => res.json());
+    }
+    
     public addBoard(board) {
-        const url = `${this.apiUrl}/addboard`
+        const url = `${this.apiUrl}/board`
         return this.http
             .post( url, JSON.stringify( { board } ), {headers: this.headers})
+            .map(res => res.json());
+    }
+    
+    
+    public updateBoard(board) {
+        const url = `${this.apiUrl}/board`
+        return this.http
+            .put(url, JSON.stringify( { board } ), {headers: this.headers})
             .map(res => res.json());
     }
 
@@ -30,11 +53,12 @@ export class DataService {
             .map(res => res.json());
     }
 
-
-    public getBoardList() {
+    public initSharedBoarList() {
+        console.log('initSharedBoarList()');
         const url = `${this.apiUrl}/boardlist`
-        return this.http.get(url)
-            .map(res => res.json());
+        this.http.get(url)
+            .map(res => res.json())
+            .subscribe( boards => this.sharedBoarList.next(boards));
     }
 
     public addList(list) {
@@ -63,8 +87,8 @@ export class DataService {
             .map(res => res.json());
     }
     
-    public getLists(boarId){
-        const url = `${this.apiUrl}/lists?_id=${boarId}`
+    public getLists(boardId){
+        const url = `${this.apiUrl}/lists?_id=${boardId}`
         return this.http.get(url)
                 .map(res => res.json());
     }
