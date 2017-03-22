@@ -46,17 +46,20 @@ app.use(passport.session()); // persistent login sessions
 app.use('/',  routes);
 app.use('/api', isLoggedIn, api);
 
-
-
 // app.use('/login',  trelloapp);
 
 // TODO Refactor - move to routes.js
 function isLoggedIn(req, res, next) {
+  console.log('=== is logged in in server.js ===');
+  console.log(req.headers);
+  console.log(req.body);
+  console.log('---------------------------------');
   if (req.isAuthenticated()) {
+    
     console.log('User authenticated');
     return next();
   }
-  console.log('User not authenticated')  
+  console.log('User not authenticated')
   res.render('app.html', {'testitem' : 'testvalue'});
 }
 

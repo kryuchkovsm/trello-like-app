@@ -6,12 +6,11 @@ const Board    = require('../models/board');
 const List     = require('../models/list');
 const Ticket   = require('../models/ticket');
 const Relation = require('../models/relation');
-const Schema   = mongoose.Schema;
 
-const db = mongoose.connection;
+const Schema   = mongoose.Schema;
+const db       = mongoose.connection;
 
 mongoose.connect('mongodb://localhost:27017/trelloAppDb');
-
 
 db.on('error', function(err) {
   console.log('connection error:' + err)
@@ -21,40 +20,10 @@ db.once('open', function() {
 });
 
 
-router.get('/user', function(req, res, next) {
-    console.log(req.user);
-  res.json(req.user);
-})
-
-
-// TODO refactor
-// router.get('/useremail', function(req, res, next) {
-//   console.log('user ID' + req.user._id);
-//     email = req.user.local.email
-//     ? req.user.local.email
-//     : req.user.facebook.email;
-//   res.json(email);
-// })
-
-router.get('/users', function(req, res, next) {
-  var email = req.query.email;
-  if (email) {
-    var regex = new RegExp( "^" + email, 'i' );
-    User.find({'email': regex}, {'email': true, '_id': true}, function (err, result) {
-      if (err) {
-        res.send(err);
-        return;
-      }
-      console.log('/users')
-      console.log(result);
-      res.json(result);
-    })
-  }
-
-})
-
-
 router.get('/boardlist', canRead, function(req, res, next) {
+  console.log('inside boardlist');
+  console.log(req.user);
+  console.log(req.headers);
   Relation.find(
     {'userId': req.user._id },
     {'boardId' : true},
@@ -186,8 +155,6 @@ router.post('/delboard',  function(req, res, next) {
   
   res.json(result);
 })
-
-
 
 // TODO update to callback-style
 router.post('/delticket', function(req, res, next) {

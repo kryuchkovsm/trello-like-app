@@ -13,7 +13,7 @@ import 'rxjs/add/operator/switchMap';
     selector: 'board-component',
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.css'],
-    viewProviders: [DragulaService],
+    // viewProviders: [DragulaService],
 })
 
 export class BoardComponent implements OnInit, OnDestroy {
@@ -65,8 +65,8 @@ export class BoardComponent implements OnInit, OnDestroy {
                 direction: 'horizontal'
         });
 
-        this.dragulaService
-            .setOptions('dragula-tickets', { });
+        // this.dragulaService
+        //     .setOptions('dragula-tickets', { });
         
         dragulaService.drop
             .subscribe(value => {

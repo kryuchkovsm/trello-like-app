@@ -4,19 +4,20 @@ import { BrowserModule }            from '@angular/platform-browser';
 import { FormsModule }              from '@angular/forms';
 import { HttpModule }               from '@angular/http';
 
-// Libraries
-import { DragulaModule, DragulaService } from 'ng2-dragula';
-import { DndModule }                from 'ng2-dnd';
+// Extrenal Libraries
+import { DragulaModule, DragulaService }    from 'ng2-dragula';
+import { DndModule }                        from 'ng2-dnd';
+import { AuthModule }                       from './modules/auth.module'
 
 // Directives
 import { AutosizeDirecitve,
          AutofocusDirective }       from './directives/index';
 
 // Guards
-import { AuthGuard }                from './guards/index';
+import { AuthGuard }                        from './guards/index';
 
 // Routes
-import { routing }                  from './routes/app.routes';
+import { routing }                          from './routes/app.routes';
 
 // Services
 import { 
@@ -44,15 +45,15 @@ import {
     } from './components/index';
 
 // Pipes
-import { OrderBy } from './pipes/orderby.pipe';
-import { Where } from './pipes/where.pipe';
-
+import { OrderBy,
+         Where } from './pipes/index';
 
 @NgModule({
     imports: [
         BrowserModule,
         FormsModule,
         HttpModule,
+        AuthModule,
         DragulaModule,
         DndModule.forRoot(),
         routing

@@ -14,7 +14,7 @@ router.get('/login', function(req, res, next) {
   res.render('app.html');
 })
 
-router.post('/custom', function(req, res, next) {
+router.post('/authorize', function(req, res, next) {
   console.log(req.body);
   passport.authenticate('jwt', { session: false }, function(err, user, info) {
     console.log('==== err, user, info, req.user: ====');

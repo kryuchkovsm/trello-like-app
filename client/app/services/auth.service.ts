@@ -30,8 +30,8 @@ export class AuthService {
         this.jwt = currentUser && currentUser.token;
     }
 
-    public authenticate() {
-
+    public authorize() {
+        
     }
 
     public login(email:string, password:string): Observable<boolean> {
@@ -46,7 +46,8 @@ export class AuthService {
                 let jwt =  user && user.jwt;
                 if (jwt) {
                     this.jwt = jwt;
-                    localStorage.setItem('currentUser', JSON.stringify({ _id: user._id, email: user.email, jwt: jwt }));
+                    localStorage.setItem('currentUser', JSON.stringify({ _id: user._id, email: user.email }));
+                    localStorage.setItem('id_token', jwt);
                     this.loginState = { isLoggedIn: true, email: user.email }; 
                     this.announceLogin(this.loginState);
                     this.router.navigate(['/dashboard']);
@@ -58,10 +59,7 @@ export class AuthService {
     }
 
     public isLoggedIn() {
-        console.log(this.jwt);
-        console.log(tokenNotExpired());
-        console.log(tokenNotExpired(this.jwt));
-        return true;
+        return tokenNotExpired();
     }
 
     public logout() {
