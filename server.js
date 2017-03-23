@@ -1,7 +1,6 @@
 const port          = process.env.PORT || 3000;
 const path          = require('path');
 const bodyParser    = require('body-parser');
-const passport      = require('passport');
 const morgan        = require('morgan');
 const Express       = require('express');
 
@@ -24,21 +23,25 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 
 // Routes ======================================================================
-// TODO move to antoher section
+// TODO move to antoher section?
 
-const expressJWT        = require('express-jwt');
+// contain secret for jwt, and social login providers
 const authConfig        = require('./config/auth');
-const api               = require('./app/routes/api');
-const routes            = require('./app/routes/routes');
+const expressJWT        = require('express-jwt');
+const passport          = require('passport');
+const api               = require('./routes/api');
+const routes            = require('./routes/routes');
 
 authenticated = expressJWT({secret: authConfig.jwtAuth.jwtSecret});
 
 app.use(passport.initialize());
-app.use('/',  routes);
+// api must be first, because links exclude /api redirect to render application page
 app.use('/api', authenticated, api);
+app.use('/',  routes);
 
 
-// launch ======================================================================
+
+// Launch ======================================================================
 app.listen(port,  function() {
   console.log('Server started on port' + port);
 });

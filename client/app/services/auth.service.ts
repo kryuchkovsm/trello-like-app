@@ -38,11 +38,7 @@ export class AuthService {
         let url = `${this.baseUrl}/login`;
         return this.http.post(url, JSON.stringify( {email: email, password: password} ), {headers: this.headers})
             .map((response: Response) => {
-                console.log('login angular2 ')
-                
                 let user = response.json().user;
-                console.log(user);
-                
                 let jwt =  user && user.jwt;
                 if (jwt) {
                     this.jwt = jwt;
@@ -77,7 +73,6 @@ export class AuthService {
             .map(res => {
                 let result = res.json()
                 if (result.user) {
-                    console.log('signup service');
                     let user = {_id : result.user._id, email: result.user.email };
                     localStorage.setItem('currentUser', JSON.stringify(user));                    
                     this.loginState = { isLoggedIn:true, email:user.email }; 

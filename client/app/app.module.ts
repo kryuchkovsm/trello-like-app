@@ -41,7 +41,8 @@ import {
         WelcomePageComponent,
         LoginComponent,
         SignUpComponent,
-        HomeComponent
+        UserProfileComponent,
+        UserSettingsDropdownComponent
     } from './components/index';
 
 // Pipes
@@ -70,10 +71,11 @@ import { OrderBy,
         ListComponent,
         TicketComponent,
         TicketDetailsComponent,
-        HomeComponent,
         LoginComponent,
         SignUpComponent,
         WelcomePageComponent,
+        UserProfileComponent,
+        UserSettingsDropdownComponent,
         OrderBy,
         Where
     ],

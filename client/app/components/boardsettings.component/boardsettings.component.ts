@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Router } from '@angular/router';
-import { UserSearchService }    from '../../services/usersearch.service';
+import { Router }               from '@angular/router';
+import { UserSearchService }    from '../../services/user-search.service';
 import { User }                 from '../../classes/user';
 import { DataService }          from '../../services/data.service';
 import { Observable }           from 'rxjs/Observable';
