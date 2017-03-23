@@ -16,7 +16,7 @@ import { List }                     from '../../classes/list'
     selector: 'list-component',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css'],
-    // viewProviders: [DragulaService],
+    viewProviders: [DragulaService],
 })
 
 export class ListComponent implements OnInit, OnDestroy{
@@ -61,9 +61,9 @@ export class ListComponent implements OnInit, OnDestroy{
                 this.tickets = tickets;
             })
 
-        // if (this.list._id) {
-        //     this.dragulaService.setOptions(this.list._id, {  });
-        // }
+        if (this.list._id) {
+            this.dragulaService.setOptions(this.list._id, {  });
+        }
     }
 
 

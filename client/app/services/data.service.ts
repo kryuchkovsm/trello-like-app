@@ -18,8 +18,7 @@ export class DataService {
     public  sharedBoarList$ = this.sharedBoarList.asObservable();
 
     constructor(private http:Http,
-                private authHttp: AuthHttp,
-                private authService: AuthService) { }
+                private authHttp: AuthHttp) { }
 
     public getBoard(boardId) {
         const url = `${this.apiUrl}/board?_id=${boardId}`
@@ -115,7 +114,8 @@ export class DataService {
 
     public getTicket(ticketId){
         const url = `${this.apiUrl}/ticket?ticketId=${ticketId}`
-        return this.http.get(url)
+        return this.authHttp
+            .get(url)
             .map(res => res.json());
     }
 

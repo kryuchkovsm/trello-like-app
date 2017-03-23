@@ -66,6 +66,7 @@ export class AuthService {
         // remove user from local storage to log user out
         this.jwt = null;
         localStorage.removeItem('currentUser');
+        localStorage.removeItem('id_token');
         this.loginState.isLoggedIn = false;
         this.announceLogin(this.loginState);
     }

@@ -1,6 +1,8 @@
 import { Injectable }      from '@angular/core';
 import { Http, Headers }   from '@angular/http';
 import { Observable }      from 'rxjs/Observable';
+import { AuthHttp }                      from 'angular2-jwt';
+
 // import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map'
 
@@ -13,10 +15,10 @@ export class UserSearchService {
     users = ['JohnSmith@email.com',
         'FooBar@Baz.com'];
 
-    constructor(private http:Http) { }
+    constructor(private authHttp: AuthHttp) { }
 
     search(term: string): Observable<string[]> {
-        return this.http
+        return this.authHttp
             .get(`api/users?email=${term}`)
             .map(response => response.json() as any[]);
     }

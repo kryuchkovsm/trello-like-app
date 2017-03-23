@@ -13,7 +13,7 @@ import 'rxjs/add/operator/switchMap';
     selector: 'board-component',
     templateUrl: './board.component.html',
     styleUrls: ['./board.component.css'],
-    // viewProviders: [DragulaService],
+    viewProviders: [DragulaService],
 })
 
 export class BoardComponent implements OnInit, OnDestroy {

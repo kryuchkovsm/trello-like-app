@@ -4,6 +4,12 @@ const passport = require('passport');
 // passport configuration
 require('../../config/passport')(passport); // pass passport for configuration
 
+
+const expressJWT = require('express-jwt');
+const authConfig        = require('../../config/auth');
+authenticated = expressJWT({secret: authConfig.jwtAuth.jwtSecret});
+
+
 //home page
 router.get('/', function(req, res, next) {
     res.render('app.html');
@@ -14,34 +20,34 @@ router.get('/login', function(req, res, next) {
   res.render('app.html');
 })
 
-router.post('/authorize', function(req, res, next) {
-  console.log(req.body);
-  passport.authenticate('jwt', { session: false }, function(err, user, info) {
-    console.log('==== err, user, info, req.user: ====');
-    console.log(err);
-    console.log(user);
-    console.log(info);
-    const result = {err, user, info};
-    console.log(req.user);
-    console.log('----------------------------------')
-    // console.log(res);
-    if (err) {
-      console.log('err:');
-      console.log(err);
-      res.json(err);
-      return;
-    }
-    if (!user) {
-      console.log('info:');
-      console.log(info);
-      res.json(info);
-      return;
-    }
-    
-    res.json({_id: user._id, email: user.email});
-    })(req, res, next)
-  }
-);
+// router.post('/authorize', function(req, res, next) {
+//   console.log(req.body);
+//   passport.authenticate('jwt', { session: false }, function(err, user, info) {
+//     console.log('==== err, user, info, req.user: ====');
+//     console.log(err);
+//     console.log(user);
+//     console.log(info);
+//     const result = {err, user, info};
+//     console.log(req.user);
+//     console.log('----------------------------------')
+//     // console.log(res);
+//     if (err) {
+//       console.log('err:');
+//       console.log(err);
+//       res.json(err);
+//       return;
+//     }
+//     if (!user) {
+//       console.log('info:');
+//       console.log(info);
+//       res.json(info);
+//       return;
+//     }
+//    
+//     res.json({_id: user._id, email: user.email});
+//     }, deserializeUser)(req, res, next)
+//   }
+// );
 
 // it's work ^_^
 router.post('/login', function(req, res, next) {
@@ -83,13 +89,13 @@ router.post('/signup', function(req, res, next) {
 });
 
 
-router.get('/b/:id', isLoggedIn, function(req, res, next) {
+router.get('/b/:id', authenticated, function(req, res, next) {
   console.log('------------------')
   console.log(req.params.id);
   res.render('app.html');
 });
 
-router.get('/dashboard', isLoggedIn, function(req, res, next) {
+router.get('/dashboard', authenticated, function(req, res, next) {
   res.render('app.html');
 });
 
@@ -124,9 +130,3 @@ router.get('/logout', function(req, res) {
 });
 
 module.exports = router;
-
-function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated())
-    return next();
-  res.render('app.html');
-}

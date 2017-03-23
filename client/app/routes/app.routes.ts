@@ -10,7 +10,7 @@ import { HomeComponent }               from '../components/home.component/home.c
 import { DashBoardComponent}           from '../components/dashboard.component/dashboard.component';
 
 const appRoutes: Routes = [
-    { path: '', component: WelcomePageComponent },
+    { path: '', component: DashBoardComponent, canActivate: [AuthGuard] },
     // { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'signup', component: SignUpComponent },
