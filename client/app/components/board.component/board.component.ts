@@ -232,7 +232,7 @@ export class BoardComponent implements OnInit, OnDestroy {
                 .subscribe(board => {
                     this.board = board
                     //update board names for dashboard and boardlist
-                    this.dataService.initSharedBoarList();
+                    this.dataService.updateSharedBoarList();
                 });
         }
         this.cancelEditingBoardName();

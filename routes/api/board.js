@@ -10,26 +10,69 @@ var deleteObjects = require('./delobjects');
 
 router.get('/', function(req, res, next) {
   if (req.query._id === 'all') {
+
+    // ==================================================
+    Relation
+      .find(
+        {'user': req.user._id },
+        {'board' : true, 'rights': true})
+      .populate('board')
+      .exec(function (err, data) {
+        if (err)
+          res.send(err);
+        var flateredData = data.map(relBoard => { 
+          var newBoard = {};
+            newBoard['_id'] = relBoard.board._id;
+            newBoard['name'] = relBoard.board.name;
+            newBoard['order'] = relBoard.board.order;
+            newBoard['rights'] = relBoard.rights;
+          console.log(newBoard);
+          return newBoard;
+        })
+        
+        console.log('======== populate return boards =======');
+        console.log('======== mapped data =======');
+        console.log(flateredData);
+      })
+
+    // ==================================================
     Relation.find(
-      {'userId': req.user._id },
-      {'boardId' : true},
-      function(err, boardIDs) {
+      {'user': req.user._id },
+      {'board' : true},
+      function(err, boardRel) {
         if (err) {
           res.send(err);
           return;
         }
-        var ids = boardIDs.map(function(boardId) { return boardId.boardId });
+        
+        var ids = boardRel.map(boardId => boardId.board);
 
         Board.find({_id: {$in: ids}}, function(err, boards) {
           if (err) {
-            console.log(err);
+            res.send(err);
           }
+          console.log('============== boards ============')
+          console.log(boards);
           res.json(boards);
         });
       }
     )
+    // ==================================================
+
+
   }
   else {
+    Relation
+      .findOne(
+        {'board':req.query._id, 'user': req.user._id })
+      .populate('board')
+      .exec(function (err, data) {
+        if (err)
+          res.send(err);
+        console.log('======== find board by id =======');
+        console.log(data);
+      })
+    
     Board.findOne({'_id': req.query._id},
       function(err, result) {
         if (err) {
@@ -58,9 +101,8 @@ router.post('/', function(req, res, next) {
   })
 
   relation = new Relation({
-    userId: req.user._id,
-    boardId: board._id,
-    boardName: inputBoard.name,
+    user: req.user._id,
+    board: board._id,
     rights: ['Owner', 'Read', 'Write']
   })
 
@@ -94,12 +136,32 @@ router.delete('/',  function(req, res, next) {
   var result = {};
   result[boardId] = 'ok';
 
-  deleteObjects(Ticket,   'boardId', boardId);
-  deleteObjects(List,     'boardId', boardId);
-  deleteObjects(Board,    '_id',     boardId);
-  deleteObjects(Relation, 'boardId', boardId);
-
-  res.json(result);
+  deleteObjects(Ticket, 'boardId', boardId, (err, result) => {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    deleteObjects(List, 'boardId', boardId, (err, result) => {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      deleteObjects(Board, '_id', boardId, (err, result) => {
+        if (err) {
+          res.send(err);
+          return;
+        }
+        deleteObjects(Relation, 'board', boardId, (err, result) => {
+          if (err) {
+            res.send(err);
+            return;
+          }
+          res.json({[boardId]: 'ok'});
+        });
+      });
+    });
+  });
+  
 })
 
 

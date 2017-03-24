@@ -1,13 +1,21 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// Schema.Types.ObjectId
+// userId:    Schema.Types.ObjectId,
+// boardId:   Schema.Types.ObjectId,
 
-// rights [read, write, owner]
 var relationSchema = Schema({
-  userId:    Schema.Types.ObjectId,
-  boardId:   Schema.Types.ObjectId,
-  rights:    [String]
+  user: {
+    ref: 'User',
+    type: Schema.Types.ObjectId
+  },
+  board: {
+    ref: 'Board',
+    type: Schema.Types.ObjectId
+  },
+  
+  // ['Owner', 'Read', 'Write']
+  rights:    [String] 
 });
 
 module.exports = mongoose.model('Relation', relationSchema);

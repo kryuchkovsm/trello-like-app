@@ -10,13 +10,14 @@ import 'rxjs/add/operator/map'
 @Injectable()
 export class DataService {
     public headers = new Headers({'Content-Type': 'application/json'});
-
     private apiUrl = 'http://localhost:3000/api';  // URL to web api
 
     // to use in dashboard and baordlist comonent realtime update
-    private sharedBoarList  = new Subject<any>();
+    public sharedBoarList  = new Subject<any>();
     public  sharedBoarList$ = this.sharedBoarList.asObservable();
 
+    boards: any[];
+    
     constructor(private http:Http,
                 private authHttp: AuthHttp) { }
 
@@ -59,16 +60,14 @@ export class DataService {
             .map(res => res.json());
     }
     
-    public initSharedBoarList() {
-        console.log('initSharedBoarList()');
+    public updateSharedBoarList() {
         const url = `${this.apiUrl}/board?_id=all`
         this.authHttp
             .get(url)
             .map(res => res.json())
             .subscribe( boards => this.sharedBoarList.next(boards));
     }
-
-
+    
     // ====================================================================
     // =========================   LIST    ================================
     // ====================================================================

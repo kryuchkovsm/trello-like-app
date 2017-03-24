@@ -6,15 +6,15 @@ const Relation = require('../../models/relation');
 
 router.get('/', function(req, res, next) {
   Relation.find(
-    {'boardId': req.query._id },
-    {'userId' : true},
-    function(err, userIDs) {
+    {'board': req.query._id },
+    {'user' : true},
+    function(err, users) {
       if (err) {
         res.send({ error: err });
         return;
       }
-
-      var ids = userIDs.map(function(userId) { return userId.userId });
+      
+      var ids = users.map(userRecord => userRecord.user );
 
       User.find(
         {_id: {$in: ids}},
@@ -31,13 +31,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/', function(req, res, next) {
-  console.log('/assignuser');
-
-  console.log(req.body.boardId);
-
   relation = new Relation({
-    boardId: req.body.boardId,
-    userId: req.body.user._id,
+    board: req.body.boardId,
+    user: req.body.user._id,
     rights: ['Read']
   });
 
@@ -46,17 +42,15 @@ router.post('/', function(req, res, next) {
       res.send({ error: err });
       return;
     }
-    console.log(result);
-
+    
     User.findOne(
-      {_id: result.userId},
+      {_id: result.user},
       {_id: true, email: true},
       function(err, user) {
         if (err) {
           res.send({ error: err });
           return;
         }
-        console.log(user);
         res.json(user);
       });
   });
@@ -65,7 +59,7 @@ router.post('/', function(req, res, next) {
 router.delete('/', function(req, res, next) {
   // TODO is there need to check owner?..
   Relation
-    .find({ boardId: req.body.boardId, userId: req.body.userId },
+    .find({ board: req.body.boardId, user: req.body.userId },
       function(err, result) {
         if (err) {
           res.send({ error: err });

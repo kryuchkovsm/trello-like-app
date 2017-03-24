@@ -43,7 +43,6 @@ export class BoardListComponent {
         this.dataService.addBoard(newBoard)
             .subscribe(board => {
                 this.boards.push(board);
-                // this.onAddBoard.emit(board);
             });
     }
 

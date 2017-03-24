@@ -73,17 +73,18 @@ router.put('/', function(req, res, next) {
   })
 })
 
-// TODO update to callback-style
+
 router.delete('/', function(req, res, next) {
   var ticketId = req.body.ticketId;
-  var result = {};
-  result[ticketId] = 'ok';
-
-  console.log('delTicket: ', ticketId);
-
-  deleteObjects(Ticket,   '_id', ticketId);
-
-  res.json(result);
+  
+  deleteObjects(Ticket, '_id', ticketId, (err, result) => {
+    if (err) {
+      res.send(err);
+      return;
+    }
+    res.json({[ticketId]:'ok'});
+  })
+  
 })
 
 module.exports = router
