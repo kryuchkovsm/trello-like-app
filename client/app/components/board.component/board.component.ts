@@ -42,10 +42,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     private subscribtion: any;
 
     constructor(
-        private dataService: DataService,
+        private dataService:    DataService,
         private dragulaService: DragulaService,
-        private sharedService: SharedService,
-        private route: ActivatedRoute) {
+        private sharedService:  SharedService,
+        private router:         Router,
+        private route:          ActivatedRoute) {
 
         console.log('construct board');
 
@@ -94,7 +95,9 @@ export class BoardComponent implements OnInit, OnDestroy {
 
         if (this.boardId) {
             this.dataService.getBoard(this.boardId)
-                .subscribe(board => this.board = board);
+                .subscribe(board => this.board = board,
+                           err   => this.router.navigate(['/dashboard']))
+                    
         }
 
         // read list from data.service
@@ -161,10 +164,9 @@ export class BoardComponent implements OnInit, OnDestroy {
     addList() {
         this.lists = this.lists || [];
         let newList = <List>{
-            // _id: +new Date(),
             name: this.addListName,
             order: (this.lists.length + 1) * 1000,
-            boardId: this.board._id
+            boardId: this.board.boardId
         };
         this.dataService.addList(newList)
             .subscribe(list => {
@@ -230,7 +232,7 @@ export class BoardComponent implements OnInit, OnDestroy {
             this.board.name = this.editingBoardNameBuffer;
             this.dataService.updateBoard(this.board)
                 .subscribe(board => {
-                    this.board = board
+                    this.board = board;
                     //update board names for dashboard and boardlist
                     this.dataService.updateSharedBoarList();
                 });

@@ -4,11 +4,13 @@ const router      = require('express').Router();
 const List        = require('../../models/list');
 const Ticket      = require('../../models/ticket');
 
-var deleteObjects = require('./delobjects');
+var deleteObjects = require('./accessories/del-objects');
+const hasRights     = require('./accessories/has-rights');
+const rightsConfig  = require('../../config/rights');
 
 // find list by board id
-router.get('/', function(req, res, next) {
-  List.find({'boardId': req.query._id},
+router.get('/', hasRights(rightsConfig.list.read), function(req, res, next) {
+  List.find({'boardId': req.query.boardId},
     function (err, result) {
       if (err) {
         res.send(err);
@@ -18,7 +20,7 @@ router.get('/', function(req, res, next) {
     })
 });
 
-router.post('/', function(req, res, next) {
+router.post('/', hasRights(rightsConfig.list.add), function(req, res, next) {
   var inputList = req.body.list;
   console.log('add list');
   console.log(inputList.action);
@@ -39,7 +41,7 @@ router.post('/', function(req, res, next) {
   })
 });
 
-router.put('/', function(req, res, next) {
+router.put('/', hasRights(rightsConfig.list.edit),function(req, res, next) {
   var inputList = req.body.list;
   List.findOneAndUpdate(
     { _id:  inputList._id },
@@ -55,8 +57,7 @@ router.put('/', function(req, res, next) {
 });
 
 
-// TODO update to callback-style
-router.delete('/', function(req, res, next) {
+router.delete('/', hasRights(rightsConfig.list.delete), function(req, res, next) {
   var listId = req.body.listId;
   
   console.log('delList ', listId);

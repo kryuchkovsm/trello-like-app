@@ -2,7 +2,10 @@ const mongoose      = require('mongoose');
 const router        = require('express').Router();
 
 const Ticket        = require('../../models/ticket');
-const deleteObjects = require('./delobjects');
+
+const deleteObjects = require('./accessories/del-objects');
+const hasRights     = require('./accessories/has-rights');
+const rightsConfig  = require('../../config/rights');
 
 // get selected ticket for ticketdetails.component
 router.get('/', function(req, res, next) {
@@ -30,7 +33,7 @@ router.get('/', function(req, res, next) {
   }
 })
 
-router.post('/', function(req, res, next) {
+router.post('/', hasRights(['Owner', 'Write']), function(req, res, next) {
   var inputTicket = req.body.ticket;
 
   ticket = new Ticket({
@@ -51,7 +54,7 @@ router.post('/', function(req, res, next) {
   })
 })
 
-router.put('/', function(req, res, next) {
+router.put('/', hasRights(['Owner', 'Write']), function(req, res, next) {
   var inputTicket = req.body.ticket;
   console.log(inputTicket);
 
@@ -74,7 +77,7 @@ router.put('/', function(req, res, next) {
 })
 
 
-router.delete('/', function(req, res, next) {
+router.delete('/', hasRights(['Owner', 'Write']), function(req, res, next) {
   var ticketId = req.body.ticketId;
   
   deleteObjects(Ticket, '_id', ticketId, (err, result) => {

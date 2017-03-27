@@ -6,8 +6,8 @@ module.exports = {
   },
 
   'facebookAuth' : {
-    'clientID'      : '1351737858219109', // your App ID
-    'clientSecret'  : '30b4e0c9857098103802080e50dcb7d8', // your App Secret
+    'clientID'      : '1351737858219109',                             // App ID
+    'clientSecret'  : '30b4e0c9857098103802080e50dcb7d8',             // App Secret
     'callbackURL'   : 'http://localhost:3000/auth/facebook/callback',
     'profileFields': ['id', 'email', 'name'],
   },

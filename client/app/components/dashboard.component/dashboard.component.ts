@@ -10,8 +10,11 @@ import { DataService }      from '../../services/data.service';
 })
 
 export class DashBoardComponent implements OnDestroy, OnInit {
-    boards: any[];
+    // boards: Board[];
+    myBoards: Board[];
+    assignedBoards: Board[];
     addBoardName: string;
+    
     addingBoard: boolean = false;
     boardlistSubscription: any;
     
@@ -20,7 +23,10 @@ export class DashBoardComponent implements OnDestroy, OnInit {
         // subscribe to boards list to realtime update
         this.boardlistSubscription = this.dataService
             .sharedBoarList$
-            .subscribe( boards => this.boards = boards );
+            .subscribe( boards => {
+                this.myBoards = boards.filter(board => board.rights.includes('Owner'));
+                this.assignedBoards = boards.filter(board => (!board.rights.includes('Owner') ));
+            });
     };
 
     ngOnInit() {
@@ -32,15 +38,16 @@ export class DashBoardComponent implements OnDestroy, OnInit {
     }
 
     addBoard() {
-        this.boards = this.boards || [];
+        this.myBoards = this.myBoards || [];
         let newBoard = <Board>{
             name: this.addBoardName,
-            order: (this.boards.length + 1) * 1000,
+            order: (this.myBoards.length + 1) * 1000,
         };
         this.dataService.addBoard(newBoard)
             .subscribe(board => {
-                this.boards.push(board);
+                this.myBoards.push(board);
             });
+        this.dataService.updateSharedBoarList();
     }
 
     addBoardOnEnter(event: KeyboardEvent) {
@@ -60,7 +67,11 @@ export class DashBoardComponent implements OnDestroy, OnInit {
         this.addingBoard = false;
         this.addBoardName = '';
     }
-    
+
+    hasAssignedBoards() {
+        if (this.assignedBoards)
+            return this.assignedBoards.length > 0;
+    }
     
     ngOnDestroy() {
         this.boardlistSubscription.unsubscribe();

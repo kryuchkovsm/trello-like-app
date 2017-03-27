@@ -12,8 +12,8 @@ import { DataService }      from '../../services/data.service';
 
 export class BoardListComponent {
     @Output() closeBoardList$: EventEmitter<boolean> = new EventEmitter<boolean>();
-    
-    boards: Board[];
+    myBoards: Board[];
+    assignedBoards: Board[];
     addBoardName: string;
     addingBoard: boolean = false;
     
@@ -22,7 +22,8 @@ export class BoardListComponent {
         this.dataService
             .sharedBoarList$
             .subscribe( boards => {
-                this.boards = boards;
+                this.myBoards = boards.filter(board => board.rights.includes('Owner'));
+                this.assignedBoards = boards.filter(board => (!board.rights.includes('Owner') ));
             });
     }
 
@@ -35,15 +36,16 @@ export class BoardListComponent {
     }
 
     addBoard() {
-        this.boards = this.boards || [];
+        this.myBoards = this.myBoards || [];
         let newBoard = <Board>{
             name: this.addBoardName,
-            order: (this.boards.length + 1) * 1000,
+            order: (this.myBoards.length + 1) * 1000,
         };
         this.dataService.addBoard(newBoard)
             .subscribe(board => {
-                this.boards.push(board);
+                this.myBoards.push(board);
             });
+        this.dataService.updateSharedBoarList();
     }
 
     addBoardOnEnter(event: KeyboardEvent) {
@@ -58,6 +60,12 @@ export class BoardListComponent {
             this.cancelAddBoard();
         }
     }
+
+    hasAssignedBoards() {
+        if (this.assignedBoards)
+            return this.assignedBoards.length > 0;
+    }
+
 
     cancelAddBoard() {
         this.addingBoard = false;

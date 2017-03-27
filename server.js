@@ -21,7 +21,6 @@ app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
-
 // Routes ======================================================================
 // TODO move to antoher section?
 
@@ -38,7 +37,6 @@ app.use(passport.initialize());
 // api must be first, because links exclude /api redirect to render application page
 app.use('/api', authenticated, api);
 app.use('/',  routes);
-
 
 
 // Launch ======================================================================

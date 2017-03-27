@@ -16,7 +16,7 @@ export class DataService {
     public sharedBoarList  = new Subject<any>();
     public  sharedBoarList$ = this.sharedBoarList.asObservable();
 
-    boards: any[];
+    // boards: any[];
     
     constructor(private http:Http,
                 private authHttp: AuthHttp) { }
@@ -27,14 +27,15 @@ export class DataService {
     // ====================================================================
 
     public getBoard(boardId) {
-        const url = `${this.apiUrl}/board?_id=${boardId}`
+        const url = `${this.apiUrl}/board?boardId=${boardId}`;
         return this.authHttp
             .get(url)
             .map(res => res.json());
     }
     
+    
     public addBoard(board) {
-        const url = `${this.apiUrl}/board`
+        const url = `${this.apiUrl}/board`;
         return this.authHttp
             .post( url, JSON.stringify( { board } ), {headers: this.headers})
             .map(res => res.json());
@@ -42,7 +43,7 @@ export class DataService {
     
     
     public updateBoard(board) {
-        const url = `${this.apiUrl}/board`
+        const url = `${this.apiUrl}/board`;
         return this.authHttp
             .put(url, JSON.stringify( { board } ), {headers: this.headers})
             .map(res => res.json());
@@ -50,7 +51,7 @@ export class DataService {
 
     public deleteBoard(boardId) {
         const url = `${this.apiUrl}/board`;
-        let body = JSON.stringify({boardId})
+        let body = JSON.stringify({boardId});
         let options = new RequestOptions({
             headers: this.headers,
             body: body
@@ -61,7 +62,7 @@ export class DataService {
     }
     
     public updateSharedBoarList() {
-        const url = `${this.apiUrl}/board?_id=all`
+        const url = `${this.apiUrl}/board?boardId=all`;
         this.authHttp
             .get(url)
             .map(res => res.json())
@@ -73,21 +74,21 @@ export class DataService {
     // ====================================================================
 
     public getLists(boardId){
-        const url = `${this.apiUrl}/list?_id=${boardId}`
+        const url = `${this.apiUrl}/list?boardId=${boardId}`;
         return this.authHttp
             .get(url)
             .map(res => res.json());
     }
     
     public addList(list) {
-        const url = `${this.apiUrl}/list`
+        const url = `${this.apiUrl}/list`;
         return this.authHttp
             .post(url, JSON.stringify( { list } ), {headers: this.headers})
             .map(res => res.json());
     }
 
     public updateList(list) {
-        const url = `${this.apiUrl}/list`
+        const url = `${this.apiUrl}/list`;
         return this.authHttp
             .put(url, JSON.stringify( { list } ), {headers: this.headers})
             .map(res => res.json());
@@ -95,7 +96,7 @@ export class DataService {
 
     public deleteList(listId) {
         const url = `${this.apiUrl}/list`;
-        let body = JSON.stringify( { listId } )
+        let body = JSON.stringify( { listId } );
         let options = new RequestOptions({ 
             headers: this.headers,
             body: body });
@@ -109,36 +110,36 @@ export class DataService {
     // ====================================================================
 
     public getTickets(listId){
-        const url = `${this.apiUrl}/ticket?listId=${listId}`
+        const url = `${this.apiUrl}/ticket?listId=${listId}`;
         return this.authHttp
             .get(url)
             .map(res => res.json());
     }
 
     public getTicket(ticketId){
-        const url = `${this.apiUrl}/ticket?ticketId=${ticketId}`
+        const url = `${this.apiUrl}/ticket?ticketId=${ticketId}`;
         return this.authHttp
             .get(url)
             .map(res => res.json());
     }
     
     public addTicket(ticket) {
-        const url = `${this.apiUrl}/ticket`
+        const url = `${this.apiUrl}/ticket`;
         return this.authHttp
             .post(url, JSON.stringify( { ticket } ), {headers: this.headers})
             .map(res => res.json());
     }
     
     public updateTicket(ticket) {
-        const url = `${this.apiUrl}/ticket`
+        const url = `${this.apiUrl}/ticket`;
         return this.authHttp
             .put(url, JSON.stringify( { ticket } ), {headers: this.headers})
             .map(res => res.json());
     }
 
     public deleteTicket(ticketId) {
-        const url = `${this.apiUrl}/ticket`
-        let body = JSON.stringify( { ticketId } )
+        const url = `${this.apiUrl}/ticket`;
+        let body = JSON.stringify( { ticketId } );
         let options = new RequestOptions({
             headers: this.headers,
             body: body });
@@ -152,22 +153,22 @@ export class DataService {
     // ====================================================================
     
     public getAassignedUses(boardId) {
-        const url = `${this.apiUrl}/assigneduser?_id=${boardId}`
+        const url = `${this.apiUrl}/assigneduser?_id=${boardId}`;
         return this.authHttp
             .get(url)
             .map(res => res.json());
     }
     
     public assignUser(boardId, user) {
-        const url = `${this.apiUrl}/assigneduser`
+        const url = `${this.apiUrl}/assigneduser`;
         return this.authHttp
             .post(url, JSON.stringify( { "boardId":boardId, "user":user } ), {headers: this.headers})
             .map(res => res.json());
     }
 
     public removeAssignedUser(boardId, userId) {
-        const url = `${this.apiUrl}/assigneduser`
-        let body = JSON.stringify( { "boardId":boardId, "userId":userId } )
+        const url = `${this.apiUrl}/assigneduser`;
+        let body = JSON.stringify( { "boardId":boardId, "userId":userId } );
         let options = new RequestOptions({
             headers: this.headers,
             body: body });

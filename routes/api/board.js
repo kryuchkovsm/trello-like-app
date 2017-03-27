@@ -1,94 +1,73 @@
-const mongoose = require('mongoose');
-const router   = require('express').Router();
+const mongoose      = require('mongoose');
+const router        = require('express').Router();
 
-const Board    = require('../../models/board');
-const List      = require('../../models/list');
-const Ticket    = require('../../models/ticket');
-const Relation = require('../../models/relation');
+const Board         = require('../../models/board');
+const List          = require('../../models/list');
+const Ticket        = require('../../models/ticket');
+const Relation      = require('../../models/relation');
 
-var deleteObjects = require('./delobjects');
+const deleteObjects = require('./accessories/del-objects');
+const hasRights     = require('./accessories/has-rights');
+const rightsConfig  = require('../../config/rights');
+
+// ========================= Read permissions ====================
 
 router.get('/', function(req, res, next) {
-  if (req.query._id === 'all') {
-
-    // ==================================================
+  if (req.query.boardId === 'all') {
     Relation
       .find(
         {'user': req.user._id },
         {'board' : true, 'rights': true})
       .populate('board')
-      .exec(function (err, data) {
-        if (err)
-          res.send(err);
-        var flateredData = data.map(relBoard => { 
-          var newBoard = {};
-            newBoard['_id'] = relBoard.board._id;
-            newBoard['name'] = relBoard.board.name;
-            newBoard['order'] = relBoard.board.order;
-            newBoard['rights'] = relBoard.rights;
-          console.log(newBoard);
-          return newBoard;
-        })
-        
-        console.log('======== populate return boards =======');
-        console.log('======== mapped data =======');
-        console.log(flateredData);
-      })
-
-    // ==================================================
-    Relation.find(
-      {'user': req.user._id },
-      {'board' : true},
-      function(err, boardRel) {
+      .exec(function (err, rawBoards) {
         if (err) {
+          console.log('get boards error');
           res.send(err);
-          return;
         }
-        
-        var ids = boardRel.map(boardId => boardId.board);
-
-        Board.find({_id: {$in: ids}}, function(err, boards) {
-          if (err) {
-            res.send(err);
-          }
-          console.log('============== boards ============')
-          console.log(boards);
-          res.json(boards);
+        var boards = rawBoards.map(rawBoard => {
+          return {
+            'boardId' :  rawBoard.board._id,
+            'name'  :    rawBoard.board.name,
+            'order' :    rawBoard.board.order,
+            'rights':    rawBoard.rights
+          };           
         });
-      }
-    )
-    // ==================================================
-
-
-  }
-  else {
-    Relation
-      .findOne(
-        {'board':req.query._id, 'user': req.user._id })
-      .populate('board')
-      .exec(function (err, data) {
-        if (err)
-          res.send(err);
-        console.log('======== find board by id =======');
-        console.log(data);
+        res.json(boards);
       })
+  }
     
-    Board.findOne({'_id': req.query._id},
-      function(err, result) {
-        if (err) {
-          res.send(err);
-          return;
-        }
-        res.json(result);
-      });
+  else {
+    if (req.query.boardId) {
+      Relation
+        .findOne(
+          {'board':req.query.boardId, 'user': req.user._id })
+        .populate('board')
+        .exec(function (err, rawBoard) {
+          if (err) {
+            console.log('================ ERROR =================');
+            console.log('find single board error:' + err.message );
+            var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+            res.status(400).send({[fullUrl]: ' failed to load resource'});
+            return;
+          }
+          
+          var board = {
+            'boardId':  rawBoard.board._id,
+            'name':     rawBoard.board.name,
+            'order':    rawBoard.board.order,
+            'rights':   rawBoard.rights
+          }
+          res.status(200).json(board);
+        })
+      }
   }
 })
 
 router.post('/', function(req, res, next) {
   var inputBoard = req.body.board;
   board = new Board({
-    _id: mongoose.Types.ObjectId(),
-    name: inputBoard.name,
+    _id:   mongoose.Types.ObjectId(),
+    name:  inputBoard.name,
     order: inputBoard.order,
   })
 
@@ -113,10 +92,12 @@ router.post('/', function(req, res, next) {
   })
 })
 
-router.put('/', function(req, res, next) {
+// ========================= Only owner/write permissions ====================
+
+router.put('/', hasRights(rightsConfig.board.edit), function(req, res, next) {
   var inputBoard = req.body.board;
   Board.findOneAndUpdate(
-    { _id:  inputBoard._id },
+    { _id:  inputBoard.boardId },
     { $set: { name: inputBoard.name }},
     { new:  true },
     function(err, doc){
@@ -124,18 +105,17 @@ router.put('/', function(req, res, next) {
         res.send(500, { error: err });
         return;
       }
-      console.log('update result');
-      console.log(doc);
       res.json(doc);
     });
 })
 
-// TODO update to callback-style
-router.delete('/',  function(req, res, next) {
+
+router.delete('/', hasRights(rightsConfig.board.delete), function(req, res, next) {
   var boardId = req.body.boardId;
   var result = {};
   result[boardId] = 'ok';
 
+  // i know, that is bad...
   deleteObjects(Ticket, 'boardId', boardId, (err, result) => {
     if (err) {
       res.send(err);

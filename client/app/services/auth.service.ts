@@ -22,7 +22,7 @@ export class AuthService {
 
     announceLogin(loginState: any) {
         this.userLoggedSource.next(loginState);
-    }
+    };
 
     constructor(private http:Http, private router: Router) {
         this.announceLogin(this.loginState);

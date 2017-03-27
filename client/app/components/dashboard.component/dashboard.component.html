@@ -1,11 +1,10 @@
 <div class="boards-wrapper">
     <div class = 'my-boards clearfix'>
-        <h2 *ngIf = 'boards'>Boards</h2>
-        <div *ngIf = 'boards'>
-            <a
-                    class="board"
-                    *ngFor = "let board of boards"
-                    [routerLink]="['/b', board._id]">
+        <h2 *ngIf = 'myBoards'>Boards</h2>
+        <div *ngIf = 'myBoards'>
+            <a      class="board"
+                    *ngFor = "let board of myBoards"
+                    [routerLink]="['/b', board.boardId]">
                 <span class="title">{{board.name}}</span>
             </a>
 
@@ -20,7 +19,6 @@
                        myAutofocus
                        class = "add-board-input"
                        placeholder= 'Create a new board...'
-                       [attr.autofocus]="addingBoard"
                        [(ngModel)]="addBoardName"
                        (focusout)="cancelAddBoard()"
                        (keyup)="addBoardOnEnter($event)"/>
@@ -28,6 +26,13 @@
         </div>
     </div>
     <div class = 'assigned-boards'>
-        <h2> Assigned Boards</h2>
+        <h2  *ngIf = 'hasAssignedBoards()'> Assigned Boards</h2>
+        <div *ngIf = 'hasAssignedBoards()'>
+            <a      class="board"
+                    *ngFor = "let board of assignedBoards"
+                    [routerLink]="['/b', board.boardId]">
+                <span class="title">{{board.name}}</span>
+            </a>
+        </div>
     </div>
 </div>
