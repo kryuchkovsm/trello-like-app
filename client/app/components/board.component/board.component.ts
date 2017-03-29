@@ -1,12 +1,17 @@
-import { Component, OnInit, Input, OnDestroy }         from '@angular/core';
+import { Component,
+         OnInit,
+         OnDestroy,
+         ViewChild}                         from '@angular/core';
 import { DataService }                      from '../../services/data.service';
 import { SharedService }                    from '../../services/shared.service';
 import { DragulaService }                   from 'ng2-dragula'
 import { List }                             from '../../classes/list';
-import { Board }                             from '../../classes/board';
+import { Board }                            from '../../classes/board';
 import { Router, ActivatedRoute, Params }   from '@angular/router';
+import {BoardSettingsComponent}             from "../boardsettings.component/index";
 
 import 'rxjs/add/operator/switchMap';
+
 
 @Component({
     moduleId: module.id,
@@ -18,6 +23,10 @@ import 'rxjs/add/operator/switchMap';
 
 export class BoardComponent implements OnInit, OnDestroy {
     // this board id
+    @ViewChild(BoardSettingsComponent) private boardsettingscomponent:BoardSettingsComponent;
+
+    
+
     boardId: string;
     board: Board;
     lists: List[];
@@ -35,11 +44,12 @@ export class BoardComponent implements OnInit, OnDestroy {
     // better to move ouside board component?
     ticketDetailsVisible: boolean;
     ticketDetailsTicketId: string;
-
-
-
+    ticketDetailsSubscribtion: any;
+    
+    hasRights: boolean; 
+    
     // to ger this.boardId from route
-    private subscribtion: any;
+    private boardIdSubscribtion: any;
 
     constructor(
         private dataService:    DataService,
@@ -50,12 +60,33 @@ export class BoardComponent implements OnInit, OnDestroy {
 
         console.log('construct board');
 
-        this.sharedService.showTicketDetails$.subscribe(
+        // uset do call ticket details modal window when user click on ticket
+        this.ticketDetailsSubscribtion = this.sharedService.showTicketDetails$.subscribe(
             ticket => {
                 this.ticketDetailsVisible = ticket.visibility;
                 this.ticketDetailsTicketId = ticket._id;
             });
 
+        // get boardId from route         
+        this.boardIdSubscribtion = this.route.params
+            .subscribe(params => {
+                this.boardId = params['id']
+            });
+
+        if (this.boardId) {
+            this.dataService.getBoard(this.boardId)
+                .subscribe(board => {
+                        this.board = board;
+                        this.hasRights = this.board.rights.includes('Owner');
+                        //share for all components                     
+                        this.dataService.setRights(this.hasRights);
+                    },
+                    err   => this.router.navigate(['/dashboard'])
+                )
+        }
+        
+        
+        
         this.dragulaService
             .setOptions('dragula-lists', {
                 moves: function (el, container, handle) {
@@ -85,76 +116,16 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        console.log('init board');
-
-        // get boardId from route         
-        this.subscribtion = this.route.params
-            .subscribe(params => {
-                this.boardId = params['id']
-            });
-
-        if (this.boardId) {
-            this.dataService.getBoard(this.boardId)
-                .subscribe(board => this.board = board,
-                           err   => this.router.navigate(['/dashboard']))
-                    
-        }
-
         // read list from data.service
         this.route.params
             .switchMap((params: Params) => this.dataService.getLists(params['id']))
             .subscribe(lists => this.lists = lists)
     }
 
-    private onDrop( args ): void {
-        console.log(args);
-        let [type, eModel, target, source] = args;
-        switch(type) {
-            case 'dragula-lists': {
-                // console.log('list dragged');
-                break;
-            }
-            case 'dragula-tickets': {
-                // console.log('ticket dragged');
 
-
-
-                // TODO get parentID, and set to dragged item
-                let parent = target;
-
-
-                // TODO get orders of siblings
-                break;
-            }
-            default: {
-                console.log('unknown dragged object');
-                break;
-            }
-        }
-        // let found = false;
-        // for( let i in this.lists ){
-        //     if( this.lists[i].order == eModel.id ){
-        //         found = true;
-        //         break;
-        //     }
-        // }
-        //
-        // this.message = "Item '" + eModel.name + "' was ";
-        //
-        // if( found ){
-        //     this.message += 'added.';
-        // }
-        // else{
-        //     this.message += 'removed.';
-        // }
-
-        // console.log(this.message);
-    }
-
-
-    
     toggleSetup() {
         this.setupVisible = !this.setupVisible;
+        
     }
     
     public enableAddList(){
@@ -188,7 +159,6 @@ export class BoardComponent implements OnInit, OnDestroy {
         }
     }
 
-    
     cancelAddList() {
         this.addingList = false;
         this.addListName = '';
@@ -204,14 +174,14 @@ export class BoardComponent implements OnInit, OnDestroy {
     onCloseBoardSettings() {
         this.setupVisible = false;
     }
-    
-    
-    
+
    
 
     editBoardName() {
-        this.editingBoardName = true;
-        this.editingBoardNameBuffer = this.board.name;
+        if (this.hasRights) {
+            this.editingBoardName = true;
+            this.editingBoardNameBuffer = this.board.name;
+        }
     }
 
     cancelEditingBoardName() {
@@ -242,7 +212,8 @@ export class BoardComponent implements OnInit, OnDestroy {
     
     ngOnDestroy() {
         console.log('destroy board');
-        this.subscribtion.unsubscribe();
+        this.boardIdSubscribtion.unsubscribe();
+        this.ticketDetailsSubscribtion.unsubscribe();
         this.dragulaService.destroy('dragula-lists');
     }
 }

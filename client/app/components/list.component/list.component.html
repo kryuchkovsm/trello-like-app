@@ -16,6 +16,7 @@
         </div>
 
         <button
+                *ngIf = 'hasRights'
                 class = 'btn btn-del-list'
                 (click) = deleteList()>
                 x
@@ -34,7 +35,8 @@
         </div>
     </div>
 
-    <div class="add-ticket"
+    <div *ngIf = 'hasRights'
+         class="add-ticket"
          (click)="enableAddTicket()" >
 
         <span *ngIf='!addingTicket'>

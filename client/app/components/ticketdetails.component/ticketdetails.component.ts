@@ -17,27 +17,32 @@ import { Ticket }          from '../../classes/ticket';
 
 export class TicketDetailsComponent implements OnInit, OnDestroy {
     @Input() ticketId: string;
+    @Input() boardId:  string;
+    
     ticket:Ticket;
 
     descriptionEditBuffer: string = '';
     descriptionEditing:boolean = false;
+
+    hasRights:boolean = false;
+
     
     constructor (
         private dataService: DataService,
         private sharedService: SharedService) {
-        
+
     }
 
     ngOnInit() {
+        this.hasRights = this.dataService.getRights();
+
         console.log(this.ticketId);
         this.getTicket();
     }
 
     getTicket() {
-        this.dataService.getTicket(this.ticketId)
-            .subscribe(ticket => {
-                this.ticket = ticket;
-            });
+        this.dataService.getTicket({_id:     this.ticketId, boardId: this.boardId })
+            .subscribe(ticket => { this.ticket = ticket });
     }
 
     saveDescription() {
@@ -61,9 +66,11 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
 
     // set GUI flag to change div to textarea, and save original description to buffer(to have cancel ability)
     editDescription(condition) {
-        this.descriptionEditing = condition;
-        if (condition) {
-            this.descriptionEditBuffer = this.ticket.description;
+        if (this.hasRights) {
+            this.descriptionEditing = condition;
+            if (condition) {
+                this.descriptionEditBuffer = this.ticket.description;
+            }
         }
     }
 
@@ -85,6 +92,7 @@ export class TicketDetailsComponent implements OnInit, OnDestroy {
 
     // just debug for this time
     ngOnDestroy() {
+
         // console.log('destroy ticket details component');
     }
 }

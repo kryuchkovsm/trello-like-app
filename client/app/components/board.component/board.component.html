@@ -1,5 +1,6 @@
 <ticketdetails-component
         [ticketId]='ticketDetailsTicketId'
+        [boardId]='board.boardId'
         *ngIf = 'ticketDetailsVisible'>
 </ticketdetails-component>
 
@@ -23,8 +24,8 @@
     </a>
 
     <boardsettings-component
+            *ngIf = '(hasRights !== undefined) && setupVisible'
             (closeBoardSettings$)='onCloseBoardSettings($event)'
-            [ngClass]="{'is-shown':!setupVisible}"
             [boardId]='boardId'>
     </boardsettings-component>
 </div>
@@ -43,8 +44,10 @@
                  </list-component>
         </div>
 
-        <div class="add-list flex"
-             (click)="enableAddList()" >
+        <div
+             *ngIf   = 'hasRights'
+             class   = 'add-list flex'
+             (click) = 'enableAddList()' >
 
             <span *ngIf="!addingList">
                Add a list...

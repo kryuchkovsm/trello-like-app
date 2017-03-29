@@ -1,16 +1,30 @@
+// rights middleware for access to board objects
+
 const Relation  = require('../../../models/relation');
 
-var hasRights = function(rights) {
-  return hasRights[rights] || (hasRights[rights] = function(req, res, next) {
+var hasRights = function(rights, unsubscribe) {
+  return hasRights[rights, unsubscribe] || (hasRights[rights, unsubscribe] = function(req, res, next) {
+      // TODO refactor this custom conditions ((
+      if (unsubscribe === 'unsubscribe') {
+        if ( req.user._id === req.body.relation.userId )
+          // user can remove himself from relation (unsubscribe)
+          next();
+        return;
+      }
+
+    
       // get boardId from query
       var boardId = req.query.boardId;
       
       // search boardId in request body
       var object = req.body.board
                 || req.body.ticket
+                || req.body.relation
                 || req.body.list;
       
       // if body exist - try to get boardId, or leave id from query
+      
+      
       if (object) {
         boardId = boardId || object.boardId;
       }

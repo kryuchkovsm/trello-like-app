@@ -16,7 +16,7 @@ import { List }                     from '../../classes/list'
     selector: 'list-component',
     templateUrl: './list.component.html',
     styleUrls: ['./list.component.css'],
-    viewProviders: [DragulaService],
+    // viewProviders: [DragulaService],
 })
 
 export class ListComponent implements OnInit, OnDestroy{
@@ -36,34 +36,29 @@ export class ListComponent implements OnInit, OnDestroy{
     // tickets in current list
     tickets: Ticket[];
 
+    hasRights:boolean = false;
+    
     constructor (
         private dataService: DataService,
-        private dragulaService: DragulaService
-    ) {
-
+        private dragulaService: DragulaService) {
+        
         dragulaService.dropModel.subscribe((value) => {
             console.log('============= dragulasevice DROPmODEL in list.component.ts =============');
-            // console.log(value);
-            // this.onDrop(value.slice(1));
         });
         
         dragulaService.drop.subscribe((value) => {
             console.log('--------------- dragulasevice "DROP" in list.component.ts ----------------');
-            // console.log(value);
-            // console.log(`drop: ${value[0]}`);
-            // this.onDrop(value.slice(1));
         });
     }
 
     ngOnInit(): void {
+        
         this.dataService.getTickets(this.list._id)
             .subscribe(tickets => {
                 this.tickets = tickets;
             })
 
-        if (this.list._id) {
-            this.dragulaService.setOptions(this.list._id, {  });
-        }
+        this.hasRights = this.dataService.getRights();
     }
 
 
@@ -111,10 +106,11 @@ export class ListComponent implements OnInit, OnDestroy{
     // ============================== LIST RENAME SECTION =============================
     
     editListName() {
-        this.editingListName = true;
-        this.editingListNameBuffer = this.list.name;
+        if (this.hasRights) {
+            this.editingListName = true;
+            this.editingListNameBuffer = this.list.name;
+        }
     }
-
 
     renameListOnEnter(event: KeyboardEvent) {
         if (event.keyCode === 13) {
@@ -146,7 +142,7 @@ export class ListComponent implements OnInit, OnDestroy{
     }
 
     deleteList() {
-        this.dataService.deleteList(this.list._id)
+        this.dataService.deleteList(this.list)
             .subscribe( result => {
                 if (result[this.list._id] === "ok") {
                     this.removeListFromBoard$.emit(this.list._id);
@@ -164,9 +160,6 @@ export class ListComponent implements OnInit, OnDestroy{
     
     
     ngOnDestroy() {
-        // const bag: any = this.dragulaService.find('dragula-tickets');
-        // if (bag !== undefined )
-        //     this.dragulaService.destroy('dragula-tickets');
         console.log('List ' + this.list._id + ' destroyed');
     }
 

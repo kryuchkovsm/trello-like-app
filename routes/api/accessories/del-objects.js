@@ -1,6 +1,5 @@
-var deleteObjects = function(Object, fieldName, Id, callback) {
-    var query = {};
-    query[fieldName] = Id;
+var deleteObjects = function(Object, fieldName, id, callback) {
+    var query = {[fieldName]: id};   
     Object
       .find(query, function(err, res) {
         if (err) {

@@ -26,10 +26,18 @@ import search = require("core-js/fn/symbol/search");
 export class BoardSettingsComponent implements OnInit {
     @Input() boardId;
     @Output() closeBoardSettings$: EventEmitter<boolean> = new EventEmitter<boolean>();
-    currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+    currentUserId = JSON.parse(localStorage.getItem('currentUser'))._id;
     
-    visible: boolean = false;
+    // confirmation buttons for board deletion, if user is owner
     confirmingDel: boolean = false;
+
+    // confirmation buttons for unsubscribe for gueststs
+    confirmingUss: boolean = false;
+    
+    // current user is owner of this board
+    hasRights: boolean;
+    
     users: User[];
     // users: Array<string>;
     usersempty: boolean;
@@ -44,18 +52,16 @@ export class BoardSettingsComponent implements OnInit {
         private dataService:        DataService,
         private router:             Router) {};
 
-    search(term: string): void {
-        this.searchTerms.next(term);
-        this.searchBoxVisible = true;
-    }
+ 
 
     ngOnInit(): void {
         this.dataService.getAassignedUses(this.boardId)
-            .subscribe(guests => {
-                this.users = guests
-                this.usersempty = !(this.users.length > 0)
-                
+            .subscribe(users => {
+                this.users = users;
+                this.usersempty = !(this.users.length > 0);
             });
+        
+        this.hasRights = this.dataService.getRights();
         
         // searchbox dropdown on search
         this.searchResult = this.searchTerms
@@ -74,24 +80,63 @@ export class BoardSettingsComponent implements OnInit {
             });
     }
 
-    cancelSearch() {
-        this.searchString = '';
-        this.searchBoxVisible = false;
-    }
 
     addUser(selectedUser) {
         this.users = this.users || [];
         if (this.users.filter(user => user.email === selectedUser.email).length === 0) {
-            this.dataService.assignUser(this.boardId, selectedUser)
+            this.dataService.assignUser({relation: {boardId: this.boardId, user: selectedUser, rights: ['Read']}})
                 .subscribe(user => {
                     this.users.push(user);
                     this.usersempty = false;
                 });
         }
     }
+    
 
+    canBeDeleted(user) {
+        return (this.hasRights && !(this.currentUserId === user._id)) 
+    }
+    
+    
+    cancelSearch() {
+        this.searchString = '';
+        this.searchBoxVisible = false;
+    }
+
+
+    closeBoardSettings() {
+
+        this.closeBoardSettings$.emit(true);
+    }
+
+    
+    confirmDel(condition) {
+        this.confirmingDel = condition;
+    }
+    
+    
+    confirmUss(condition) {
+        this.confirmingUss = condition;
+    }
+    
+    
+    isOwner(user):boolean {
+        return (user.rights.indexOf('Owner') !== -1)
+    }
+
+    
+    deleteBoard() {
+        this.dataService.deleteBoard({ boardId: this.boardId})
+            .subscribe(result => {
+                if (result[this.boardId] === "ok") {
+                    this.router.navigate(['/dashboard']);
+                }
+            })
+    }
+
+    
     removeUser(userId) {
-        this.dataService.removeAssignedUser(this.boardId, userId)
+        this.dataService.removeAssignedUser({relation: { boardId: this.boardId, userId: userId }}) 
             .subscribe( result =>
             {
                 if(result.ok === 1) {
@@ -103,20 +148,15 @@ export class BoardSettingsComponent implements OnInit {
             });
     }
 
-    confirmDel(condition) {
-        this.confirmingDel = condition;
-    }
-
-    deleteBoard() {
-        this.dataService.deleteBoard(this.boardId)
-            .subscribe(result => {
-                if (result[this.boardId] === "ok") {
-                    this.router.navigate(['/dashboard']);
-                }
-            })
+    
+    search(term: string): void {
+        this.searchTerms.next(term);
+        this.searchBoxVisible = true;
     }
     
-    closeBoardSettings() {
-        this.closeBoardSettings$.emit(true);
+    
+    unsubscribeBoard(userId) {
+        this.removeUser(userId);
+        this.router.navigate(['/dashboard']);
     }
 }

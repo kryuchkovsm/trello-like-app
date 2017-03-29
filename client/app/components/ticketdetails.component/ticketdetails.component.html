@@ -5,6 +5,7 @@
 
         <div class = 'header'>
             <textarea
+                    *ngIf = 'hasRights'
                     rows="1"
                     autosize
                     (blur) = 'updateTicket()'
@@ -12,7 +13,10 @@
                     class = ticket-title>
                 {{ticket.text}}
             </textarea>
-
+            <div    *ngIf = '!hasRights'
+                    class = 'ticket-title ticket-title-div'>
+                    {{ticket.text}}
+            </div>
             <button
                     class = 'btn-close btn'
                     (click)="close()">X
@@ -29,7 +33,6 @@
             <div    *ngIf = 'descriptionEditing'
                     class = 'description-editbox'>
 
-                <!--(focusout) = editDescription(false);-->
                 <textarea class = 'description-textarea'
                           [(ngModel)] = 'descriptionEditBuffer'
                           myAutofocus
@@ -55,13 +58,13 @@
 
             <a      class = 'description-add-href'
                     (click) = 'editDescription(true)'
-                    *ngIf = '!ticket.description && !descriptionEditing'>
+                    *ngIf = '!ticket.description && !descriptionEditing && hasRights'>
                 Add description...
             </a>
 
             <a      class = 'description-add-href'
                     (click) = 'editDescription(true)'
-                    *ngIf = 'ticket.description && !descriptionEditing'>
+                    *ngIf = 'ticket.description && !descriptionEditing && hasRights'>
                 Edit description...
             </a>
         </div>

@@ -83,11 +83,6 @@
     flex-direction: row;
 }
 
-
-.is-shown {
-    display: none;
-}
-
 .setup-btn {
     background: none;
     border: none;

@@ -1,5 +1,11 @@
 module.exports = {
   
+  'users' : {
+    'read'     : ['Read'],
+    'add'      : ['Owner'],
+    'delete'   : ['Owner']
+  },
+  
   'board' : {
     'read'     : ['Read'],
     'edit'     : ['Owner'],

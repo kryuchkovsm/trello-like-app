@@ -9,7 +9,7 @@
     </div>
 
     <button
-            *ngIf = '!editingTicket'
+            *ngIf = 'hasRights'
             class = 'btn btn-del-ticket'
             (click) = deleteTicket()>x
     </button>

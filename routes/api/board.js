@@ -13,7 +13,10 @@ const rightsConfig  = require('../../config/rights');
 // ========================= Read permissions ====================
 
 router.get('/', function(req, res, next) {
-  if (req.query.boardId === 'all') {
+  if (req.query.boardId !== 'all') {
+    next()
+  }
+  else {
     Relation
       .find(
         {'user': req.user._id },
@@ -33,11 +36,12 @@ router.get('/', function(req, res, next) {
           };           
         });
         res.json(boards);
-      })
+    })
   }
-    
-  else {
-    if (req.query.boardId) {
+})
+
+router.get('/', hasRights(rightsConfig.board.read), function(req, res, next) {
+   if (req.query.boardId) {
       Relation
         .findOne(
           {'board':req.query.boardId, 'user': req.user._id })
@@ -50,7 +54,7 @@ router.get('/', function(req, res, next) {
             res.status(400).send({[fullUrl]: ' failed to load resource'});
             return;
           }
-          
+
           var board = {
             'boardId':  rawBoard.board._id,
             'name':     rawBoard.board.name,
@@ -59,9 +63,10 @@ router.get('/', function(req, res, next) {
           }
           res.status(200).json(board);
         })
-      }
-  }
+    }
 })
+
+
 
 router.post('/', function(req, res, next) {
   var inputBoard = req.body.board;
@@ -111,7 +116,7 @@ router.put('/', hasRights(rightsConfig.board.edit), function(req, res, next) {
 
 
 router.delete('/', hasRights(rightsConfig.board.delete), function(req, res, next) {
-  var boardId = req.body.boardId;
+  var boardId = req.body.board.boardId;
   var result = {};
   result[boardId] = 'ok';
 

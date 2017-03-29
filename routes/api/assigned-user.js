@@ -3,38 +3,37 @@ const router   = require('express').Router();
 const User     = require('../../models/user');
 const Relation = require('../../models/relation');
 
+const hasRights     = require('./accessories/has-rights');
+const rightsConfig  = require('../../config/rights');
 
 router.get('/', function(req, res, next) {
-  Relation.find(
-    {'board': req.query._id },
-    {'user' : true},
-    function(err, users) {
+  Relation
+    .find(
+      {'board': req.query._id })
+    .populate('user')
+    .exec(function (err, rawUsers) {
       if (err) {
         res.send({ error: err });
         return;
       }
-      
-      var ids = users.map(userRecord => userRecord.user );
-
-      User.find(
-        {_id: {$in: ids}},
-        {_id: true, email: true},
-        function(err, users) {
-          if (err) {
-            res.send({ error: err });
-            return;
-          }
-          res.json(users);
-        });
-    }
-  )
+      var users = rawUsers.map(rawUser => {
+        return {
+          '_id' :    rawUser.user._id,
+          'email'  : rawUser.user.email,
+          'rights':  rawUser.rights
+        };
+      });
+      res.json(users);
+    })
 });
 
-router.post('/', function(req, res, next) {
+
+router.post('/', hasRights(rightsConfig.users.add), function(req, res, next) {
+  var userRights = req.body.relation.rights
   relation = new Relation({
-    board: req.body.boardId,
-    user: req.body.user._id,
-    rights: ['Read']
+    board: req.body.relation.boardId,
+    user: req.body.relation.user._id,
+    rights: userRights
   });
 
   relation.save(function(err, result) {
@@ -51,15 +50,19 @@ router.post('/', function(req, res, next) {
           res.send({ error: err });
           return;
         }
-        res.json(user);
+        var newUser = {
+          _id:    user._id,
+          email:  user.email,
+          rights: userRights
+        }
+        res.json(newUser);
       });
   });
 });
 
-router.delete('/', function(req, res, next) {
-  // TODO is there need to check owner?..
+router.delete('/', hasRights(rightsConfig.users.delete, 'unsubscribe'), function(req, res, next) {
   Relation
-    .find({ board: req.body.boardId, user: req.body.userId },
+    .find({ board: req.body.relation.boardId, user: req.body.relation.userId },
       function(err, result) {
         if (err) {
           res.send({ error: err });

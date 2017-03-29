@@ -9,31 +9,37 @@ const rightsConfig  = require('../../config/rights');
 
 // get selected ticket for ticketdetails.component
 router.get('/', function(req, res, next) {
-  if (req.query.listId) {
-    console.log(req.query.listId)
-    Ticket.find({'listId': req.query.listId},
-      // {'text':true, 'order': true },
-      function (err, result) {
-        if (err) {
-          res.send(err);
-          return;
-        }
-        res.json(result);
-      })
+  if (!req.query.listId) {
+    next();
   }
   else {
-    Ticket.findOne({'_id': req.query.ticketId},
-      function (err, result) {
-        if (err) {
-          res.send(err);
-          return;
-        }
-        res.json(result);
-      })  
+     console.log(req.query.listId)
+     Ticket.find({'listId': req.query.listId},
+     // {'text':true, 'order': true },
+     function (err, result) {
+       if (err) {
+         res.send(err);
+         return;
+       }
+       res.json(result);
+     })
   }
 })
 
-router.post('/', hasRights(['Owner', 'Write']), function(req, res, next) {
+router.get('/', hasRights(rightsConfig.ticket.read), function(req, res, next) {
+  Ticket.findOne({'_id': req.query.ticketId},
+    function (err, result) {
+      if (err) {
+        res.send(err);
+        return;
+      }
+      res.json(result);
+    })
+})
+
+
+
+router.post('/', hasRights(rightsConfig.ticket.add), function(req, res, next) {
   var inputTicket = req.body.ticket;
 
   ticket = new Ticket({
@@ -54,7 +60,7 @@ router.post('/', hasRights(['Owner', 'Write']), function(req, res, next) {
   })
 })
 
-router.put('/', hasRights(['Owner', 'Write']), function(req, res, next) {
+router.put('/', hasRights(rightsConfig.ticket.edit), function(req, res, next) {
   var inputTicket = req.body.ticket;
   console.log(inputTicket);
 
@@ -77,8 +83,8 @@ router.put('/', hasRights(['Owner', 'Write']), function(req, res, next) {
 })
 
 
-router.delete('/', hasRights(['Owner', 'Write']), function(req, res, next) {
-  var ticketId = req.body.ticketId;
+router.delete('/', hasRights(rightsConfig.ticket.delete), function(req, res, next) {
+  var ticketId = req.body.ticket._id;
   
   deleteObjects(Ticket, '_id', ticketId, (err, result) => {
     if (err) {

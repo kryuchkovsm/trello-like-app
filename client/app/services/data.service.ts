@@ -16,11 +16,11 @@ export class DataService {
     public sharedBoarList  = new Subject<any>();
     public  sharedBoarList$ = this.sharedBoarList.asObservable();
 
-    // boards: any[];
+    // TODO move to corresponding place, when neccessary
+    private hasRights: boolean;
     
     constructor(private http:Http,
                 private authHttp: AuthHttp) { }
-
 
     // ====================================================================
     // =========================   BOARD   ================================
@@ -32,7 +32,15 @@ export class DataService {
             .get(url)
             .map(res => res.json());
     }
-    
+
+    // public getBoard(boardId) {
+    //         const url = `${this.apiUrl}/board?boardId=${boardId}`;
+    //         return this.authHttp
+    //             .get(url)
+    //             .toPromise()
+    //             .then(res => res.json())
+    //             .catch(this.handleError);
+    //     }
     
     public addBoard(board) {
         const url = `${this.apiUrl}/board`;
@@ -49,9 +57,9 @@ export class DataService {
             .map(res => res.json());
     }
 
-    public deleteBoard(boardId) {
+    public deleteBoard(board) {
         const url = `${this.apiUrl}/board`;
-        let body = JSON.stringify({boardId});
+        let body = JSON.stringify({board});
         let options = new RequestOptions({
             headers: this.headers,
             body: body
@@ -68,7 +76,15 @@ export class DataService {
             .map(res => res.json())
             .subscribe( boards => this.sharedBoarList.next(boards));
     }
+
     
+    getRights():boolean {
+        return this.hasRights;
+    }
+
+    setRights(value:boolean) {
+        this.hasRights = value;
+    }
     // ====================================================================
     // =========================   LIST    ================================
     // ====================================================================
@@ -94,9 +110,9 @@ export class DataService {
             .map(res => res.json());
     }
 
-    public deleteList(listId) {
+    public deleteList(list) {
         const url = `${this.apiUrl}/list`;
-        let body = JSON.stringify( { listId } );
+        let body = JSON.stringify( { list } );
         let options = new RequestOptions({ 
             headers: this.headers,
             body: body });
@@ -116,8 +132,8 @@ export class DataService {
             .map(res => res.json());
     }
 
-    public getTicket(ticketId){
-        const url = `${this.apiUrl}/ticket?ticketId=${ticketId}`;
+    public getTicket(ticket){
+        const url = `${this.apiUrl}/ticket?ticketId=${ticket._id}&boardId=${ticket.boardId}`;
         return this.authHttp
             .get(url)
             .map(res => res.json());
@@ -137,9 +153,9 @@ export class DataService {
             .map(res => res.json());
     }
 
-    public deleteTicket(ticketId) {
+    public deleteTicket(ticket) {
         const url = `${this.apiUrl}/ticket`;
-        let body = JSON.stringify( { ticketId } );
+        let body = JSON.stringify( { ticket } );
         let options = new RequestOptions({
             headers: this.headers,
             body: body });
@@ -159,16 +175,16 @@ export class DataService {
             .map(res => res.json());
     }
     
-    public assignUser(boardId, user) {
+    public assignUser(relation) {
         const url = `${this.apiUrl}/assigneduser`;
         return this.authHttp
-            .post(url, JSON.stringify( { "boardId":boardId, "user":user } ), {headers: this.headers})
+            .post(url, JSON.stringify( relation ), {headers: this.headers})
             .map(res => res.json());
     }
 
-    public removeAssignedUser(boardId, userId) {
+    public removeAssignedUser( relation) {
         const url = `${this.apiUrl}/assigneduser`;
-        let body = JSON.stringify( { "boardId":boardId, "userId":userId } );
+        let body = JSON.stringify( relation );
         let options = new RequestOptions({
             headers: this.headers,
             body: body });
@@ -176,4 +192,23 @@ export class DataService {
             .delete( url, options)
             .map(res => res.json());
     }
+    
+    public unsubscribeBoard( board ) {
+        const url = `${this.apiUrl}/assigneduser`;
+        let body = JSON.stringify( board );
+        let options = new RequestOptions({
+            headers: this.headers,
+            body: body });
+        return this.authHttp
+            .delete( url, options)
+            .map(res => res.json());
+    }
+
+
+    private handleError(error: any): Promise<any> {
+        console.error('An error occurred', error); // for demo purposes only
+        return Promise.reject(error.message || error);
+    }
 }
+
+

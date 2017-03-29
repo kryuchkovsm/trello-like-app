@@ -22,10 +22,12 @@ export class NavBarComponent implements OnInit, OnDestroy {
         private authService: AuthService,
         private dragulaService: DragulaService) {
         // in SPA service login
-        authService.userLogged$.subscribe(
-            loginState => {
-                this.setUser()
-            });
+        authService
+            .userLogged$
+            .subscribe(
+                loginState => {
+                    this.setUser()
+                });
 
         // on page refresh in browser
         this.setUser();

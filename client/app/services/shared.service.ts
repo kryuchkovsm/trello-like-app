@@ -1,5 +1,4 @@
 import { Injectable }      from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 
 import 'rxjs/add/operator/map'
@@ -10,12 +9,20 @@ export class SharedService {
     private showTicketDetails = new Subject<any>();
     // Observable string streams
     showTicketDetails$ = this.showTicketDetails.asObservable();
-
+    
     // Service message commands
     setTicketDetails(ticket: Object) {
         this.showTicketDetails.next(ticket);
     }
 
+    private boardRights = new Subject<any>();
+    boardRights$ = this.boardRights.asObservable();
+    
+    setBoardRights(isOwner: any) {
+        console.log('shared service setBoardRights: ' + isOwner);
+        this.boardRights.next(isOwner);
+        
+    }
     // private updateTicketDetails = new Subject<any>();
     //
     // updateTicketDetails$ = this.updateTicketDetails.asObservable();

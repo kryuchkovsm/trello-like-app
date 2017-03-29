@@ -58,7 +58,7 @@ router.put('/', hasRights(rightsConfig.list.edit),function(req, res, next) {
 
 
 router.delete('/', hasRights(rightsConfig.list.delete), function(req, res, next) {
-  var listId = req.body.listId;
+  var listId = req.body.list._id;
   
   console.log('delList ', listId);
   

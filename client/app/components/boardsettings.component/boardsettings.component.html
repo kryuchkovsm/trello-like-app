@@ -6,23 +6,48 @@
         </button>
     </div>
 
-    <div class = 'delete-board'>
-        <button *ngIf = 'confirmingDel'
-                class = 'btn btn-yes'
-                (click) = 'deleteBoard()'>
-                Yes
-        </button>
+    <div class = 'manage-board'>
+
+        <!-- delete section, if is owner -->
+
+        <div *ngIf = 'confirmingDel'
+             class = 'confirm-btns-block clearfix'>
+            <h4> Delete Board? </h4>
+            <button class = 'btn btn-yes'
+                    (click) = 'deleteBoard()'>
+                    Yes
+            </button>
+            <button class = 'btn btn-no'
+                    (click) = 'confirmDel(false)'>
+                    No
+            </button>
+        </div>
         <button
-                *ngIf = 'confirmingDel'
-                class = 'btn btn-no'
-                (click) = 'confirmDel(false)'>
-                No
-        </button>
-        <button
-                *ngIf = '!confirmingDel'
+                *ngIf = '!confirmingDel && hasRights'
                 (click) = 'confirmDel(true)'
                 class = 'btn btn-del-board'>
                 Delete board
+        </button>
+
+        <!-- unsubscribe  buttons for guests -->
+
+        <div *ngIf = 'confirmingUss'
+             class = 'confirm-btns-block clearfix'>
+            <h4> Unsubscribe? </h4>
+            <button class = 'btn btn-yes'
+                    (click) = 'unsubscribeBoard(currentUserId)'>
+                Yes
+            </button>
+            <button class = 'btn btn-no'
+                    (click) = 'confirmUss(false)'>
+                No
+            </button>
+        </div>
+        <button
+                *ngIf = '!confirmingUss && !hasRights'
+                (click) = 'confirmUss(true)'
+                class = 'btn btn-del-board'>
+            Unsubscribe
         </button>
     </div>
 
@@ -33,45 +58,46 @@
             *ngFor = 'let user of users'>
             <span>{{user.email}}</span>
 
-            <span
-                    class = 'owner'
-                    *ngIf = 'currentUser.email === user.email'>[owner]</span>
+            <span   class = 'owner'
+                    *ngIf = 'isOwner(user)'>[owner]</span>
 
-            <button
-                    *ngIf = 'currentUser.email !== user.email'
+            <button *ngIf = 'canBeDeleted(user)'
                     class="btn btn-20-20"
-                    (click)="removeUser(user._id)"
-            >x</button>
+                    (click)="removeUser(user._id)">
+                x
+            </button>
         </li>
     </ul>
 
-    <h5> Invite user:</h5>
+    <div *ngIf = 'hasRights'
+         class = 'invite-user'>
+        <h5> Invite user:</h5>
+        <input
+                id="search-box"
+                class="form-control"
+                placeholder="user email"
+                (keyup)='this.search(searchString)'
+                [(ngModel)]='searchString'/>
 
-    <input
-            id="search-box"
-            class="form-control"
-            placeholder="user email"
-            (keyup)='this.search(searchString)'
-            [(ngModel)]='searchString'/>
+        <div
+                class="search-result"
+                *ngIf = 'searchBoxVisible'>
+            <div class = "search-title">
+                <h5>Search result:</h5>
+                <button
+                    class = 'btn btn-20-20 cancel-search-btn'
+                    (click) = 'cancelSearch()'>x
+                </button>
+            </div>
 
-    <div
-            class="search-result"
-            *ngIf = 'searchBoxVisible'>
-        <div class = "search-title">
-            <h5>Search result:</h5>
-            <button
-                class = 'btn btn-20-20 cancel-search-btn'
-                (click) = 'cancelSearch()'>x
-            </button>
+            <ul>
+                <li *ngFor="let result of searchResult | async"
+                    class="search-item"
+                    (click) = 'addUser(result)'>
+                    {{result.email}}
+                </li>
+            </ul>
         </div>
-
-        <ul>
-            <li *ngFor="let result of searchResult | async"
-                class="search-item"
-                (click) = 'addUser(result)'>
-                {{result.email}}
-            </li>
-        </ul>
     </div>
 </div>
 

@@ -28,24 +28,26 @@
 }
 
 .ticket-title {
-    overflow: hidden;
-    word-wrap: break-word;
-    height: 30px;
-    width: 300px;
-    height: auto;
     background: 0 0;
-
     border: 0;
     border-radius: 3px;
     box-shadow: none;
     font-size: 18px;
     font-weight: 700;
+    height: auto;
     line-height: 22px;
-
     min-height: 22px;
+    overflow: hidden;
     padding: 4px 6px;
     resize: none;
+    word-wrap: break-word;
+    width: 300px;
 }
+
+.ticket-title-div {
+    display: inline-block;
+}
+
 
 .btn-close {
     float: right;
@@ -104,7 +106,7 @@
 }
 .description-textarea {
     width: 100%;
-    min-height: 80px;
+    min-height: 60px;
     resize: none;
     border-radius: 3px;
     overflow: hidden;
@@ -118,7 +120,7 @@
 
 .description-div {
     word-wrap: break-word;
-    min-height: 80px;
+    min-height: 30px;
 }
 
 .date-field {
@@ -132,7 +134,7 @@
 .description-add-href {
     display: block;
     padding-left: 20px;
-
+    margin-top: 40px;
     height: 30px;
     line-height: 30px;
     width: 100%;
@@ -144,8 +146,6 @@
     background-color: #d7d7d7;
     color: black;
 }
-
-
 
 
 .date {
