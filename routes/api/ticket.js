@@ -1,8 +1,6 @@
 const mongoose      = require('mongoose');
 const router        = require('express').Router();
-
 const Ticket        = require('../../models/ticket');
-
 const deleteObjects = require('./accessories/del-objects');
 const hasRights     = require('./accessories/has-rights');
 const rightsConfig  = require('../../config/rights');
@@ -13,7 +11,7 @@ router.get('/', function(req, res, next) {
     next();
   }
   else {
-     console.log(req.query.listId)
+     console.log(req.query.listId);
      Ticket.find({'listId': req.query.listId},
      // {'text':true, 'order': true },
      function (err, result) {
@@ -24,7 +22,7 @@ router.get('/', function(req, res, next) {
        res.json(result);
      })
   }
-})
+});
 
 router.get('/', hasRights(rightsConfig.ticket.read), function(req, res, next) {
   Ticket.findOne({'_id': req.query.ticketId},
@@ -35,12 +33,12 @@ router.get('/', hasRights(rightsConfig.ticket.read), function(req, res, next) {
       }
       res.json(result);
     })
-})
+});
 
 
 
 router.post('/', hasRights(rightsConfig.ticket.add), function(req, res, next) {
-  var inputTicket = req.body.ticket;
+  const inputTicket = req.body.ticket;
 
   ticket = new Ticket({
     _id:        mongoose.Types.ObjectId(),
@@ -49,7 +47,7 @@ router.post('/', hasRights(rightsConfig.ticket.add), function(req, res, next) {
     listId:     inputTicket.listId,
     order:      inputTicket.order,
     lastUpdate: new Date()
-  })
+  });
 
   ticket.save(function(err, result) {
     if (err) {
@@ -58,10 +56,10 @@ router.post('/', hasRights(rightsConfig.ticket.add), function(req, res, next) {
     }
     res.json(result);
   })
-})
+});
 
 router.put('/', hasRights(rightsConfig.ticket.edit), function(req, res, next) {
-  var inputTicket = req.body.ticket;
+  const inputTicket = req.body.ticket;
   console.log(inputTicket);
 
   Ticket.findById(inputTicket._id, function (err, ticket) {
@@ -76,15 +74,15 @@ router.put('/', hasRights(rightsConfig.ticket.edit), function(req, res, next) {
     console.log(ticket);
     ticket.save(function(err, result) {
       if (err)
-        return res.json(err)
+        return res.json(err);
       res.json(result);
     })
   })
-})
+});
 
 
 router.delete('/', hasRights(rightsConfig.ticket.delete), function(req, res, next) {
-  var ticketId = req.body.ticket._id;
+  const ticketId = req.body.ticket._id;
   
   deleteObjects(Ticket, '_id', ticketId, (err, result) => {
     if (err) {
@@ -94,6 +92,6 @@ router.delete('/', hasRights(rightsConfig.ticket.delete), function(req, res, nex
     res.json({[ticketId]:'ok'});
   })
   
-})
+});
 
-module.exports = router
+module.exports = router;

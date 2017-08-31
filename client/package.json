@@ -1,7 +1,7 @@
 {
   "name": "trello-app",
   "version": "0.1.0",
-  "description":"learning application",
+  "description": "learning application",
   "repository": "xz.xz.xz",
   "scripts": {
     "start": "tsc && concurrently \"tsc -w\" \"lite-server\" ",

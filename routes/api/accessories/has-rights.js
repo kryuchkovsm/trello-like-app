@@ -2,7 +2,7 @@
 
 const Relation  = require('../../../models/relation');
 
-var hasRights = function(rights, unsubscribe) {
+const hasRights = function(rights, unsubscribe) {
   return hasRights[rights, unsubscribe] || (hasRights[rights, unsubscribe] = function(req, res, next) {
       // TODO refactor this custom conditions ((
       if (unsubscribe === 'unsubscribe') {
@@ -14,19 +14,17 @@ var hasRights = function(rights, unsubscribe) {
 
     
       // get boardId from query
-      var boardId = req.query.boardId;
+      let boardId = req.query.boardId;
       
       // search boardId in request body
-      var object = req.body.board
+      let currentObject = req.body.board
                 || req.body.ticket
                 || req.body.relation
                 || req.body.list;
       
       // if body exist - try to get boardId, or leave id from query
-      
-      
-      if (object) {
-        boardId = boardId || object.boardId;
+      if (currentObject) {
+        boardId = boardId || currentObject.boardId;
       }
       
       if (!boardId) {
@@ -40,14 +38,14 @@ var hasRights = function(rights, unsubscribe) {
         .findOne(
           {'board':boardId, 'user': req.user._id }, function(err, data) {
             if (err) {
-              res.send(err)
+              res.send(err);
               return;
             }
             
-            var rightsOverlap = data.rights
+            const rightsOverlap = data.rights
               .filter(n => {
                 return rights.indexOf(n) !== -1;
-              })
+              });
             
             if (rightsOverlap.length <= 0) {
               res.status(403).send({err: 'Action restricted for this user'});

@@ -59,7 +59,7 @@ Open your browser on page 'localhost:3000'
 
 ## Authors
 
-* **Sergey Kryuchkov** - *Initial work* - [dunice-kryuchkov](https://bitbucket.org/dunice-kryuchkov/)
+* **Sergey Kryuchkov** - *Initial work* 
 
 ## License
 

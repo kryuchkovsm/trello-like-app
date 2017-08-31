@@ -4,7 +4,7 @@ const FacebookStrategy  = require('passport-facebook').Strategy;
 const GoogleStrategy    = require('passport-google-oauth').Strategy;
 const JwtStrategy       = require('passport-jwt').Strategy;
 const ExtractJwt        = require('passport-jwt').ExtractJwt;
-
+const mongoose          = require('mongoose');
 const jwt               = require('jsonwebtoken');
 const User              = require('../models/user');
 const authConfig        = require('./auth');
@@ -57,7 +57,7 @@ module.exports = function(passport) {
         }
         else {
 
-         var newUser            = new User();
+         let newUser            = new User();
           newUser._id      = mongoose.Types.ObjectId();
           newUser.email    = email;
           newUser.password = newUser.generateHash(password);

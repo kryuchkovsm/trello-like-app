@@ -22,8 +22,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:false}));
 
 // Routes ======================================================================
-// TODO move to antoher section?
-
 // contain secret for jwt, and social login providers
 const authConfig        = require('./config/auth');
 const expressJWT        = require('express-jwt');
